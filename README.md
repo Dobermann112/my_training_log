@@ -5,6 +5,11 @@
 
 ---
 
+## 画面遷移図
+[画面遷移図はこちら](https://www.figma.com/design/1jBN6jRxSqQ7g7bjCPOtSU/%E7%84%A1%E9%A1%8C?node-id=0-1&t=mBggKAmyQhu7UCZB-1)
+
+---
+
 ## このサービスへの思い・作りたい理由
 「より多くの人に筋トレ、トレーニングをすることの素晴らしさを伝えたい」
 
