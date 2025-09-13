@@ -10,6 +10,11 @@
 
 ---
 
+## ER図
+[ER図はこちら](https://drive.google.com/file/d/1ZHafTCcjD7SEN_n-EKfH2mL63iYaXdyf/view?usp=sharing)
+
+---
+
 ## このサービスへの思い・作りたい理由
 「より多くの人に筋トレ、トレーニングをすることの素晴らしさを伝えたい」
 
