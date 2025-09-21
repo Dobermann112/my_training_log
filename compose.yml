@@ -1,16 +1,14 @@
 services:
   db:
-    image: mysql:8.0
+    image: postgres:16
     environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: myapp_development
-      MYSQL_USER: rails
-      MYSQL_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: my_training_log_development
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - mysql_data:/var/lib/mysql
-    command: --default-authentication-plugin=mysql_native_password
+      - postgres_data:/var/lib/postgresql/data
 
   app:
     build:
@@ -25,12 +23,12 @@ services:
       - db
     environment:
       DATABASE_HOST: db
-      DATABASE_USERNAME: rails
+      DATABASE_USERNAME: postgres
       DATABASE_PASSWORD: password
-      DATABASE_NAME: myapp_development
+      DATABASE_NAME: my_training_log_development
     stdin_open: true
     tty: true
 
 volumes:
-  mysql_data:
+  postgres_data:
   bundle_cache:
