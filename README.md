@@ -117,7 +117,7 @@
 
 - **MVP（Railsのみ/アバターなし）**  
   - `Ruby on Rails`: 7.1.5
-  - `MySQL`: データベース
+  - `PostgreSQL 16`: データベース
   - `Heroku`: デプロイサーバー
   - `devise`: 認証機能
   - `chartkick`+`groupdate`: 週次/種目別グラフの表示  
