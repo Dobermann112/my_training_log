@@ -1,6 +1,6 @@
 inherit_from: .rubocop_todo.yml
 
-require:
+plugins:
   - rubocop-performance
   - rubocop-rails
   - rubocop-rspec
@@ -86,7 +86,7 @@ Lint/AssignmentInCondition:
   Enabled: false
 
 # メソッド名等の命名の指摘
-Naming/PredicateName:
+Naming/PredicatePrefix:
   Enabled: false
 
 # 未i18nのチェック
