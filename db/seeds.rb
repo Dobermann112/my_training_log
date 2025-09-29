@@ -1,9 +1,14 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+body_parts = [
+  { name: '胸', display_order: 1 },
+  { name: '背中', display_order: 2 },
+  { name: '脚', display_order: 3 },
+  { name: '肩', display_order: 4 },
+  { name: '腕', display_order: 5 },
+  { name: '腹', display_order: 6 }
+]
+
+body_parts.each do |bp|
+    BodyPart.find_or_create_by!(name: bp[:name]) do |part|
+        part.display_order = bp[:display_order]
+    end
+end
