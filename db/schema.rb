@@ -10,15 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_09_29_125244) do
+ActiveRecord::Schema[7.1].define(version: 2025_10_02_111304) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "body_parts", force: :cascade do |t|
-    t.string "name"
-    t.integer "display_order"
+    t.string "name", null: false
+    t.integer "display_order", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["display_order"], name: "index_body_parts_on_display_order", unique: true
+    t.index ["name"], name: "index_body_parts_on_name", unique: true
   end
 
   create_table "exercises", force: :cascade do |t|
