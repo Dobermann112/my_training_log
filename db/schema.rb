@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_10_02_111304) do
+ActiveRecord::Schema[7.1].define(version: 2025_10_02_125505) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -51,6 +51,33 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_02_111304) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "workout_sets", force: :cascade do |t|
+    t.bigint "workout_id", null: false
+    t.bigint "exercise_id", null: false
+    t.integer "set_number", null: false
+    t.decimal "weight", precision: 5, scale: 2
+    t.integer "reps"
+    t.text "memo"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["exercise_id"], name: "index_workout_sets_on_exercise_id"
+    t.index ["workout_id", "exercise_id", "set_number"], name: "idx_on_workout_id_exercise_id_set_number_db8390fc60", unique: true
+    t.index ["workout_id"], name: "index_workout_sets_on_workout_id"
+  end
+
+  create_table "workouts", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.date "workout_date", null: false
+    t.text "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "workout_date"], name: "index_workouts_on_user_id_and_workout_date"
+    t.index ["user_id"], name: "index_workouts_on_user_id"
+  end
+
   add_foreign_key "exercises", "body_parts"
   add_foreign_key "exercises", "users"
+  add_foreign_key "workout_sets", "exercises"
+  add_foreign_key "workout_sets", "workouts"
+  add_foreign_key "workouts", "users"
 end
