@@ -15,7 +15,7 @@ class UsersController < ApplicationController
             redirect_to user_path, notice: "プロフィールを更新しました"
         else
             flash.now[:alert] = "入力内容に誤りがあります"
-            reder :edit, status: :unprocessable_entity
+            render :edit, status: :unprocessable_entity
         end
     end
 
