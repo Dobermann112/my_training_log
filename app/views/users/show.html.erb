@@ -1,0 +1,28 @@
+<h2>プロフィール</h2>
+
+<div class="profile-section">
+  <p>名前：<%= @user.name %></p>
+  <%= link_to "編集", edit_user_path %>
+</div>
+
+<div class="profile-section">
+  <p>性別：<%= @user.gender %></p>
+  <%= link_to "編集", edit_user_path %>
+</div>
+
+<div class="profile-section">
+  <p>目標：<%= @user.goal.presence || "未設定" %></p>
+  <%= link_to "編集", edit_user_path %>
+</div>
+
+<hr>
+
+<div class="profile-section">
+  <p>メールアドレス：<%= @user.email %></p>
+  <%= link_to "変更", "#" %>
+</div>
+
+<div class="profile-section">
+  <p>パスワード：********</p>
+  <%= link_to "変更", "#" %>
+</div>
