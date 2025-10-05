@@ -1,0 +1,27 @@
+<h2>プロフィール編集</h2>
+
+<%= form_with model: @user, url: user_path, method: :patch, local: true do |f| %>
+  <% if @user.errors.any? %>
+    <%= render "shared/error_messages", resource: @user %>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :name, "名前" %>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :gender, "性別" %>
+    <%= f.select :gender, User.genders.keys.map { |k| [k, k] }, {}, class: "form-select" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :goal, "目標" %>
+    <%= f.text_area :goal, rows: 3, class: "form-control" %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "更新する", class: "btn btn-primary" %>
+    <%= link_to "戻る", user_path, class: "btn btn-secondary" %>
+  </div>
+<% end %>
