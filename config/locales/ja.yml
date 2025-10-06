@@ -1,0 +1,15 @@
+ja:
+  activerecord:
+    models:
+      user: ユーザー
+    attributes:
+      user:
+        name: 名前
+        email: メールアドレス
+        password: パスワード
+        gender: 性別
+        goal: 目標
+  errors:
+    messages:
+      blank: を入力してください
+      too_short: は短すぎます
