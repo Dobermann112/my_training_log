@@ -41,7 +41,7 @@
 <div>
   <p>退会をご希望の場合は下のボタンをクリックしてください。</p>
   <%= button_to "アカウントを削除する", registration_path(resource_name),
-      data: { confirm: "本当に削除してもよろしいですか？" },
+      data: { turbo_confirm: "本当に削除してもよろしいですか？" },
       method: :delete %>
 </div>
 
