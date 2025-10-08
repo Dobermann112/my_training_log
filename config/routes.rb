@@ -6,8 +6,14 @@ Rails.application.routes.draw do
   end
 
   resource :user, only: [:show, :edit, :update]
-  
-  get "up" => "rails/health#show", as: :rails_health_check
 
-  root "users#show"
+  authenticated :user do
+    root "users#show", as: :authenticated_root
+  end
+
+  unauthenticated do
+    root "devise/sessions#new", as: :unauthenticated_root
+  end
+
+  get "up" => "rails/health#show", as: :rails_health_check
 end
