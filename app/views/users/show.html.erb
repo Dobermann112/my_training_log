@@ -19,10 +19,17 @@
 
 <div class="profile-section">
   <p>メールアドレス：<%= @user.email %></p>
-  <%= link_to "変更", "#" %>
+  <%= link_to "変更", account_edit_user_path %>
 </div>
 
 <div class="profile-section">
   <p>パスワード：********</p>
-  <%= link_to "変更", "#" %>
+  <%= link_to "変更", account_edit_user_path %>
+</div>
+
+<hr>
+
+<div class="actions">
+  <%= link_to "ログアウト", destroy_user_session_path,
+        data: { turbo_method: :delete, turbo_confirm: "ログアウトしますか？" } %>
 </div>

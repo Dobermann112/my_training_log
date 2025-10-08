@@ -1,0 +1,25 @@
+ja:
+  activerecord:
+    models:
+      user: ユーザー
+    attributes:
+      user:
+        name: 名前
+        email: メールアドレス
+        password: パスワード
+        password_confirmation: パスワード（確認用）
+        gender: 性別
+        goal: 目標
+  devise:
+    registrations:
+      destroyed: アカウントを削除しました。ご利用ありがとうございました。
+    sessions:
+      signed_in: ログインしました。
+      signed_out: ログアウトしました。
+    passwords:
+      updated: パスワードを更新しました。
+      send_instructions: パスワード再設定メールを送信しました。
+  errors:
+    messages:
+      blank: を入力してください
+      too_short: は短すぎます

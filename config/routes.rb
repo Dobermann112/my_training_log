@@ -1,9 +1,19 @@
 Rails.application.routes.draw do
   devise_for :users
   
+  devise_scope :user do
+    get "account_edit", to: "devise/registrations#edit", as: :account_edit_user
+  end
+
   resource :user, only: [:show, :edit, :update]
 
-  get "up" => "rails/health#show", as: :rails_health_check
+  authenticated :user do
+    root "users#show", as: :authenticated_root
+  end
 
-  root "users#show"
+  unauthenticated do
+    root "devise/sessions#new", as: :unauthenticated_root
+  end
+
+  get "up" => "rails/health#show", as: :rails_health_check
 end
