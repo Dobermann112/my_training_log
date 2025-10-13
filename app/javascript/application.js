@@ -1,3 +1,8 @@
-// Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
+// Import Turbo
 import "@hotwired/turbo-rails"
-import "controllers"
+
+// Import Bootstrap JS globally
+import "bootstrap"
+
+// Import Stimulus (controllers)
+import "./controllers"

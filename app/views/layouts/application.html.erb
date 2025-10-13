@@ -7,16 +7,17 @@
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body>
-    <% flash.each do |key, message| %>
-      <div class="flash <%= key %>">
-        <%= message %>
-      </div>
-    <% end %>
-    
-    <%= yield %>
+  <body class="d-flex flex-column min-vh-100 bg-black text-light">
+    <%= render "layouts/navbar" %>
+
+    <main class="container mt-4 flex-grow-1">
+      <%= render "layouts/flash_messages" %>
+      <%= yield %>
+    </main>
+
+    <%= render "layouts/footer" %>
   </body>
 </html>
