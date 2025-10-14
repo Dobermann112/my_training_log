@@ -1,5 +1,9 @@
 // Import and register all your controllers from the importmap via controllers/**/*_controller
 import { application } from "./application"
 
-// Stimulusの自動読込を停止（import.meta.globを使わない）
+// 個別に読み込む Stimulus コントローラ
+import ConfirmController from "./confirm_controller"
+
+application.register("confirm", ConfirmController)
+
 export { application }
