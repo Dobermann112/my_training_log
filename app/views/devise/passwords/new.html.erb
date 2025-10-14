@@ -1,16 +1,19 @@
-<h2>パスワードをお忘れですか？</h2>
+<%= render "devise/shared/auth_container" do %>
+  <h2 class="text-center mb-4 text-warning fw-semibold">パスワード再設定</h2>
+  <p class="text-center text-muted mb-4">登録済みのメールアドレスを入力してください。再設定リンクをお送りします。</p>
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+  <%= form_for(resource, as: resource_name, url: password_path(resource_name)) do |f| %>
+    <div class="mb-3">
+      <%= f.label :email, "メールアドレス", class: "form-label" %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control bg-dark text-light border-secondary" %>
+    </div>
 
-  <div class="field">
-    <%= f.label :email, "登録メールアドレス" %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+    <div class="d-grid">
+      <%= f.submit "再設定メールを送信", class: "btn btn-warning text-dark fw-semibold" %>
+    </div>
+  <% end %>
 
-  <div class="actions">
-    <%= f.submit "パスワード再設定用メールを送信する" %>
+  <div class="text-center mt-4">
+    <%= render "devise/shared/links" %>
   </div>
 <% end %>
-
-<%= render "devise/shared/links" %>
