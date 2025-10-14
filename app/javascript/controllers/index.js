@@ -3,7 +3,9 @@ import { application } from "./application"
 
 // 個別に読み込む Stimulus コントローラ
 import ConfirmController from "./confirm_controller"
+import FlashController from "./flash_controller"
 
 application.register("confirm", ConfirmController)
+application.register("flash", FlashController)
 
 export { application }
