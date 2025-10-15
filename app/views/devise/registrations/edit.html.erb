@@ -37,6 +37,6 @@
   <% end %>
 
   <div class="text-center mt-4">
-    <%= link_to "アカウントを削除する", registration_path(resource_name), data: { turbo_method: :delete, confirm: "本当に削除しますか？" }, class: "text-danger small text-decoration-none" %>
+    <%= link_to "アカウントを削除する", registration_path(resource_name), data: { controller: "confirm", action: "click->confirm#confirm", "confirm-message-value": "本当に削除しますか？", turbo_method: :delete }, class: "text-danger small text-decoration-none" %>
   </div>
 <% end %>
