@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>App</title>
+    <title>My Training Log</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -10,14 +10,21 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body class="d-flex flex-column min-vh-100 bg-black text-light">
-    <%= render "layouts/navbar" %>
+  <body class="app-body">
+    <header>
+      <%= render "shared/navbar" if lookup_context.exists?("shared/_navbar") %>
+    </header>
 
-    <main class="container mt-4 flex-grow-1">
-      <%= render "layouts/flash_messages" %>
+    <main class="container py-4">
+      <div id="flash-area" aria-live="polite" aria-atomic="true">
+        <%= render "shared/flash_messages" %>
+      </div>
+
       <%= yield %>
     </main>
 
-    <%= render "layouts/footer" %>
+    <footer>
+      <%= render "shared/footer" if lookup_context.exists?("shared/_footer") %>
+    </footer>
   </body>
 </html>

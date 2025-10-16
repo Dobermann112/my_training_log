@@ -1,0 +1,32 @@
+<% return if flash.empty? %>
+
+<% flash.each do |type, message| %>
+  <% next if message.blank? %>
+
+  <% css_class =
+      case type.to_sym
+      when :notice, :info then "flash-notice"
+      when :alert, :error then "flash-error"
+      when :success       then "flash-success"
+      else "flash-notice"
+      end %>
+
+  <div
+    class="flash-message <%= css_class %>"
+    role="status"
+    data-controller="flash"
+    data-flash-timeout-value="3500"  <%# ミリ秒。自動フェード不要ならこの2行削除 %>
+    data-action="click->flash#dismiss keydown@window->flash#esc"
+  >
+    <div class="flash-message__content">
+      <%= sanitize(message) %>
+    </div>
+
+    <button
+      type="button"
+      class="flash-message__close"
+      aria-label="閉じる"
+      data-action="flash#dismiss"
+    >&times;</button>
+  </div>
+<% end %>

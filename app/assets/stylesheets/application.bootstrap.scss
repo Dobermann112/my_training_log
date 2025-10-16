@@ -1,0 +1,64 @@
+// ===== Theme Variables =====
+$primary-bg: #0d1b2a;
+$secondary-bg: #1b263b;
+$accent-color: #3a86ff;
+$text-light: #e0e1dd;
+$text-dark: #1b1b1b;
+
+$flash-success-bg: #d8f3dc;
+$flash-success-text: #1b4332;
+$flash-error-bg: #fcd5ce;
+$flash-error-text: #9b2226;
+$flash-notice-bg: #e0e1dd;
+$flash-notice-text: #000;
+
+// ===== Base Layout =====
+body {
+  background-color: $primary-bg;
+  color: $text-light;
+}
+
+.flash-message {
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  margin: 1rem auto;
+  max-width: 600px;
+  text-align: center;
+  font-weight: 600;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.flash-success {
+  background-color: $flash-success-bg;
+  color: $flash-success-text;
+}
+
+.flash-error {
+  background-color: $flash-error-bg;
+  color: $flash-error-text;
+}
+
+.flash-notice {
+  background-color: $flash-notice-bg;
+  color: $flash-notice-text;
+}
+
+html, body {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  main {
+    flex: 1;
+  }
+  
+  footer {
+    margin-top: auto;
+    background-color: $secondary-bg;
+    color: $text-light;
+    text-align: center;
+    padding: 1rem 0;
+    border-top: 1px solid lighten($secondary-bg, 10%);
+  }
+  
