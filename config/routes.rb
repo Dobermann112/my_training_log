@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get 'body_parts/index'
   devise_for :users
   
   devise_scope :user do
@@ -7,7 +6,7 @@ Rails.application.routes.draw do
   end
 
   resource :user, only: [:show, :edit, :update]
-  resource :body_parts, only: [:index]
+  resources :body_parts, only: [:index]
 
   devise_scope :user do
     authenticated :user do
