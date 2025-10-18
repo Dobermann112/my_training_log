@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   end
 
   resource :user, only: [:show, :edit, :update]
+  resources :body_parts, only: [:index]
 
   devise_scope :user do
     authenticated :user do
