@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'body_parts/index'
   devise_for :users
   
   devise_scope :user do
