@@ -1,6 +1,6 @@
 class ExercisesController < ApplicationController
     before_action :set_body_part
-    before_action :set_exercise, only: [:show, :edit, :update, :destroy]
+    before_action :set_exercise, only: [:edit, :update, :destroy]
   
     def index
       @exercises = @body_part.exercises

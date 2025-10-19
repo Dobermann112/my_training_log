@@ -1,0 +1,8 @@
+<h2>「<%= @exercise.name %>」を編集</h2>
+
+<%= render "form", exercise: @exercise %>
+
+<div class="mt-3">
+  <%= link_to "一覧に戻る", body_part_exercises_path(@body_part),
+              class: "btn btn-outline-light" %>
+</div>

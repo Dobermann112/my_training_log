@@ -1,0 +1,35 @@
+<h2><%= @body_part.name %> の種目一覧</h2>
+
+<div class="mb-3">
+  <%= link_to "新規登録", new_body_part_exercise_path(@body_part), class: "btn btn-warning" %>
+  <%= link_to "部位一覧に戻る", body_parts_path, class: "btn btn-outline-light" %>
+</div>
+
+<table class="table table-dark table-striped">
+  <thead>
+    <tr>
+      <th>種目名</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @exercises.each do |exercise| %>
+      <tr>
+        <td><%= exercise.name %></td>
+        <td>
+          <%= link_to "編集", edit_body_part_exercise_path(@body_part, exercise),
+                      class: "btn btn-sm btn-outline-light" %>
+          <%= link_to "削除", body_part_exercise_path(@body_part, exercise),
+                      method: :delete,
+                      data: { controller: "confirm",
+                              confirm_message_value: "「#{exercise.name}」を削除しますか？" },
+                      class: "btn btn-sm btn-outline-danger" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% if @exercises.empty? %>
+  <p class="text-muted">まだ登録されている種目はありません。</p>
+<% end %>
