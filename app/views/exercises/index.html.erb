@@ -20,11 +20,8 @@
           <%= link_to "編集", edit_body_part_exercise_path(@body_part, exercise),
                       class: "btn btn-sm btn-outline-light" %>
           <%= link_to "削除", body_part_exercise_path(@body_part, exercise),
-                      data: { controller: "confirm",
-                              action: "click->confirm#confirm",
-                              "confirm_message_value": "「#{exercise.name}」を削除しますか？",
-                              turbo_method: :delete
-                            },
+                      data: { turbo_method: :delete,
+                              turbo_confirm: "「#{exercise.name}」を削除しますか？" },
                       class: "btn btn-sm btn-outline-danger" %>
         </td>
       </tr>
