@@ -1,0 +1,20 @@
+<%= form_with model: [@body_part, exercise], local: true do |f| %>
+    <% if exercise.errors.any? %>
+      <div class="alert alert-danger">
+        <p><strong><%= pluralize(exercise.errors.count, "件") %>のエラーがあります。</strong></p>
+        <ul>
+          <% exercise.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  
+    <div class="mb-3">
+      <%= f.label :name, "種目名" %>
+      <%= f.text_field :name, class: "form-control" %>
+    </div>
+  
+    <%= f.submit class: "btn btn-warning" %>
+  <% end %>
+  

@@ -2,12 +2,12 @@
   <h2 class="mb-4 text-center text-light">Body Parts</h2>
 
   <div class="row">
-    <% @body_parts.each do |part| %>
+    <% @body_parts.each do |body_part| %>
       <div class="col-md-4 mb-4">
         <div class="card bg-dark text-light shadow-sm border-warning h-100">
           <div class="card-body text-center">
-            <h5 class="card-title fw-bold"><%= part.name %></h5>
-            <%= link_to "この部位を選択", "#", class: "btn btn-warning w-100 mt-3" %>
+            <h5 class="card-title fw-bold"><%= body_part.name %></h5>
+            <%= link_to "種目を選択", body_part_exercises_path(body_part), class: "btn btn-warning w-100 mt-3" %>
           </div>
         </div>
       </div>
