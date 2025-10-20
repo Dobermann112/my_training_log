@@ -1,35 +1,29 @@
-<h2>プロフィール</h2>
+<div class="container my-5">
+  <div class="card p-4">
+    <h2 class="mb-4 text-light border-bottom pb-2">プロフィール</h2>
 
-<div class="profile-section">
-  <p>名前：<%= @user.name %></p>
-  <%= link_to "編集", edit_user_path %>
-</div>
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <p><strong>名前：</strong> <%= @user.name %></p>
+        <p><strong>性別：</strong> <%= @user.gender %></p>
+        <p><strong>目標：</strong> <%= @user.goal.presence || "未設定" %></p>
+      </div>
 
-<div class="profile-section">
-  <p>性別：<%= @user.gender %></p>
-  <%= link_to "編集", edit_user_path %>
-</div>
+      <div class="col-md-6 text-md-end">
+        <%= link_to "プロフィール編集", edit_user_path, class: "btn btn-primary mb-2" %><br>
+        <%= link_to "アカウント設定", account_edit_user_path, class: "btn btn-secondary" %>
+      </div>
+    </div>
 
-<div class="profile-section">
-  <p>目標：<%= @user.goal.presence || "未設定" %></p>
-  <%= link_to "編集", edit_user_path %>
-</div>
+    <hr>
 
-<hr>
-
-<div class="profile-section">
-  <p>メールアドレス：<%= @user.email %></p>
-  <%= link_to "変更", account_edit_user_path %>
-</div>
-
-<div class="profile-section">
-  <p>パスワード：********</p>
-  <%= link_to "変更", account_edit_user_path %>
-</div>
-
-<hr>
-
-<div class="actions">
-  <%= link_to "ログアウト", destroy_user_session_path,
-        data: { turbo_method: :delete, turbo_confirm: "ログアウトしますか？" } %>
+    <p><strong>メールアドレス：</strong> <%= @user.email %></p>
+    <p><strong>パスワード：</strong> ********</p>
+    
+    <div class="text-end mt-4">
+      <%= link_to "ログアウト", destroy_user_session_path,
+            data: { turbo_method: :delete, turbo_confirm: "ログアウトしますか？" },
+            class: "btn btn-outline-light" %>
+    </div>
+  </div>
 </div>
