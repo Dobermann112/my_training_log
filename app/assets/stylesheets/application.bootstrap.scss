@@ -61,4 +61,45 @@ html, body {
     padding: 1rem 0;
     border-top: 1px solid lighten($secondary-bg, 10%);
   }
+
+// ===== Bootstrap Custom Overrides =====
+.card {
+    background-color: $secondary-bg;
+    border: 1px solid lighten($secondary-bg, 10%);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  .btn-primary {
+    background-color: $accent-color;
+    border: none;
+    color: $text-light;
+  
+    &:hover {
+      background-color: darken($accent-color, 10%);
+    }
+  }
+  
+  .btn-secondary {
+    background-color: lighten($secondary-bg, 10%);
+    border: none;
+    color: $text-light;
+  
+    &:hover {
+      background-color: lighten($secondary-bg, 20%);
+    }
+  }
+  
+  .form-control,
+  .form-select,
+  textarea {
+    background-color: $secondary-bg;
+    color: $text-light;
+    border: 1px solid lighten($secondary-bg, 10%);
+  
+    &:focus {
+      border-color: $accent-color;
+      box-shadow: 0 0 5px rgba($accent-color, 0.5);
+    }
+  }
   
