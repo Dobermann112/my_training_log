@@ -14,7 +14,7 @@ class Exercise < ApplicationRecord
 
     scope :defaults, -> { where(user_id: nil, is_default: true) }
     scope :custom_of, ->(user) { where(user_id: user.id) }
-    scope :for_user, ->(user) { default.or(custom_of(user)) }
+    scope :for_user, ->(user) { defaults.or(custom_of(user)) }
     
     def default_exercise?
         is_default && user_id.nil?
