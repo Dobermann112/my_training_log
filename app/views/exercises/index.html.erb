@@ -17,12 +17,19 @@
       <tr>
         <td><%= exercise.name %></td>
         <td>
-          <%= link_to "編集", edit_body_part_exercise_path(@body_part, exercise),
-                      class: "btn btn-sm btn-outline-light" %>
-          <%= link_to "削除", body_part_exercise_path(@body_part, exercise),
-                      data: { turbo_method: :delete,
-                              turbo_confirm: "「#{exercise.name}」を削除しますか？" },
-                      class: "btn btn-sm btn-outline-danger" %>
+          <% if exercise.user == current_user %>
+            <%= link_to "編集", edit_body_part_exercise_path(@body_part, exercise),
+                        class: "btn btn-sm btn-outline-light" %>
+            <%= link_to "削除", body_part_exercise_path(@body_part, exercise),
+                        data: { turbo_method: :delete,
+                                turbo_confirm: "「#{exercise.name}」を削除しますか？" },
+                        class: "btn btn-sm btn-outline-danger" %>
+          <% elsif exercise.default_exercise? %>
+            <%= link_to "編集", edit_body_part_exercise_path(@body_part, exercise),
+                        class: "btn btn-sm btn-outline-light" %>
+          <% else %>
+            <span class="text-muted">-</span>
+          <% end %>
         </td>
       </tr>
     <% end %>

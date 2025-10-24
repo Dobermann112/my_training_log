@@ -1,9 +1,10 @@
 class ExercisesController < ApplicationController
     before_action :set_body_part
     before_action :set_exercise, only: [:edit, :update, :destroy]
+    before_action :authorize_exercise!, only: [:edit, :update, :destroy]
   
     def index
-      @exercises = @body_part.exercises
+      @exercises = Exercise.for_user(current_user).where(body_part: @body_part).includes(:body_part)
     end
   
     def new
@@ -12,6 +13,10 @@ class ExercisesController < ApplicationController
   
     def create
       @exercise = @body_part.exercises.build(exercise_params)
+      # current_user がいればカスタム種目扱いに
+      @exercise.user = current_user if user_signed_in?
+      @exercise.is_default = false if @exercise.user.present?
+
       if @exercise.save
         redirect_to body_part_exercises_path(@body_part), notice: "種目を登録しました。"
       else
@@ -41,7 +46,14 @@ class ExercisesController < ApplicationController
     end
   
     def set_exercise
-      @exercise = @body_part.exercises.find(params[:id])
+      @exercise = Exercise.for_user(current_user).where(body_part: @body_part).find(params[:id])
+    end
+
+    def authorize_exercise!
+        # 他人のカスタム・既定は編集・削除できないようにする
+        unless @exercise.user.nil? || @exercise.user == current_user
+            redirect_to body_part_exercise_path(@body_part), alert: "権限がありません。"
+        end
     end
   
     def exercise_params
