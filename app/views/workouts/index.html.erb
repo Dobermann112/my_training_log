@@ -1,2 +1,23 @@
-<h1>Workouts#index</h1>
-<p>Find me in app/views/workouts/index.html.erb</p>
+<h2>トレーニングセッション一覧</h2>
+<%= link_to "新規作成", new_workout_path, class: "btn btn-success mb-3" %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>日付</th>
+      <th>メモ</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @workouts.each do |w| %>
+      <tr>
+        <td><%= w.workout_date %></td>
+        <td><%= truncate(w.notes, length: 50) %></td>
+        <td>
+          <%= link_to "詳細", workout_path(w), class: "btn btn-outline-primary btn-sm" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
