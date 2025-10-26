@@ -1,2 +1,7 @@
-<h1>Workouts#show</h1>
-<p>Find me in app/views/workouts/show.html.erb</p>
+<h2><%= @workout.workout_date %> のトレーニング</h2>
+<p><strong>メモ:</strong> <%= simple_format(@workout.notes) %></p>
+
+<%= link_to "編集", edit_workout_path(@workout), class: "btn btn-secondary" %>
+<%= link_to "削除", workout_path(@workout),
+            data: { turbo_method: :delete, turbo_confirm: "削除しますか？" },
+            class: "btn btn-danger" %>
