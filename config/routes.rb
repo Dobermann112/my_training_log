@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   end
 
   resource :user, only: [:show, :edit, :update]
+  resources :workouts
   resources :body_parts, only: [:index] do
     resources :exercises
   end
