@@ -1,0 +1,24 @@
+<%= form_with model: @workout, local: true do |f| %>
+    <% if @workout.errors.any? %>
+      <div class="alert alert-danger">
+        <ul>
+          <% @workout.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  
+    <div class="mb-3">
+      <%= f.label :workout_date, "日付" %>
+      <%= f.date_field :workout_date, class: "form-control" %>
+    </div>
+  
+    <div class="mb-3">
+      <%= f.label :notes, "メモ" %>
+      <%= f.text_area :notes, class: "form-control", rows: 4 %>
+    </div>
+  
+    <%= f.submit class: "btn btn-primary" %>
+  <% end %>
+  
