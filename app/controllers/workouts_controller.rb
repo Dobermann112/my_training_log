@@ -6,12 +6,13 @@ class WorkoutsController < ApplicationController
     @workouts = current_user.workouts.order(workout_date: :desc)
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @workout = current_user.workouts.new
   end
+
+  def edit; end
 
   def create
     @workout = current_user.workouts.new(workout_params)
@@ -21,9 +22,6 @@ class WorkoutsController < ApplicationController
       flash.now[:alert] = "作成に失敗しました。"
       render :new, status: :unprocessable_entity
     end
-  end
-
-  def edit
   end
 
   def update

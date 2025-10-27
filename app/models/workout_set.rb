@@ -9,8 +9,6 @@ class WorkoutSet < ApplicationRecord
   private
 
   def at_least_one_value_present
-    if weight.blank? && reps.blank? && memo.blank?
-      errors.add(:base, "重量、回数、メモのいずれかを入力してください")
-    end
+    errors.add(:base, "重量、回数、メモのいずれかを入力してください") if weight.blank? && reps.blank? && memo.blank?
   end
 end
