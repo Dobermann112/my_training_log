@@ -45,6 +45,8 @@ RSpec.configure do |config|
 
   config.include FactoryBot::Syntax::Methods
 
+  config.include Devise::Test::IntegrationHelpers, type: :request
+
   config.full_backtrace = false
 
   # You can uncomment this line to turn off ActiveRecord support entirely.
