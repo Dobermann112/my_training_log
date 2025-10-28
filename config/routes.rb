@@ -1,13 +1,6 @@
 Rails.application.routes.draw do
-  get 'workouts/index'
-  get 'workouts/new'
-  get 'workouts/create'
-  get 'workouts/edit'
-  get 'workouts/update'
-  get 'workouts/show'
-  get 'workouts/destroy'
   devise_for :users
-  
+
   devise_scope :user do
     get "account_edit", to: "devise/registrations#edit", as: :account_edit_user
   end
@@ -22,7 +15,7 @@ Rails.application.routes.draw do
     authenticated :user do
       root "users#show", as: :authenticated_root
     end
-  
+
     unauthenticated do
       root "devise/sessions#new", as: :unauthenticated_root
     end
