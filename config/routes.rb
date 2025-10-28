@@ -1,11 +1,4 @@
 Rails.application.routes.draw do
-  get 'workouts/index'
-  get 'workouts/new'
-  get 'workouts/create'
-  get 'workouts/edit'
-  get 'workouts/update'
-  get 'workouts/show'
-  get 'workouts/destroy'
   devise_for :users
 
   devise_scope :user do
