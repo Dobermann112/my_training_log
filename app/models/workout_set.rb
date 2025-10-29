@@ -11,6 +11,8 @@ class WorkoutSet < ApplicationRecord
 
   before_validation :set_sequential_number, on: :create
 
+  scope :by_set_number, -> { order(:set_number) }
+
   private
 
   def at_least_one_value_present
