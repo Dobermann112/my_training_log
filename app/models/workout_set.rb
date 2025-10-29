@@ -3,6 +3,9 @@ class WorkoutSet < ApplicationRecord
   belongs_to :exercise
 
   validates :set_number, presence: true, numericality: { greater_than: 0 }
+  validates :weight, numericality: { greater_than: 0 }, allow_nil: true
+  validates :reps, numericality: { greater_than_or_equal_to: 1 }, allow_nil: true
+  validates :memo, length: { maximum: 100 }
 
   validate :at_least_one_value_present
 
