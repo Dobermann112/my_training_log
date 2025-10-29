@@ -21,7 +21,7 @@ class WorkoutSet < ApplicationRecord
 
   def set_sequential_number
     return if set_number.present?
-    max_number = WorkoutSet.where(workout_id:, execise_id:).maximum(:set_number) || 0
+    max_number = WorkoutSet.where(workout_id:, exercise_id:).maximum(:set_number) || 0
     self.set_number = max_number + 1
   end
 end
