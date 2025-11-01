@@ -23,9 +23,9 @@ RSpec.describe "Workouts", type: :request do
 
   describe "POST /create" do
     it "creates a workout and redirects" do
-      expect {
+      expect do
         post workouts_path, params: { workout: valid_attributes }
-      }.to change(Workout, :count).by(1)
+      end.to change(Workout, :count).by(1)
       expect(response).to redirect_to(workout_path(Workout.last))
     end
   end
@@ -57,9 +57,9 @@ RSpec.describe "Workouts", type: :request do
   describe "DELETE /destroy" do
     it "destroys a workout and redirects" do
       workout = create(:workout, user: user)
-      expect {
+      expect do
         delete workout_path(workout)
-      }.to change(Workout, :count).by(-1)
+      end.to change(Workout, :count).by(-1)
       expect(response).to redirect_to(workouts_path)
     end
   end

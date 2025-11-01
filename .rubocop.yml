@@ -96,3 +96,11 @@ Rails/I18nLocaleTexts:
 # before_actionの際の未定義メソッドのチェック
 Rails/LexicallyScopedActionFilter:
   Enabled: false
+
+# Rspecでの１つのitブロックの中のexpectの許容数
+Rspec/MultipleExpectations:
+  Max: 2
+
+# Rspecでの１つのitブロックの行数の上限
+Rspec/ExampleLength:
+  Max: 8

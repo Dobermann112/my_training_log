@@ -5,3 +5,28 @@
 <%= link_to "削除", workout_path(@workout),
             data: { turbo_method: :delete, turbo_confirm: "削除しますか？" },
             class: "btn btn-danger" %>
+
+<hr>
+
+<h3 class="mt-4">セット記録</h3>
+
+<%= link_to "新しいセットを追加", new_workout_workout_set_path(@workout),
+            class: "btn btn-warning mb-3" %>
+
+<% if @workout.workout_sets.any? %>
+  <% @workout.workout_sets.includes(:exercise).by_set_number.each do |set| %>
+    <div class="card bg-dark text-light mb-2 p-2">
+      <strong><%= set.exercise.name %></strong>
+      <div>重量: <%= set.weight || "-" %> kg / 回数: <%= set.reps || "-" %> 回</div>
+      <div><%= set.memo.presence || "（メモなし）" %></div>
+      <div class="mt-2">
+        <%= link_to "編集", edit_workout_workout_set_path(@workout, set), class: "btn btn-sm btn-outline-warning" %>
+        <%= link_to "削除", workout_workout_set_path(@workout, set),
+                    data: { turbo_method: :delete, turbo_confirm: "このセットを削除しますか？" },
+                    class: "btn btn-sm btn-outline-danger" %>
+      </div>
+    </div>
+  <% end %>
+<% else %>
+  <p>まだセットが登録されていません。</p>
+<% end %>
