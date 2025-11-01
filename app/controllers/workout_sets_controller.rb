@@ -7,6 +7,10 @@ class WorkoutSetsController < ApplicationController
     @workout_set = @workout.workout_sets.new
   end
 
+  def edit
+    @workout_set = @workout.workout_sets.find(params[:id])
+  end
+
   def create
     @workout_set = @workout.workout_sets.new(workout_set_params)
     if @workout_set.save
@@ -14,10 +18,6 @@ class WorkoutSetsController < ApplicationController
     else
       render :new, status: :unprocessable_entity
     end
-  end
-
-  def edit
-    @workout_set = @workout.workout_sets.find(params[:id])
   end
 
   def update

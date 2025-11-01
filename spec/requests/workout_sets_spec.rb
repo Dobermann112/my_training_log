@@ -9,11 +9,11 @@ RSpec.describe "WorkoutSets", type: :request do
 
   describe "POST /workouts/:workout_id/workout_sets" do
     it "新しいセットを作成できること" do
-      expect {
+      expect do
         post workout_workout_sets_path(workout), params: {
           workout_set: { exercise_id: exercise.id, weight: 40, reps: 10 }
         }
-      }.to change(WorkoutSet, :count).by(1)
+      end.to change(WorkoutSet, :count).by(1)
       expect(response).to redirect_to(workout_path(workout))
     end
   end
@@ -34,9 +34,9 @@ RSpec.describe "WorkoutSets", type: :request do
     let!(:workout_set) { create(:workout_set, workout: workout, exercise: exercise) }
 
     it "セットを削除できること" do
-      expect {
+      expect do
         delete workout_workout_set_path(workout, workout_set)
-      }.to change(WorkoutSet, :count).by(-1)
+      end.to change(WorkoutSet, :count).by(-1)
       expect(response).to redirect_to(workout_path(workout))
     end
   end
