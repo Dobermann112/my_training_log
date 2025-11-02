@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get 'calendar/index'
   devise_for :users
 
   devise_scope :user do
@@ -7,6 +6,7 @@ Rails.application.routes.draw do
   end
 
   resource :user, only: [:show, :edit, :update]
+  resources :calendars, only: :index
   resources :workouts do
     resources :workout_sets, only: [:new, :create, :edit, :update, :destroy]
   end
