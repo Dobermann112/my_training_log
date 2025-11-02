@@ -1,15 +1,15 @@
 class CalendarsController < ApplicationController
   def index
-    @workouts = Workout.where(user: current_user)
+    @workouts = current_user.workouts.select(:id, :workout_date)
 
     respond_to do |format|
-      format.html # index.html.erb
+      format.html
       format.json do
         render json: @workouts.map { |w|
           {
             title: "Workout",
             start: w.workout_date,
-            url: Rails.application.routes.url_helpers.workout_path(w)
+            url: workout_path(w)
           }
         }
       end
