@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get 'calendars/index'
   devise_for :users
 
   devise_scope :user do
