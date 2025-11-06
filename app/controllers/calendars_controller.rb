@@ -2,16 +2,21 @@ class CalendarsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-  end
+    @workouts = current_user.workouts.select(:id, :workout_date)
 
-  def events
-    workouts = current_user.workouts.select(:id, :workout_date)
-    events = workouts.map do |w|
-      {
-        title: "Training",
-        start: w.workout_date
-      }
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: @workouts.map { |w|
+          {
+            id: w.id,
+            title: "Training",
+            start: w.workout_date,
+            url: workout_path(w),
+            color: "#3a86ff"
+          }
+        }
+      end
     end
-    render json: events
   end
 end
