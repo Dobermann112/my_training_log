@@ -11,7 +11,7 @@
   
     <div class="mb-3">
       <%= f.label :workout_date, "日付" %>
-      <%= f.date_field :workout_date, class: "form-control" %>
+      <%= f.date_field :workout_date, class: "form-control", value: params[:date] || @workout.workout_date %>
     </div>
   
     <div class="mb-3">
