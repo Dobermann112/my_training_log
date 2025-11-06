@@ -1,4 +1,6 @@
 class CalendarsController < ApplicationController
+  before_action :authenticate_user!
+
   def index
     @workouts = current_user.workouts.select(:id, :workout_date)
 
@@ -7,9 +9,11 @@ class CalendarsController < ApplicationController
       format.json do
         render json: @workouts.map { |w|
           {
-            title: "Workout",
+            id: w.id,
+            title: "Training",
             start: w.workout_date,
-            url: workout_path(w)
+            url: workout_path(w),
+            color: "#3a86ff"
           }
         }
       end
