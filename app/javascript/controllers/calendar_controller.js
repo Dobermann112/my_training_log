@@ -14,7 +14,7 @@ export default class extends Controller {
       locale: "en",
       firstDay: 0,
       height: "auto",
-      events: "/calendars/events",
+      events: "/calendars.json",
       eventColor: "#3a86ff",
       headerToolbar: {
         left: "prev,next today",
@@ -25,8 +25,13 @@ export default class extends Controller {
         today: "Today"
       },
       dateClick: (info) => {
-        window.location.href = `/workouts/new?date=${info.dateStr}`
-      },
+        const existingEvent = calendar.getEvents().find(e => e.startStr === info.dateStr)
+        if (existingEvent) {
+          window.location.href = existingEvent.url
+        } else {
+          window.location.href = `/workouts/new?date=${info.dateStr}`
+        }
+      }
     })
 
     calendar.render()
