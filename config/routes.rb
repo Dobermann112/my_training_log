@@ -6,7 +6,11 @@ Rails.application.routes.draw do
   end
 
   resource :user, only: [:show, :edit, :update]
-  resources :calendars, only: :index
+  resources :calendars, only: :index do
+    collection do
+      get :events
+    end
+  end
   resources :workouts do
     resources :workout_sets, only: [:new, :create, :edit, :update, :destroy]
   end

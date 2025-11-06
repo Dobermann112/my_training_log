@@ -14,6 +14,8 @@ export default class extends Controller {
       locale: "en",
       firstDay: 0,
       height: "auto",
+      events: "/calendars/events",
+      eventColor: "#3a86ff",
       headerToolbar: {
         left: "prev,next today",
         center: "title",
