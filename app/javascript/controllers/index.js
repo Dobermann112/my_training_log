@@ -9,5 +9,3 @@ import CalendarController from "./calendar_controller"
 application.register("confirm", ConfirmController)
 application.register("flash", FlashController)
 application.register("calendar", CalendarController)
-
-export { application }
