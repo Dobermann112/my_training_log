@@ -4,7 +4,7 @@ module Stats
     def call
       rel = sets_scope.joins(exercise: :body_part)
 
-      sessions = rel.select("body_parts.id AS bid, COUNT(DISTINCT) workouts.id) AS cnt")
+      sessions = rel.select("body_parts.id AS bid, COUNT(DISTINCT workouts.id) AS cnt")
                     .joins(:workout)
                     .group("body_parts.id")
                     .pluck("bid", "cnt").to_h
