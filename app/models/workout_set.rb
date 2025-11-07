@@ -11,7 +11,11 @@ class WorkoutSet < ApplicationRecord
 
   before_validation :set_sequential_number, on: :create
 
+  delegate :user_id, :workout_date, to: :workout
+
   scope :by_set_number, -> { order(:set_number) }
+  scope :for_user, ->(user) { joins(:workout).merge(Workout.for_user(user)) }
+  scope :between, ->(from, to) { joins(:workout).merge(Workout.between(from,to)) }
 
   private
 
