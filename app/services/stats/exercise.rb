@@ -8,7 +8,7 @@ module Stats
       sets    = grouped.count
       reps    = grouped.sum(:reps)
 
-      exercise_names = Exercise.where(id: maxes.keys | sets.keys | reps.keys)
+      exercise_names = ::Exercise.where(id: maxes.keys | sets.keys | reps.keys)
                                .pluck(:id, :name).to_h
 
       (maxes.keys | sets.keys | reps.keys).map do |eid|

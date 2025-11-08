@@ -13,7 +13,7 @@ module Stats
       sets = rel.group("body_parts.id").count
       reps = rel.group("body_parts.id").sum(:reps)
 
-      names = BodyPart.where(id: sessions.keys | sets.keys | reps.keys)
+      names = ::BodyPart.where(id: sessions.keys | sets.keys | reps.keys)
                       .pluck(:id, :name).to_h
 
       (sessions.keys | sets.keys | reps.keys).map do |bid|

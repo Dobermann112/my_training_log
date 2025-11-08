@@ -6,11 +6,11 @@ class Api::V1::StatsController < ApplicationController
   end
 
   def exercises
-    render_cached(:exercises) { Stats::Exercises.new(**ctx).call }
+    render_cached(:exercises) { Stats::Exercise.new(**ctx).call }
   end
 
   def body_parts
-    render_cached(:body_parts) { Stats::BodyParts.new(**ctx).call }
+    render_cached(:body_parts) { Stats::BodyPart.new(**ctx).call }
   end
 
   private
