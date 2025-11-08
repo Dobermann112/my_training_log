@@ -12,7 +12,7 @@ module Stats
 
     # 連続記録日数（対象期間内での最大連続稼働日数）
     def streak_days
-      days = workouts_scope.distinct.order(:worktout_date).pluck(:workout_date).uniq
+      days = workouts_scope.distinct.order(:workout_date).pluck(:workout_date).uniq
       return 0 if days.empty?
 
       max_streak = 1
