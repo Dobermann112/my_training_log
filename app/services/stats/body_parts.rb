@@ -4,10 +4,11 @@ module Stats
     def call
       rel = sets_scope.joins(exercise: :body_part)
 
-      sessions = rel.select("body_parts.id AS bid, COUNT(DISTINCT workouts.id) AS cnt")
-                    .joins(:workout)
+      sessions = rel.joins(:workout, exercise: :body_part)
+                    .select("body_parts.id AS body_part_id, COUNT(DISTINCT workouts.id) AS cnt")
                     .group("body_parts.id")
-                    .pluck("bid", "cnt").to_h
+                    .map { |r| [r.body_part_id, r.cnt] }
+                    .to_h
 
       sets = rel.group("body_parts.id").count
       reps = rel.group("body_parts.id").sum(:reps)
