@@ -32,18 +32,30 @@ AllCops:
 
 ### ルールのカスタマイズ
 
+Metrics/MethodLength:
+  Max: 20
+  Exclude:
+    - "config/routes.rb"
+
+Metrics/AbcSize:
+  Max: 40
+
 # ブロック内の行数をチェックする
 Metrics/BlockLength:
   Exclude:
+    - "config/routes.rb"
     - "spec/**/*"
 
 # 一行あたりの文字数
 Layout/LineLength:
   Enabled: false
 
-# メソッドの改行ルール
+# --- スタイル調整（視覚的ルール） ---
 Layout/MultilineMethodCallIndentation:
-  EnforcedStyle: indented
+  Enabled: false    # インデント誤差は自動整形に任せる
+Style/MultilineBlockChain:
+  Enabled: false    # map.sort_by など可読性優先で許容
+
 
 # 日本語にコメントを許可
 Style/AsciiComments:
