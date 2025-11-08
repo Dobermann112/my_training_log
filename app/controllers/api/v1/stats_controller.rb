@@ -21,7 +21,7 @@ class Api::V1::StatsController < ApplicationController
 
   # 軽いキャッシュ（同一ユーザー+条件10分）
   def render_cached(key)
-    cache_key = ["stats", key, current_user.id, params.slice(:from, :to).to_h]
+    cache_key = ["stats", key, current_user.id, params.permit(:from, :to).to_h]
     payload = Rails.cache.fetch(cache_key, expires_in: 10.minutes) { yield }
     render json: payload
   end
