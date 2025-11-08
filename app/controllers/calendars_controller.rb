@@ -2,6 +2,12 @@ class CalendarsController < ApplicationController
   before_action :authenticate_user!
 
   def index
+    @events = load_events
+  end
+
+  private
+
+  def load_events
     @workouts = current_user.workouts.select(:id, :workout_date)
 
     respond_to do |format|

@@ -14,6 +14,16 @@ Rails.application.routes.draw do
     resources :exercises
   end
 
+  namespace :api do
+    namespace :v1 do
+      resource :stats, only: [] do
+        get :summary
+        get :exercises
+        get :body_parts
+      end
+    end
+  end
+
   devise_scope :user do
     authenticated :user do
       root "calendars#index", as: :authenticated_root

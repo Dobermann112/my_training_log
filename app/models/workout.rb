@@ -4,4 +4,14 @@ class Workout < ApplicationRecord
 
   validates :workout_date, presence: true
   validates :notes, length: { maximum: 500 }, allow_blank: true
+
+  scope :for_user, ->(user) { where(user_id: user.id) }
+  scope :between, lambda { |from, to|
+    return all if from.blank? && to.blank?
+
+    rel = all
+    rel = rel.where(workout_date: from..) if from.present?
+    rel = rel.where(workout_date: ..to) if to.present?
+    rel
+  }
 end
