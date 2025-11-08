@@ -1,5 +1,5 @@
 module Stats
-  class BodyParts < Base
+  class BodyPart < Base
     # 戻り値: [{body_part_id:, body_part_name:, sessions:, sets:, reps:}, ...]
     def call
       rel = sets_scope.joins(exercise: :body_part)

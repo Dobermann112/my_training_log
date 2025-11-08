@@ -1,5 +1,5 @@
 module Stats
-  class Exercises < Base
+  class Exercise < Base
     # 戻り値: [{exercise_id:, exercise_name:, max_weight:, total_sets:, total_reps:}, ...]
     def call
       rel = sets_scope.includes(:exercise)
