@@ -9,15 +9,15 @@ module Stats
       reps    = grouped.sum(:reps)
 
       exercise_names = ::Exercise.where(id: maxes.keys | sets.keys | reps.keys)
-                               .pluck(:id, :name).to_h
+        .pluck(:id, :name).to_h
 
       (maxes.keys | sets.keys | reps.keys).map do |eid|
         {
-          exercise_id:   eid,
+          exercise_id: eid,
           exercise_name: exercise_names[eid],
-          max_weight:    maxes[eid] || 0,
-          total_sets:    sets[eid]  || 0,
-          total_reps:    reps[eid]  || 0
+          max_weight: maxes[eid] || 0,
+          total_sets: sets[eid]  || 0,
+          total_reps: reps[eid]  || 0
         }
       end.sort_by { |h| -h[:max_weight].to_f }
     end

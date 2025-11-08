@@ -15,7 +15,7 @@ class WorkoutSet < ApplicationRecord
 
   scope :by_set_number, -> { order(:set_number) }
   scope :for_user, ->(user) { joins(:workout).merge(Workout.for_user(user)) }
-  scope :between, ->(from, to) { joins(:workout).merge(Workout.between(from,to)) }
+  scope :between, ->(from, to) { joins(:workout).merge(Workout.between(from, to)) }
 
   private
 

@@ -18,7 +18,7 @@ module Stats
       max_streak = 1
       cur = 1
       (1...days.length).each do |i|
-        if days[i] == days[i-1] + 1
+        if days[i] == days[i - 1] + 1
           cur += 1
           max_streak = [max_streak, cur].max
         else
