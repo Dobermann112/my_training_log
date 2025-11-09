@@ -1,21 +1,26 @@
 module Stats
   class Base
-    attr_reader :user, :from, :to
+    attr_reader :user, :period, :limit
 
-    def initialize(user:, from: nil, to: nil)
+    def initialize(user:, period:, limit: nil)
       @user = user
-      @from = from.presence && Date.parse(from.to_s)
-      @to   = to.presence   && Date.parse(to.to_s)
+      @period = period
+      @limit = limit
     end
 
     private
 
     def sets_scope
-      WorkoutSet.for_user(user).between(from, to)
+      WorkoutSet.joins(:workout)
+                .where(workouts: { user: user, workout_date: period })
     end
 
     def workouts_scope
-      Workout.for_user(user).between(from, to)
+      Workout.where(user: user, workout_date: period)
+    end
+
+    def self.call(**args)
+      new(**args).call
     end
   end
 end

@@ -1,11 +1,16 @@
-// Import and register all your controllers from the importmap via controllers/**/*_controller
 import { application } from "./application"
 
-// 個別に読み込む Stimulus コントローラ
-import ConfirmController from "./confirm_controller"
-import FlashController from "./flash_controller"
 import CalendarController from "./calendar_controller"
-
-application.register("confirm", ConfirmController)
-application.register("flash", FlashController)
 application.register("calendar", CalendarController)
+
+import ChartsController from "./charts_controller"
+application.register("charts", ChartsController)
+
+import ConfirmController from "./confirm_controller"
+application.register("confirm", ConfirmController)
+
+import FlashController from "./flash_controller"
+application.register("flash", FlashController)
+
+import HelloController from "./hello_controller"
+application.register("hello", HelloController)
