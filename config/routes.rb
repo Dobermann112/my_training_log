@@ -35,7 +35,7 @@ Rails.application.routes.draw do
   end
 
   namespace :stats do
-    get "graph", to: "graph#index"
+    get "graphs", to: "graphs#index"
   end
 
   get "dashboard/stats", to: "dashboard#stats"
