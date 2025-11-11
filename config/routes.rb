@@ -38,6 +38,10 @@ Rails.application.routes.draw do
     get "graphs", to: "graphs#index"
   end
 
+  namespace :dashboard do
+    get "report", to: "reports#index"
+  end
+
   get "dashboard/stats", to: "dashboard#stats"
 
   get "up" => "rails/health#show", as: :rails_health_check

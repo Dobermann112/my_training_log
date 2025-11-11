@@ -2,7 +2,16 @@ import { Controller } from "@hotwired/stimulus"
 import ApexCharts from "apexcharts"
 
 export default class extends Controller {
-  static targets = ["line", "pie", "bar", "range", "bodyPart"]
+  static targets = [
+    "line",
+    "pie",
+    "bar",
+    "range",
+    "bodyPart",
+    "summarySets",
+    "summaryReps",
+    "summaryStreak"
+  ]
 
   connect() {
     this._charts = { line: null, pie: null, bar: null }
@@ -10,6 +19,13 @@ export default class extends Controller {
     this.currentBodyPart = "" // ←　全身がデフォルト
     this.load()
     window.addEventListener("turbo:before-render", () => this._destroyAll())
+  }
+
+  updateSummary(summary) {
+    if (!summary) return
+    this.summarySetsTarget.textContent = summary.total_sets
+    this.summaryRepsTarget.textContent = summary.total_reps
+    this.summaryStreakTarget.textContent = summary.streak_days
   }
 
   disconnect() { this._destroyAll() }
@@ -38,6 +54,8 @@ export default class extends Controller {
       this._renderLine(data.line_daily_volume || [])
       this._renderPie(data.pie_by_body_part || [])
       this._renderBar(data.bar_by_exercise || [])
+
+      this.updateSummary(data.summary)
     } catch (e) {
       console.error("グラフデータの取得に失敗しました:", e)
     }
