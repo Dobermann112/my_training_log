@@ -5,6 +5,13 @@
       <option value="month" selected>月</option>
       <option value="year">年</option>
     </select>
+
+    <select data-charts-target="bodyPart" data-action="change->charts#changeBodyPart" class="form-select w-auto">
+      <option value="">全身</option>
+      <% BodyPart.all.each do |bp| %>
+        <option value="<%= bp.id %>"><%= bp.name %></option>
+      <% end %>
+    </select>
   </div>
 
   <div class="row">
