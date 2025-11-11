@@ -2,19 +2,35 @@ import { Controller } from "@hotwired/stimulus"
 import ApexCharts from "apexcharts"
 
 export default class extends Controller {
-  static targets = ["line", "pie", "bar"]
+  static targets = ["line", "pie", "bar", "range", "bodyPart"]
 
   connect() {
     this._charts = { line: null, pie: null, bar: null }
+    this.currentRange = "month" // ←　月表示がデフォルト
+    this.currentBodyPart = "" // ←　全身がデフォルト
     this.load()
     window.addEventListener("turbo:before-render", () => this._destroyAll())
   }
 
   disconnect() { this._destroyAll() }
 
+  changeRange() {
+    this.currentRange = this.rangeTarget.value
+    this.load()
+  }
+
+  changeBodyPart() {
+    this.currentBodyPart = this.bodyPartTarget.value
+    this.load()
+  }
+
   async load() {
+    const params = new URLSearchParams({
+      range: this.currentRange,
+      body_part_id: this.currentBodyPart
+    })
     try {
-      const res = await fetch("/stats/graphs?range=month", {
+      const res = await fetch(`/stats/graphs?${params.toString()}`, {
         headers: { Accept: "application/json" }
       })
       const data = await res.json()

@@ -1,8 +1,28 @@
-<div class="container my-4" data-controller="charts">
-  <h5 class="mb-3">グラフ配線テスト</h5>
-  <div class="row g-3">
-    <div class="col-12"><div data-charts-target="line" style="height:300px;"></div></div>
-    <div class="col-lg-6"><div data-charts-target="pie"  style="height:320px;"></div></div>
-    <div class="col-lg-6"><div data-charts-target="bar"  style="height:320px;"></div></div>
+<div data-controller="charts">
+  <div class="d-flex justify-content-end mb-3">
+    <select data-charts-target="range" data-action="change->charts#changeRange" class="form-select w-auto">
+      <option value="week">週</option>
+      <option value="month" selected>月</option>
+      <option value="year">年</option>
+    </select>
+
+    <select data-charts-target="bodyPart" data-action="change->charts#changeBodyPart" class="form-select w-auto">
+      <option value="">全身</option>
+      <% BodyPart.all.each do |bp| %>
+        <option value="<%= bp.id %>"><%= bp.name %></option>
+      <% end %>
+    </select>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 mb-4">
+      <div data-charts-target="line"></div>
+    </div>
+    <div class="col-md-6 mb-4">
+      <div data-charts-target="pie"></div>
+    </div>
+    <div class="col-md-6 mb-4">
+      <div data-charts-target="bar"></div>
+    </div>
   </div>
 </div>
