@@ -1,0 +1,66 @@
+<div data-controller="charts">
+  <!-- Summaryカード群 -->
+  <div class="row mb-4 text-center">
+    <div class="col-md-4">
+      <div class="card shadow-sm bg-dark text-light">
+        <div class="card-body">
+          <h6>総セット</h6>
+          <h3 data-charts-target="summarySets">0</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm bg-dark text-light">
+        <div class="card-body">
+          <h6>総レップ</h6>
+          <h3 data-charts-target="summaryReps">0</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm bg-dark text-light">
+        <div class="card-body">
+          <h6>連続日数</h6>
+          <h3 data-charts-target="summaryStreak">0</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- セレクタ -->
+  <div class="d-flex justify-content-end mb-3">
+    <select data-charts-target="range" data-action="change->charts#changeRange" class="form-select w-auto me-2">
+      <option value="week">週</option>
+      <option value="month" selected>月</option>
+      <option value="year">年</option>
+    </select>
+
+    <select data-charts-target="bodyPart" data-action="change->charts#changeBodyPart" class="form-select w-auto">
+      <option value="">全身</option>
+      <% BodyPart.all.each do |bp| %>
+        <option value="<%= bp.id %>"><%= bp.name %></option>
+      <% end %>
+    </select>
+  </div>
+
+  <!-- グラフ群 -->
+  <div class="row">
+    <div class="col-md-12 mb-4">
+      <div class="card shadow-sm bg-dark text-light">
+        <div class="card-body" data-charts-target="line"></div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="card shadow-sm bg-dark text-light">
+        <div class="card-body" data-charts-target="pie"></div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="card shadow-sm bg-dark text-light">
+        <div class="card-body" data-charts-target="bar"></div>
+      </div>
+    </div>
+  </div>
+</div>
