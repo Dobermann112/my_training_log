@@ -15,6 +15,7 @@ class Stats::GraphsController < ApplicationController
     {
       period: period_info(period, range),
       summary: summary_data(period),
+      line_daily_volume: daily_volume_chart(period),
       pie_by_body_part: body_part_chart(period),
       bar_by_exercise:  exercise_chart(period, limit)
     }
@@ -30,6 +31,10 @@ class Stats::GraphsController < ApplicationController
 
   def summary_data(period)
     Stats::Summary.call(user: current_user, period: period)
+  end
+
+  def daily_volume_chart(period)
+    Stats::DailyVolume.call(user: current_user, period: period)
   end
 
   def body_part_chart(period)

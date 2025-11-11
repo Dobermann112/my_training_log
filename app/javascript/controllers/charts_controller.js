@@ -2,19 +2,25 @@ import { Controller } from "@hotwired/stimulus"
 import ApexCharts from "apexcharts"
 
 export default class extends Controller {
-  static targets = ["line", "pie", "bar"]
+  static targets = ["line", "pie", "bar", "range"]
 
   connect() {
     this._charts = { line: null, pie: null, bar: null }
+    this.currentRange = "month"
     this.load()
     window.addEventListener("turbo:before-render", () => this._destroyAll())
   }
 
   disconnect() { this._destroyAll() }
 
+  changeRange() {
+    this.currentRange = this.rangeTarget.value
+    this.load()
+  }
+
   async load() {
     try {
-      const res = await fetch("/stats/graphs?range=month", {
+      const res = await fetch(`/stats/graphs?range=${this.currentRange}`, {
         headers: { Accept: "application/json" }
       })
       const data = await res.json()
