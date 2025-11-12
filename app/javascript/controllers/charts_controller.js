@@ -63,35 +63,122 @@ export default class extends Controller {
 
   _renderLine(seriesData) {
     const options = {
-      chart: { type: "line", height: 300, toolbar: { show: false }, animations: { enabled: false } },
+      chart: {
+        type: "line",
+        height: 300,
+        toolbar: { show: false },
+        animations: { enabled: false },
+        foreColor: "#e0e1dd",
+      },
       series: [{ name: "総ボリューム", data: seriesData }],
-      xaxis: { type: "datetime" },
+      xaxis: { type: "datetime", labels: { style: { colors: "#e0e1dd" } } },
+      yaxis: { labels: { style: { colors: "#e0e1dd" } } },
       dataLabels: { enabled: false },
-      stroke: { width: 3 }
+      stroke: { width: 3 },
+      tooltip: {
+        enabled: true,
+        theme: "dark",
+        x: { show: true, format: "yyyy/MM/dd" },
+        y: {
+          title: { formatter: () => "総ボリューム" },
+          formatter: val => `${val.toLocaleString()} kg`
+        }
+      },
+      noData: { text: "データがありません", align: "center" }
     }
     this._mount("line", this.lineTarget, options)
-  }
+  }  
 
   _renderPie(items) {
+    // 値の大きい順に並び替え（時計回り）
+    const sortedItems = [...items].sort((a, b) => b.value - a.value)
+  
     const options = {
-      chart: { type: "donut", height: 320, toolbar: { show: false }, animations: { enabled: false } },
-      labels: items.map(i => i.label),
-      series: items.map(i => i.value),
-      legend: { position: "bottom" },
-      dataLabels: { enabled: false }
+      chart: {
+        type: "donut",
+        height: 320,
+        toolbar: { show: false },
+        animations: { enabled: false },
+        foreColor: "#e0e1dd"
+      },
+      labels: sortedItems.map(i => i.label),
+      series: sortedItems.map(i => i.value),
+      legend: {
+        position: "bottom",
+        labels: { colors: "#e0e1dd" },
+        fontSize: "13px"
+      },
+      dataLabels: {
+        enabled: true,
+        style: {
+          fontSize: "11px",
+          colors: ["#e0e1dd"]
+        },
+        formatter: function (val, opts) {
+          if (!opts?.globals?.seriesTotals) return ''
+          const total = opts.globals.seriesTotals.reduce((a, b) => a + b, 0)
+          if (total === 0) return ''
+          const value = opts.w.globals.series[opts.seriesIndex]
+          const percent = ((value / total) * 100).toFixed(1)
+          return `${percent}%`
+        },
+        dropShadow: { enabled: false }
+      },
+      tooltip: {
+        enabled: window.innerWidth >= 768, // ← PC時のみホバー有効
+        theme: "dark",
+        y: {
+          formatter: (val, opts) => {
+            if (!opts?.globals?.seriesTotals) return ''
+            const total = opts.globals.seriesTotals.reduce((a, b) => a + b, 0)
+            const percent = ((val / total) * 100).toFixed(1)
+            return `${percent}%`
+          },
+          title: { formatter: (label) => label }
+        }
+      },
+      plotOptions: {
+        pie: {
+          startAngle: 0,
+          endAngle: 360,
+          expandOnClick: false,
+          donut: { size: "65%" }
+        }
+      },
+      states: {
+        hover: { filter: { type: "lighten", value: 0.1 } },
+        active: { filter: { type: "none" } }
+      },
+      noData: { text: "データがありません", align: "center" }
     }
     this._mount("pie", this.pieTarget, options)
-  }
+  }  
 
   _renderBar(items) {
     const options = {
-      chart: { type: "bar", height: 320, toolbar: { show: false }, animations: { enabled: false } },
-      series: [{ name: "セット数", data: items.map(i => i.y) }], // ← total_setsに対応
-      xaxis: { categories: items.map(i => i.x) },
-      dataLabels: { enabled: false }
+      chart: {
+        type: "bar",
+        height: 320,
+        toolbar: { show: false },
+        animations: { enabled: false },
+        foreColor: "#e0e1dd"
+      },
+      series: [{ name: "セット数", data: items.map(i => i.y) }],
+      xaxis: {
+        categories: items.map(i => i.x),
+        labels: { style: { colors: "#e0e1dd" } }
+      },
+      yaxis: { labels: { style: { colors: "#e0e1dd" } } },
+      dataLabels: { enabled: false },
+      tooltip: {
+        enabled: true,
+        theme: "dark",
+        y: { formatter: val => `${val} 回` }
+      },
+      noData: { text: "データがありません", align: "center" }
     }
     this._mount("bar", this.barTarget, options)
-  }
+  }  
 
   _mount(key, el, options) {
     if (this._charts[key]) this._charts[key].destroy()
