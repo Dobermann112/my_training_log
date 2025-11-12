@@ -1,5 +1,7 @@
 module Stats
   class Summary < Base
+    def self.call(**args) = new(**args).call
+
     def call
       {
         total_sets: total_sets,

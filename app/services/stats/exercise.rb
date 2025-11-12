@@ -1,5 +1,7 @@
 module Stats
   class Exercise < Base
+    def self.call(**args) = new(**args).call
+
     def call
       rel   = sets_scope.includes(:exercise)
       group = rel.group(:exercise_id)

@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   devise_scope :user do
     get "account_edit", to: "devise/registrations#edit", as: :account_edit_user
-    
+
     authenticated :user do
       root "calendars#index", as: :authenticated_root
     end

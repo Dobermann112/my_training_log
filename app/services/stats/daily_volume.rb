@@ -1,5 +1,7 @@
 module Stats
   class DailyVolume < Base
+    def self.call(**args) = new(**args).call
+
     def call
       # WorkoutSetとWorkoutを結合し、指定期間内のセットを日別にグループ化
       rel = sets_scope.joins(:workout)

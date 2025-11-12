@@ -19,12 +19,7 @@ module Stats
     end
 
     def workouts_scope
-      scope = Workout.where(user: user, workout_date: period)
-      scope
-    end
-
-    def self.call(**args)
-      new(**args).call
+      Workout.where(user: user, workout_date: period)
     end
   end
 end
