@@ -111,3 +111,50 @@ html, body {
   strong {
     color: lighten($text-light, 10%);
   }
+
+  /* Summaryカードのモバイル最適化 */
+.summary-card h4 {
+  font-size: 1.25rem;
+}
+
+.summary-card h6 {
+  font-size: 0.8rem;
+  color: #adb5bd;
+}
+
+@media (max-width: 576px) {
+  .summary-card h4 {
+    font-size: 1rem;
+  }
+
+  .summary-card h6 {
+    font-size: 0.7rem;
+  }
+
+  .summary-card {
+    flex: 1 0 30%; /* 横3枚配置を維持しつつ縮小 */
+    min-width: 95px;
+  }
+}
+
+/* グラフカード統一スタイル */
+.card[data-charts-target] {
+  background-color: $secondary-bg;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+}
+
+/* ApexCharts領域の調整 */
+.apexcharts-canvas {
+  margin: 0 auto;
+}
+
+@media (max-width: 576px) {
+  .card[data-charts-target] {
+    margin-bottom: 0.75rem;
+  }
+
+  .apexcharts-canvas {
+    max-width: 100%;
+  }
+}
