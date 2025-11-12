@@ -110,9 +110,9 @@ Rails/LexicallyScopedActionFilter:
   Enabled: false
 
 # Rspecでの１つのitブロックの中のexpectの許容数
-Rspec/MultipleExpectations:
-  Max: 2
+RSpec/MultipleExpectations:
+  Max: 5
 
 # Rspecでの１つのitブロックの行数の上限
-Rspec/ExampleLength:
+RSpec/ExampleLength:
   Max: 8

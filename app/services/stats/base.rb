@@ -9,6 +9,12 @@ module Stats
       @body_part_id = body_part_id
     end
 
+    def self.call(**args)
+      new(**args).call
+    end
+
+    private_class_method :call
+
     private
 
     def sets_scope
@@ -19,12 +25,7 @@ module Stats
     end
 
     def workouts_scope
-      scope = Workout.where(user: user, workout_date: period)
-      scope
-    end
-
-    def self.call(**args)
-      new(**args).call
+      Workout.where(user: user, workout_date: period)
     end
   end
 end
