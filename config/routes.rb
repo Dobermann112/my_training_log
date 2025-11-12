@@ -24,16 +24,6 @@ Rails.application.routes.draw do
 
   resources :calendars, only: :index
 
-  namespace :api do
-    namespace :v1 do
-      resource :stats, only: [] do
-        get :summary
-        get :exercises
-        get :body_parts
-      end
-    end
-  end
-
   namespace :stats do
     get "graphs", to: "graphs#index"
   end
