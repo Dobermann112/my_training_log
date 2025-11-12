@@ -1,5 +1,7 @@
 module Stats
   class BodyPart < Base
+    def self.call(**args) = new(**args).call
+
     def call
       rel = sets_scope.joins(exercise: :body_part)
 

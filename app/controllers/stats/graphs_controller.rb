@@ -18,7 +18,7 @@ class Stats::GraphsController < ApplicationController
       summary: summary_data(period, body_part_id),
       line_daily_volume: daily_volume_chart(period, body_part_id),
       pie_by_body_part: body_part_chart(period),
-      bar_by_exercise: exercise_chart(period, body_part_id, limit)
+      bar_by_exercise: exercise_chart(period, limit, body_part_id)
     }
   end
 

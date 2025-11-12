@@ -9,12 +9,6 @@ module Stats
       @body_part_id = body_part_id
     end
 
-    def self.call(**args)
-      new(**args).call
-    end
-
-    private_class_method :call
-
     private
 
     def sets_scope
