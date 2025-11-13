@@ -125,7 +125,9 @@ export default class extends Controller {
               const sign = ratio >= 0 ? "+" : ""
               return `${val} pt (${sign}${ratio}%)`
             } else {
-              return `${val.toLocaleString()} kg`
+              const part = seriesData[dataPointIndex].main_part
+              const suffix = part ? ` (${part}) ` : ""
+              return `${Number(val).toLocaleString()} kg ${suffix}`
             }
           }
         }

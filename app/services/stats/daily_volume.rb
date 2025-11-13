@@ -3,22 +3,40 @@ module Stats
     def self.call(**args) = new(**args).call
 
     def call
-      # WorkoutSetとWorkoutを結合し、指定期間内のセットを日別にグループ化
-      rel = sets_scope.joins(:workout)
+      if mode == :volume && body_part_id.blank?
+        return build_volume_with_main_part
+      end
 
-      # 日付ごとに「weight * reps」の合計を計算
+      rel = sets_scope.joins(:workout)
       daily_totals = rel.group("workouts.workout_date")
                         .sum("workout_sets.weight * workout_sets.reps")
 
       data = daily_totals.map do |date, volume|
         { x: date, y: volume.to_f }
       end.sort_by { |h| h[:x] }
-      
+
       return data if mode == :volume
       score_data(data)
     end
 
     private
+
+    def build_volume_with_main_part
+      rel = sets_scope
+      by_date_and_part = rel.group("workouts.workout_date", "body_parts.name")
+                            .sum("workout_sets.weight * workout_sets.reps")
+      
+      grouped = by_date_and_part.group_by { |(date, _part), _v| date }
+
+      data = grouped.map do |date, rows|
+        total = rows.sum { |(_, _), v| v.to_f }
+        top_part, _v = rows.max_by { |(_, _), v| v.to_f }
+        main_part = top_part[1]
+        { x: date, y: total, main_part: main_part }
+      end
+
+      data.sort_by { |h| h[:x] }
+    end
 
     def score_data(data)
       return [] if data.blank?
