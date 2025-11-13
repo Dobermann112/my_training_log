@@ -62,32 +62,86 @@ export default class extends Controller {
   }
 
   _renderLine(seriesData) {
+    const isScoreMode = seriesData.length > 0 && seriesData[0].ratio !== undefined
+
     const options = {
       chart: {
         type: "line",
         height: 300,
         toolbar: { show: false },
         animations: { enabled: false },
-        foreColor: "#e0e1dd",
+        foreColor: "#e0e1dd"
       },
-      series: [{ name: "総ボリューム", data: seriesData }],
-      xaxis: { type: "datetime", labels: { style: { colors: "#e0e1dd" } } },
-      yaxis: { labels: { style: { colors: "#e0e1dd" } } },
-      dataLabels: { enabled: false },
-      stroke: { width: 3 },
+      series: [{
+        name: isScoreMode ? "スコア" : "総ボリューム",
+        data: seriesData.map(d => [d.x, d.y])
+      }],
+      title: {
+        text: isScoreMode
+          ? "トレーニング量スコアの推移"
+          : "トレーニング量の推移",
+        align: "left",
+        style: { color: "#e0e1dd", fontSize: "15px" }
+      },
+      xaxis: {
+        type: "datetime",
+        labels: { style: { colors: "#e0e1dd" } }
+      },
+      yaxis: {
+        title: { text: isScoreMode ? "スコア (pt)" : "重量 (kg)" },
+        min: isScoreMode ? 0 : undefined,
+        labels: { style: { colors: "#e0e1dd" } }
+      },
+      // ✅ スコアモード時のみ100pt基準線を追加
+      annotations: {
+        yaxis: isScoreMode
+          ? [{
+              y: 100,
+              borderColor: "#888",
+              strokeDashArray: 4,
+              label: {
+                text: "基準 (100pt)",
+                style: { color: "#fff", background: "#555" }
+              }
+            }]
+          : []
+      },
+      stroke: {
+        width: 3,
+        curve: "smooth",
+        colors: [isScoreMode ? "#3a86ff" : "#06d6a0"]
+      },
       tooltip: {
         enabled: true,
         theme: "dark",
         x: { show: true, format: "yyyy/MM/dd" },
         y: {
-          title: { formatter: () => "総ボリューム" },
-          formatter: val => `${val.toLocaleString()} kg`
+          title: {
+            formatter: () => (isScoreMode ? "トレーニングスコア" : "総ボリューム")
+          },
+          formatter: (val, { dataPointIndex }) => {
+            if (isScoreMode) {
+              const ratio = seriesData[dataPointIndex].ratio
+              const sign = ratio >= 0 ? "+" : ""
+              return `${val} pt (${sign}${ratio}%)`
+            } else {
+              const part = seriesData[dataPointIndex].main_part
+              const suffix = part ? ` (${part}) ` : ""
+              return `${Number(val).toLocaleString()} kg ${suffix}`
+            }
+          }
         }
+      },
+      markers: {
+        size: 4,
+        colors: ["#fff"],
+        strokeColors: isScoreMode ? "#3a86ff" : "#06d6a0",
+        strokeWidth: 2
       },
       noData: { text: "データがありません", align: "center" }
     }
     this._mount("line", this.lineTarget, options)
-  }  
+  }
 
   _renderPie(items) {
     // 値の大きい順に並び替え（時計回り）
@@ -100,6 +154,11 @@ export default class extends Controller {
         toolbar: { show: false },
         animations: { enabled: false },
         foreColor: "#e0e1dd"
+      },
+      title: {
+        text: "部位バランス",
+        align: "left",
+        style: { color: "#e0e1dd", fontSize: "15px" }
       },
       labels: sortedItems.map(i => i.label),
       series: sortedItems.map(i => i.value),
@@ -162,6 +221,11 @@ export default class extends Controller {
         toolbar: { show: false },
         animations: { enabled: false },
         foreColor: "#e0e1dd"
+      },
+      title: {
+        text: "種目傾向",
+        align: "left",
+        style: { color: "#e0e1dd", fontSize: "15px" }
       },
       series: [{ name: "セット数", data: items.map(i => i.y) }],
       xaxis: {

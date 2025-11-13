@@ -35,7 +35,9 @@ class Stats::GraphsController < ApplicationController
   end
 
   def daily_volume_chart(period, body_part_id = nil)
-    Stats::DailyVolume.call(user: current_user, period: period, body_part_id: body_part_id)
+    mode = body_part_id.present? ? :score : :volume
+
+    Stats::DailyVolume.call(user: current_user, period: period, body_part_id: body_part_id, mode: mode)
   end
 
   def body_part_chart(period, body_part_id = nil)
