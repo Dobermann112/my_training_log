@@ -1,12 +1,13 @@
 module Stats
   class Base
-    attr_reader :user, :period, :limit, :body_part_id
+    attr_reader :user, :period, :limit, :body_part_id, :mode
 
-    def initialize(user:, period:, limit: nil, body_part_id: nil)
+    def initialize(user:, period:, limit: nil, body_part_id: nil, mode: :volume)
       @user = user
       @period = period
       @limit = limit
       @body_part_id = body_part_id
+      @mode = mode
     end
 
     private
