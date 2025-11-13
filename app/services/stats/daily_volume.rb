@@ -3,9 +3,7 @@ module Stats
     def self.call(**args) = new(**args).call
 
     def call
-      if mode == :volume && body_part_id.blank?
-        return build_volume_with_main_part
-      end
+      return build_volume_with_main_part if mode == :volume && body_part_id.blank?
 
       rel = sets_scope.joins(:workout)
       daily_totals = rel.group("workouts.workout_date")
@@ -16,6 +14,7 @@ module Stats
       end.sort_by { |h| h[:x] }
 
       return data if mode == :volume
+
       score_data(data)
     end
 
@@ -25,7 +24,7 @@ module Stats
       rel = sets_scope
       by_date_and_part = rel.group("workouts.workout_date", "body_parts.name")
                             .sum("workout_sets.weight * workout_sets.reps")
-      
+
       grouped = by_date_and_part.group_by { |(date, _part), _v| date }
 
       data = grouped.map do |date, rows|
@@ -46,7 +45,7 @@ module Stats
 
       data.map do |d|
         volume = d[:y]
-        score = (volume /avg * 100).round
+        score = (volume / avg * 100).round
         ratio = ((volume - avg) / avg * 100).round
         { x: d[:x], y: score, ratio: ratio }
       end
