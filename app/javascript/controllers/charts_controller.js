@@ -72,12 +72,10 @@ export default class extends Controller {
         animations: { enabled: false },
         foreColor: "#e0e1dd"
       },
-
       series: [{
         name: isScoreMode ? "スコア" : "総ボリューム",
         data: seriesData.map(d => [d.x, d.y])
       }],
-
       title: {
         text: isScoreMode
           ? "トレーニング量スコアの推移"
@@ -85,18 +83,15 @@ export default class extends Controller {
         align: "left",
         style: { color: "#e0e1dd", fontSize: "15px" }
       },
-
       xaxis: {
         type: "datetime",
         labels: { style: { colors: "#e0e1dd" } }
       },
-
       yaxis: {
         title: { text: isScoreMode ? "スコア (pt)" : "重量 (kg)" },
         min: isScoreMode ? 0 : undefined,
         labels: { style: { colors: "#e0e1dd" } }
       },
-
       // ✅ スコアモード時のみ100pt基準線を追加
       annotations: {
         yaxis: isScoreMode
@@ -111,13 +106,11 @@ export default class extends Controller {
             }]
           : []
       },
-
       stroke: {
         width: 3,
         curve: "smooth",
         colors: [isScoreMode ? "#3a86ff" : "#06d6a0"]
       },
-
       tooltip: {
         enabled: true,
         theme: "dark",
@@ -137,14 +130,12 @@ export default class extends Controller {
           }
         }
       },
-
       markers: {
         size: 4,
         colors: ["#fff"],
         strokeColors: isScoreMode ? "#3a86ff" : "#06d6a0",
         strokeWidth: 2
       },
-
       noData: { text: "データがありません", align: "center" }
     }
     this._mount("line", this.lineTarget, options)
@@ -161,6 +152,11 @@ export default class extends Controller {
         toolbar: { show: false },
         animations: { enabled: false },
         foreColor: "#e0e1dd"
+      },
+      title: {
+        text: "部位バランス",
+        align: "left",
+        style: { color: "#e0e1dd", fontSize: "15px" }
       },
       labels: sortedItems.map(i => i.label),
       series: sortedItems.map(i => i.value),
@@ -223,6 +219,11 @@ export default class extends Controller {
         toolbar: { show: false },
         animations: { enabled: false },
         foreColor: "#e0e1dd"
+      },
+      title: {
+        text: "種目傾向",
+        align: "left",
+        style: { color: "#e0e1dd", fontSize: "15px" }
       },
       series: [{ name: "セット数", data: items.map(i => i.y) }],
       xaxis: {
