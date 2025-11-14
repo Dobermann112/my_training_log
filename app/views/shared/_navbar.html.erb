@@ -6,12 +6,15 @@
       <%= link_to "My Training Log", unauthenticated_root_path, class: "navbar-brand fw-bold text-warning" %>
     <% end %>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+    <!-- ▼ モバイルでは非表示、PCのみ表示 -->
+    <button class="navbar-toggler d-none d-md-block" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+    <!-- ▲ -->
 
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <!-- ▼ collapse部分もモバイルでは非表示にする -->
+    <div class="collapse navbar-collapse d-none d-md-flex" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <% if user_signed_in? %>
           <li class="nav-item">
@@ -23,6 +26,12 @@
           <li class="nav-item">
             <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete }, class: "nav-link text-warning" %>
           </li>
+          <li class="nav-item">
+            <%= link_to "利用規約", "#", class: "nav-link text-light" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "プライバシーポリシー", "#", class: "nav-link text-light" %>
+          </li>
         <% else %>
           <li class="nav-item">
             <%= link_to "ログイン", new_user_session_path, class: "nav-link text-light" %>
@@ -30,8 +39,15 @@
           <li class="nav-item">
             <%= link_to "新規登録", new_user_registration_path, class: "nav-link text-warning fw-semibold" %>
           </li>
+          <li class="nav-item">
+            <%= link_to "利用規約", "#", class: "nav-link text-light" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "プライバシーポリシー", "#", class: "nav-link text-light" %>
+          </li>
         <% end %>
       </ul>
     </div>
+    <!-- ▲ -->
   </div>
 </nav>
