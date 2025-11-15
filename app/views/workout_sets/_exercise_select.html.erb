@@ -1,2 +1,32 @@
 <div data-controller="exercise-select">
+  <div class="accordion" id="exerciseAccordion">
+    <% exercises_by_part.each_with_index do |(body_part, exercises), index| %>
+      <% collapse_id = "collapse-#{index}" %>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="<%= "##{collapse_id}" %>">
+            <%= body_part.name %>
+          </button>
+        </h2>
+
+        <div id="<%= collapse_id %>"
+             class="accordion-collapse collapse"
+             data-bs-parent="#exerciseAccordion">
+
+          <div class="accordion-body">
+            <% exercises.each do |exercise| %>
+              <div class="exercise-option py-2">
+                <%= exercise.name %>
+              </div>
+            <% end %>
+          </div>
+
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>
