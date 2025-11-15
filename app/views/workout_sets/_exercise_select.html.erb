@@ -1,4 +1,7 @@
 <div data-controller="exercise-select">
+
+  <%= f.hidden_field :exercise_id, id: "select-exercise-id", data: { "exercise-select-target": "input" } %>
+
   <div class="accordion" id="exerciseAccordion">
     <% exercises_by_part.each_with_index do |(body_part, exercises), index| %>
       <% collapse_id = "collapse-#{index}" %>
@@ -19,7 +22,9 @@
 
           <div class="accordion-body">
             <% exercises.each do |exercise| %>
-              <div class="exercise-option py-2">
+              <div class="exercise-option py-2"
+                  data-action="click->exercise-select#select"
+                  data-id="<%= exercise.id %>">
                 <%= exercise.name %>
               </div>
             <% end %>
