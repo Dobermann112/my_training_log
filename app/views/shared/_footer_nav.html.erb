@@ -1,6 +1,6 @@
 <nav class="footer-nav d-md-none fixed-bottom bg-dark text-light border-top border-warning">
   <div class="footer-nav__inner">
-    <%= link_to calendars_path, class: "text-light #{'active' if current_page?(calendars_path)}" do %>
+    <%= link_to dashboard_calendar_path, class: "text-light #{'active' if current_page?(dashboard_calendar_path)}" do %>
       <i data-lucide="calendar"></i>
       <span>カレンダー</span>
     <% end %>
@@ -8,7 +8,7 @@
       <i data-lucide="bar-chart"></i>
       <span>レポート</span>
     <% end %>
-    <%= link_to user_path, class: "text-light #{'active' if current_page?(user_path)}" do %>
+    <%= link_to dashboard_profile_path, class: "text-light #{'active' if current_page?(dashboard_profile_path)}" do %>
       <i data-lucide="user"></i>
       <span>プロフィール</span>
     <% end %>

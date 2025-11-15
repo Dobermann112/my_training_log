@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     get "account_edit", to: "devise/registrations#edit", as: :account_edit_user
 
     authenticated :user do
-      root "calendars#index", as: :authenticated_root
+      root "dashboard/calendars#index", as: :authenticated_root
     end
 
     unauthenticated do
@@ -29,7 +29,10 @@ Rails.application.routes.draw do
   end
 
   namespace :dashboard do
-    get "report", to: "reports#index"
+    get "calendar", to: "calendars#index"
+    get "report",   to: "reports#index"
+    get "profile",  to: "profiles#index"
+    get "setting",  to: "settings#index"
   end
 
   get "dashboard/stats", to: "dashboard#stats"
