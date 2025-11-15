@@ -12,7 +12,8 @@
 
   <body class="app-body">
     <header>
-      <%= render "shared/navbar" if lookup_context.exists?("shared/_navbar") %>
+      <%= render "shared/navbar_mobile" %>
+      <%= render "shared/navbar" %>
     </header>
 
     <main class="container py-4">
@@ -23,8 +24,7 @@
       <%= yield %>
     </main>
 
-    <footer>
-      <%= render "shared/footer" if lookup_context.exists?("shared/_footer") %>
-    </footer>
+    <%= render "shared/footer_nav" %>
+    <%= render "shared/footer" if lookup_context.exists?("shared/_footer") %>
   </body>
 </html>

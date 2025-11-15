@@ -47,19 +47,11 @@ html, body {
     height: 100%;
     display: flex;
     flex-direction: column;
+    margin: 0;
   }
   
   main {
     flex: 1;
-  }
-  
-  footer {
-    margin-top: auto;
-    background-color: $secondary-bg;
-    color: $text-light;
-    text-align: center;
-    padding: 1rem 0;
-    border-top: 1px solid lighten($secondary-bg, 10%);
   }
 
 // ===== Bootstrap Custom Overrides =====
@@ -149,6 +141,7 @@ html, body {
   margin: 0 auto;
 }
 
+/* === ApexCharts用のレスポンシブ設定 === */
 @media (max-width: 576px) {
   .card[data-charts-target] {
     margin-bottom: 0.75rem;
@@ -156,5 +149,58 @@ html, body {
 
   .apexcharts-canvas {
     max-width: 100%;
+  }
+}
+
+/* ===== footer_nav（モバイル固定ナビ） ===== */
+.footer-nav {
+  height: 68px;
+  padding-bottom: env(safe-area-inset-bottom);
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(255,255,255,0.08);
+
+  .footer-nav__inner {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: .25rem;
+    padding: .45rem .75rem;
+  }
+
+  a {
+    color: $text-light;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .15rem;
+    padding: .45rem .2rem;
+    border-radius: .75rem;
+    font-size: .65rem; // 文字小さめ
+  }
+
+  a[aria-current="page"],
+  a.active {
+    background: rgba($accent-color, .12);
+    color: $accent-color;
+  }
+
+  i[data-lucide] {
+    width: 26px;   // アイコンやや大きめ
+    height: 26px;
+    stroke-width: 2.2;
+  }
+}
+
+/* ===== モバイル時だけ本文下に余白をつける ===== */
+@media (max-width: 767.98px) {
+  main.container {
+    padding-bottom: calc(64px + env(safe-area-inset-bottom));
+  }
+}
+
+@media (min-width: 768px) {
+  .footer-nav {
+    display: none;
   }
 }

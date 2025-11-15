@@ -15,6 +15,7 @@
     "@hotwired/turbo-rails": "^8.0.18",
     "@popperjs/core": "^2.11.8",
     "apexcharts": "^5.3.6",
-    "bootstrap": "^5.3.8"
+    "bootstrap": "^5.3.8",
+    "lucide": "^0.553.0"
   }
 }

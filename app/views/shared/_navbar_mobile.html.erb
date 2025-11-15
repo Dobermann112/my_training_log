@@ -1,0 +1,9 @@
+<nav class="navbar navbar-dark bg-dark shadow-sm d-md-none">
+  <div class="container">
+    <% if user_signed_in? %>
+      <%= link_to "My Training Log", dashboard_calendar_path, class: "navbar-brand fw-bold text-warning" %>
+    <% else %>
+      <%= link_to "My Training Log", unauthenticated_root_path, class: "navbar-brand fw-bold text-warning" %>
+    <% end %>
+  </div>
+</nav>
