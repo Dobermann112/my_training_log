@@ -9,10 +9,7 @@
     </div>
   <% end %>
 
-  <div class="form-floating mb-3">
-    <%= f.collection_select :exercise_id, Exercise.all, :id, :name, {}, class: "form-select" %>
-    <%= f.label :exercise_id, "種目" %>
-  </div>
+  <%= render "exercise_select", f: f, exercise_by_part: @execise_by_part %>
 
   <div class="form-floating mb-3">
     <%= f.number_field :weight, step: 0.5, class: "form-control", placeholder: "重量(kg)" %>
