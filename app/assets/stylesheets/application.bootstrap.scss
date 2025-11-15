@@ -154,20 +154,17 @@ html, body {
 
 /* ===== footer_nav（モバイル固定ナビ） ===== */
 .footer-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 64px;
-  background-color: $secondary-bg;
-  z-index: 1000;
-  padding-bottom: env(safe-area-inset-bottom); /* iPhone安全領域 */
+  height: 68px;
+  padding-bottom: env(safe-area-inset-bottom);
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(255,255,255,0.08);
 
   .footer-nav__inner {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: .25rem;
-    padding: .4rem .75rem;
+    padding: .45rem .75rem;
   }
 
   a {
@@ -176,10 +173,10 @@ html, body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: .2rem;
-    padding: .4rem .2rem;
+    gap: .15rem;
+    padding: .45rem .2rem;
     border-radius: .75rem;
-    font-size: .72rem;
+    font-size: .65rem; // 文字小さめ
   }
 
   a[aria-current="page"],
@@ -187,11 +184,23 @@ html, body {
     background: rgba($accent-color, .12);
     color: $accent-color;
   }
+
+  i[data-lucide] {
+    width: 26px;   // アイコンやや大きめ
+    height: 26px;
+    stroke-width: 2.2;
+  }
 }
 
 /* ===== モバイル時だけ本文下に余白をつける ===== */
 @media (max-width: 767.98px) {
   main.container {
     padding-bottom: calc(64px + env(safe-area-inset-bottom));
+  }
+}
+
+@media (min-width: 768px) {
+  .footer-nav {
+    display: none;
   }
 }
