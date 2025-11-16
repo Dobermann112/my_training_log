@@ -204,3 +204,21 @@ html, body {
     display: none;
   }
 }
+
+/* 種目の基礎スタイル（タップ領域を確保） */
+.exercise-option {
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* スマホアプリっぽい選択ハイライト */
+.exercise-option.selected-exercise {
+  background-color: rgba(58, 134, 255, 0.35);
+  border: 1.5px solid rgba(58, 134, 255, 0.45);
+  color: #0d1b2a;
+  box-shadow: 0 0 6px rgba(58, 134, 255, 0.30);
+  border-radius: 8px;
+}
