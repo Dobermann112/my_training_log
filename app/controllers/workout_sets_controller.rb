@@ -2,7 +2,7 @@ class WorkoutSetsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_workout
   before_action :authorize_user!
-  before_action :set_exercises_by_part, only: [:new, :edit]
+  before_action :set_exercises_by_part, only: [:new, :edit, :create, :update]
 
   def new
     @workout_set = @workout.workout_sets.new
