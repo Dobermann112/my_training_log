@@ -2,6 +2,7 @@ class WorkoutSetsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_workout
   before_action :authorize_user!
+  before_action :set_exercises_by_part, only: [:new, :edit, :create, :update]
 
   def new
     @workout_set = @workout.workout_sets.new
@@ -43,6 +44,10 @@ class WorkoutSetsController < ApplicationController
 
   def authorize_user!
     redirect_to root_path, alert: "権限がありません" unless current_user == @workout.user
+  end
+
+  def set_exercises_by_part
+    @exercises_by_part = Exercise.includes(:body_part).group_by(&:body_part)
   end
 
   def workout_set_params
