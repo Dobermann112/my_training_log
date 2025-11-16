@@ -7,7 +7,7 @@ class WorkoutsController < ApplicationController
   end
 
   def show
-    @exercise_sets = @workout.workout_sets.includes(:exercise).order(:exercise_id, :created_at).group_by(&:exercise)
+    @exercise_sets = @workout.workout_sets.includes(:exercise).order(:exercise_id, :created_at).group_by { |ws| ws.exercise }
   end
 
   def new

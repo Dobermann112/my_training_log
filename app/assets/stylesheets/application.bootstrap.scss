@@ -16,6 +16,7 @@ $flash-notice-text: #000;
 body {
   background-color: $primary-bg;
   color: $text-light;
+  padding-bottom: calc(68px + env(safe-area-inset-bottom));
 }
 
 .flash-message {
@@ -42,17 +43,6 @@ body {
   background-color: $flash-notice-bg;
   color: $flash-notice-text;
 }
-
-html, body {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-  }
-  
-  main {
-    flex: 1;
-  }
 
 // ===== Bootstrap Custom Overrides =====
 .card {
@@ -192,13 +182,6 @@ html, body {
   }
 }
 
-/* ===== モバイル時だけ本文下に余白をつける ===== */
-@media (max-width: 767.98px) {
-  main.container {
-    padding-bottom: calc(64px + env(safe-area-inset-bottom));
-  }
-}
-
 @media (min-width: 768px) {
   .footer-nav {
     display: none;
@@ -221,4 +204,33 @@ html, body {
   color: #0d1b2a;
   box-shadow: 0 0 6px rgba(58, 134, 255, 0.30);
   border-radius: 8px;
+}
+
+.exercise-card {
+  background-color: #102236; // ほんの少し明るいネイビー
+  border-radius: 12px;
+  padding: 1.2rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  color: $text-light;
+}
+
+.set-row {
+  padding-left: 0.3rem;
+  font-size: 1rem;
+}
+
+.exercise-card h4 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: $text-light;
+}
+
+.exercise-memo {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.85);   // text-light より少し弱め
+  padding-left: 0.3rem;
+  border-left: 3px solid rgba(255, 255, 255, 0.4); // メモの視認性UP
+  margin-top: -4px;
+  margin-bottom: 8px;
 }

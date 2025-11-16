@@ -13,25 +13,33 @@
 <%= link_to "新しいセットを追加", new_workout_workout_set_path(@workout),
             class: "btn btn-warning mb-3" %>
 
-<% if @workout.workout_sets.any? %>
+<% if @exercise_sets.present? %>
+
   <% @exercise_sets.each do |exercise, sets| %>
-    <div class="card bg-dark text-light mb-3 p-3">
-      <h4><%= exercise.name %>（<%= sets.size %>セット）</h4>
-  
-      <ul class="list-unstyled mt-2">
-        <% sets.each_with_index do |set, i| %>
-          <li>
-            <strong><%= i + 1 %>セット目:</strong>
-            <%= set.weight %>kg × <%= set.reps %>回
-            <% if set.memo.present? %>
-              （<%= truncate(set.memo, length: 20) %>）
-            <% end %>
-          </li>
+    <div class="exercise-card mb-4 p-3">
+
+      <!-- 種目名と総セット数 -->
+      <h4 class="mb-3">
+        <%= exercise.name %>（<%= sets.size %>セット）
+      </h4>
+
+      <!-- セット一覧 -->
+      <% sets.each_with_index do |set, idx| %>
+        <div class="set-row mb-2">
+          <strong><%= idx + 1 %></strong>：
+          <%= set.weight || "-" %> kg × <%= set.reps || "-" %> 回
+        </div>
+
+        <% if set.memo.present? %>
+          <div class="exercise-memo ms-4 mb-2">
+            <%= set.memo %>
+          </div>
         <% end %>
-      </ul>
-  
+      <% end %>
+
     </div>
-  <% end %>  
+  <% end %>
+
 <% else %>
   <p>まだセットが登録されていません。</p>
 <% end %>
