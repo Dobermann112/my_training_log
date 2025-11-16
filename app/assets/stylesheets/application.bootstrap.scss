@@ -234,3 +234,50 @@ body {
   margin-top: -4px;
   margin-bottom: 8px;
 }
+
+//* ===== セット行（筋トレメモ風レイアウト） ===== */
+.set-row {
+  padding: 0.6rem 0.3rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.set-number {
+  font-weight: 600;
+  color: rgba(255,255,255,0.95);
+  font-size: 1rem;
+  min-width: 1.2rem;  /* 桁揃えに備えて少し幅を確保 */
+}
+
+.set-weight,
+.set-reps {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.85);
+}
+
+.set-memo {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.75);
+
+  /* 1行で省略 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  margin-left: 1.6rem; /* 番号の縦揃えに合わせる */
+}
+
+/* 種目カードを少し整える */
+.exercise-card {
+  background-color: #102236; // (既に設定済み)
+  border-radius: 12px;
+  padding: 1.2rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  color: $text-light;
+}
+
+.exercise-card h4 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: $text-light;
+}
