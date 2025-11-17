@@ -12,18 +12,43 @@ class WorkoutsController < ApplicationController
 
   def new
     @workout = current_user.workouts.new
+    @workout.workout_date = params[:date]
+    @exercise = Exercise.find_by(id: params[:exercise_id])
+
+    render :sets_form
+    
+    unless @exercise
+      redirect_to select_exercise_workouts_path(date: params[:date]),
+                  alert: "種目が選択されていません"
+      return
+    end
   end
+  
 
   def edit; end
 
   def create
-    @workout = current_user.workouts.new(workout_params)
-    if @workout.save
-      redirect_to @workout, notice: "トレーニングセッションを作成しました。"
-    else
-      flash.now[:alert] = "作成に失敗しました。"
-      render :new, status: :unprocessable_entity
+    ActiveRecord::Base.transaction do
+      @workout = current_user.workouts.create!( workout_date: params[:date], notes: "" )
+      
+      sets_params = params[:sets] || {}
+      sets_params.each do |_idx, set_row|
+        next if set_row[:weight].blank? && set_row[:reps].blank?
+
+        @workout.workout_sets.create!(
+          exercise_id: params[:exercise_id],
+          weight: set_row[:weight],
+          reps: set_row[:reps],
+          memo: set_row[:memo]
+        )
+      end
     end
+
+    redirect_to @workout, notice: "トレーニングを記録しました。"
+
+  rescue => e
+    flash.now[:alert] = "保存に失敗しました: #{e.message}"
+    render :sets_form, status: :unprocessable_entity
   end
 
   def update
@@ -38,6 +63,11 @@ class WorkoutsController < ApplicationController
   def destroy
     @workout.destroy
     redirect_to workouts_path, notice: "トレーニングセッションを削除しました。"
+  end
+
+  def select_exercise
+    @date = params[:date]
+    @exercises_by_part = Exercise.includes(:body_part).group_by(&:body_part)
   end
 
   private
