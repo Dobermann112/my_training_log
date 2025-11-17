@@ -1,0 +1,28 @@
+<div class="set-row mt-3 p-2 rounded" data-index="<%= index %>">
+
+  <p class="fw-bold mb-2">SET <%= index + 1 %></p>
+
+  <div class="d-flex gap-2">
+    <div class="flex-fill">
+      <label class="form-label">重量 (kg)</label>
+      <input type="number"
+             name="workout_sets[<%= index %>][weight]"
+             class="form-control" />
+    </div>
+
+    <div class="flex-fill">
+      <label class="form-label">回数</label>
+      <input type="number"
+             name="workout_sets[<%= index %>][reps]"
+             class="form-control" />
+    </div>
+  </div>
+
+  <div class="mt-2">
+    <label class="form-label">メモ</label>
+    <textarea name="workout_sets[<%= index %>][memo]"
+              class="form-control"
+              rows="1"></textarea>
+  </div>
+
+</div>

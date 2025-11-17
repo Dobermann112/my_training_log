@@ -1,0 +1,32 @@
+<div class="exercise-title-card text-center mb-4 p-3">
+  <h3 class="m-0"><%= @exercise.name %></h3>
+</div>
+
+<div class="exercise-card">
+
+  <%= form_with(model: @workout, url: workouts_path, local: true) do |f| %>
+
+    <%= f.hidden_field :workout_date %>
+    <%= hidden_field_tag :exercise_id, @exercise.id %>
+
+    <div data-controller="sets-form">
+      
+      <div data-sets-form-target="list">
+        <% 4.times do |i| %>
+          <%= render "set_row", index: i %>
+        <% end %>
+      </div>
+
+      <button type="button"
+              class="btn btn-secondary w-100 mt-3"
+              data-action="sets-form#add">
+        ＋ セットを追加
+      </button>
+
+    </div>
+
+    <%= f.submit "保存する", class: "btn btn-primary w-100 mt-3" %>
+
+  <% end %>
+
+</div>
