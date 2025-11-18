@@ -1,2 +1,20 @@
 <h2>トレーニングセッション編集</h2>
-<%= render 'form' %>
+
+<%= form_with(model: @workout, local: true) do |f| %>
+
+  <div class="form-floating mb-3">
+    <%= f.date_field :workout_date, class: "form-control" %>
+    <%= f.label :workout_date, "トレーニング日" %>
+  </div>
+
+  <div class="form-floating mb-3">
+    <%= f.text_area :notes,
+                    class: "form-control",
+                    placeholder: "メモ",
+                    rows: 3 %>
+    <%= f.label :notes, "メモ" %>
+  </div>
+
+  <%= f.submit "更新する", class: "btn btn-primary" %>
+
+<% end %>
