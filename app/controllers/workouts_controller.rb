@@ -11,45 +11,35 @@ class WorkoutsController < ApplicationController
   end
 
   def new
-    @workout = current_user.workouts.new
-    @workout.workout_date = params[:date]
     @exercise = Exercise.find_by(id: params[:exercise_id])
 
-    render :sets_form
-    
     unless @exercise
       redirect_to select_exercise_workouts_path(date: params[:date]),
-                  alert: "種目が選択されていません"
+      alert: "種目が選択されていません"
       return
     end
+
+    @workout = current_user.workouts.new(workout_date: params[:date])
+
+    render :sets_form
   end
-  
 
   def edit; end
 
   def create
-    ActiveRecord::Base.transaction do
-      @workout = current_user.workouts.create!( workout_date: params[:date], notes: "" )
-      
-      sets_params = params[:sets] || {}
-      sets_params.each do |_idx, set_row|
-        next if set_row[:weight].blank? && set_row[:reps].blank?
-
-        @workout.workout_sets.create!(
-          exercise_id: params[:exercise_id],
-          weight: set_row[:weight],
-          reps: set_row[:reps],
-          memo: set_row[:memo]
-        )
-      end
-    end
-
+    @workout = WorkoutCreationService.new(
+      user: current_user,
+      date: params[:workout][:workout_date],
+      exercise_id: params[:exercise_id],
+      sets_params: params[:workout][:sets]
+    ).call
+  
     redirect_to @workout, notice: "トレーニングを記録しました。"
-
-  rescue => e
-    flash.now[:alert] = "保存に失敗しました: #{e.message}"
+  rescue WorkoutCreationService::CreationError => e
+    flash.now[:alert] = e.message
+    @exercise = Exercise.find_by(id: params[:exercise_id])
     render :sets_form, status: :unprocessable_entity
-  end
+  end  
 
   def update
     if @workout.update(workout_params)
