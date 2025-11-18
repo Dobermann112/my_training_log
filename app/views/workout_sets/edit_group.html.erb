@@ -1,0 +1,114 @@
+<div class="exercise-title-card text-center mb-4 p-3">
+  <h3 class="m-0"><%= @exercise.name %></h3>
+</div>
+
+<div class="exercise-card">
+
+  <%= form_with url: update_group_workout_workout_sets_path(@workout),
+                method: :patch,
+                local: true do %>
+
+    <%= hidden_field_tag :exercise_id, @exercise.id %>
+
+    <!-- Stimulus セット編集コントローラ -->
+    <div data-controller="sets" data-sets-edit-mode-value="true">
+
+      <!-- 既存セット行のコンテナ -->
+      <div data-sets-target="list">
+
+        <% @sets.each_with_index do |set, i| %>
+          <div class="set-input-row mb-3 p-3 rounded"
+              style="background-color: #0f2033; border: 1px solid rgba(255,255,255,0.08);"
+              data-index="<%= i %>">
+
+            <!-- 番号ラベル（Stimulus が再計算する） -->
+            <div class="set-number-label mb-2 fw-bold text-light"
+                data-sets-target="number">
+              セット<%= i + 1 %>
+            </div>
+
+            <!-- 既存セットには ID を持たせる -->
+            <%= hidden_field_tag "sets[#{set.id}][id]", set.id %>
+
+            <div class="d-flex gap-3">
+              <div class="flex-fill">
+                <label class="form-label">重量(kg)</label>
+                <%= number_field_tag "sets[#{set.id}][weight]",
+                                     set.weight,
+                                     step: 0.5,
+                                     class: "form-control" %>
+              </div>
+
+              <div class="flex-fill">
+                <label class="form-label">回数</label>
+                <%= number_field_tag "sets[#{set.id}][reps]",
+                                     set.reps,
+                                     class: "form-control" %>
+              </div>
+            </div>
+
+            <div class="mt-2">
+              <label class="form-label">メモ</label>
+              <%= text_area_tag "sets[#{set.id}][memo]",
+                                set.memo,
+                                rows: 1,
+                                class: "form-control" %>
+            </div>
+
+          </div>
+        <% end %>
+
+      </div>
+
+      <!-- 新規追加用テンプレート -->
+      <template data-sets-target="template">
+        <div class="set-input-row mb-3 p-3 rounded"
+            style="background-color: #0f2033; border: 1px solid rgba(255,255,255,0.08);">
+
+          <div class="set-number-label mb-2 fw-bold text-light"
+              data-sets-target="number">
+            セット
+          </div>
+
+          <div class="d-flex gap-3">
+            <div class="flex-fill">
+              <label class="form-label">重量(kg)</label>
+              <input type="number"
+                     step="0.5"
+                     class="form-control"
+                     data-sets-target="weight">
+            </div>
+
+            <div class="flex-fill">
+              <label class="form-label">回数</label>
+              <input type="number"
+                     class="form-control"
+                     data-sets-target="reps">
+            </div>
+          </div>
+
+          <div class="mt-2">
+            <label class="form-label">メモ</label>
+            <textarea rows="1"
+                      class="form-control"
+                      data-sets-target="memo"></textarea>
+          </div>
+
+        </div>
+      </template>
+
+      <!-- セット追加ボタン -->
+      <button type="button"
+              class="btn btn-secondary w-100 mt-3"
+              data-action="sets#add">
+        ＋ セットを追加
+      </button>
+
+    </div>
+
+    <!-- 保存ボタン -->
+    <%= submit_tag "保存する", class: "btn btn-primary w-100 mt-3" %>
+
+  <% end %>
+
+</div>
