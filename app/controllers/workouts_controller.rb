@@ -11,20 +11,35 @@ class WorkoutsController < ApplicationController
   end
 
   def new
-    @workout = current_user.workouts.new
+    @exercise = Exercise.find_by(id: params[:exercise_id])
+
+    unless @exercise
+      redirect_to select_exercise_workouts_path(date: params[:date]),
+      alert: "種目が選択されていません"
+      return
+    end
+
+    @workout = current_user.workouts.new(workout_date: params[:date])
+
+    render :sets_form
   end
 
   def edit; end
 
   def create
-    @workout = current_user.workouts.new(workout_params)
-    if @workout.save
-      redirect_to @workout, notice: "トレーニングセッションを作成しました。"
-    else
-      flash.now[:alert] = "作成に失敗しました。"
-      render :new, status: :unprocessable_entity
-    end
-  end
+    @workout = WorkoutCreationService.new(
+      user: current_user,
+      date: params[:workout][:workout_date],
+      exercise_id: params[:exercise_id],
+      sets_params: params[:workout][:sets]
+    ).call
+  
+    redirect_to @workout, notice: "トレーニングを記録しました。"
+  rescue WorkoutCreationService::CreationError => e
+    flash.now[:alert] = e.message
+    @exercise = Exercise.find_by(id: params[:exercise_id])
+    render :sets_form, status: :unprocessable_entity
+  end  
 
   def update
     if @workout.update(workout_params)
@@ -38,6 +53,11 @@ class WorkoutsController < ApplicationController
   def destroy
     @workout.destroy
     redirect_to workouts_path, notice: "トレーニングセッションを削除しました。"
+  end
+
+  def select_exercise
+    @date = params[:date]
+    @exercises_by_part = Exercise.includes(:body_part).group_by(&:body_part)
   end
 
   private

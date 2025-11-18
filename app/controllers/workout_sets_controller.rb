@@ -2,33 +2,27 @@ class WorkoutSetsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_workout
   before_action :authorize_user!
-  before_action :set_exercises_by_part, only: [:new, :edit, :create, :update]
+  before_action :set_exercise, only: [:edit_group, :update_group]
 
-  def new
-    @workout_set = @workout.workout_sets.new
+  def edit_group
+    @exercise = Exercise.find(params[:exercise_id])
+    @sets = @workout.workout_sets.where(exercise_id: @exercise.id).order(:created_at)
   end
 
-  def edit
-    @workout_set = @workout.workout_sets.find(params[:id])
-  end
-
-  def create
-    @workout_set = @workout.workout_sets.new(workout_set_params)
-    if @workout_set.save
-      redirect_to workout_path(@workout), notice: "セットを追加しました"
-    else
-      render :new, status: :unprocessable_entity
-    end
-  end
-
-  def update
-    @workout_set = @workout.workout_sets.find(params[:id])
-    if @workout_set.update(workout_set_params)
-      redirect_to workout_path(@workout), notice: "セットを更新しました"
-    else
-      render :edit, status: :unprocessable_entity
-    end
-  end
+  def update_group
+    WorkoutSetUpdateService.new(
+      workout: @workout,
+      exercise: @exercise,
+      sets_params: params[:sets]
+    ).call
+  
+    redirect_to @workout, notice: "セット内容を更新しました。"
+  
+  rescue => e
+    flash.now[:alert] = "更新に失敗しました: #{e.message}"
+    edit_group
+    render :edit_group, status: :unprocessable_entity
+  end  
 
   def destroy
     @workout_set = @workout.workout_sets.find(params[:id])
@@ -39,18 +33,14 @@ class WorkoutSetsController < ApplicationController
   private
 
   def set_workout
-    @workout = Workout.find(params[:workout_id])
+    @workout = current_user.workouts.find(params[:workout_id])
+  end
+
+  def set_exercise
+    @exercise = Exercise.find(params[:exercise_id])
   end
 
   def authorize_user!
     redirect_to root_path, alert: "権限がありません" unless current_user == @workout.user
-  end
-
-  def set_exercises_by_part
-    @exercises_by_part = Exercise.includes(:body_part).group_by(&:body_part)
-  end
-
-  def workout_set_params
-    params.require(:workout_set).permit(:exercise_id, :weight, :reps, :memo)
   end
 end

@@ -21,3 +21,6 @@ application.register("flash", FlashController)
 
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
+
+import SetsController from "./sets_controller"
+application.register("sets", SetsController)

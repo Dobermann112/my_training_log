@@ -16,7 +16,6 @@ $flash-notice-text: #000;
 body {
   background-color: $primary-bg;
   color: $text-light;
-  padding-bottom: calc(68px + env(safe-area-inset-bottom));
 }
 
 .flash-message {
@@ -280,4 +279,79 @@ body {
   font-weight: bold;
   margin-bottom: 1rem;
   color: $text-light;
+}
+
+/* ===== 種目選択 UI（カード方式） ===== */
+
+/* 全体コンテナ */
+.exercise-select-container {
+  padding-bottom: 1rem;
+}
+
+/* 部位ごとのカード */
+.exercise-select-card {
+  background-color: #102236; // 既視感あるネイビー
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* 部位タイトル */
+.part-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: $text-light;
+  margin-bottom: 0.6rem;
+}
+
+/* 種目 */
+.exercise-option {
+  padding: 0.75rem 0.8rem;
+  border-radius: 8px;
+  margin-bottom: 4px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* 選択中のハイライト */
+.exercise-option.selected-exercise {
+  background-color: rgba($accent-color, 0.28);
+  border: 1px solid rgba($accent-color, 0.4);
+  color: $text-light;
+  box-shadow: 0 0 6px rgba($accent-color, 0.25);
+}
+
+/* もっと見るボタン */
+.toggle-btn {
+  background: none;
+  border: none;
+  color: lighten($text-light, 20%);
+  padding: 4px;
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+@media (max-width: 767.98px) {
+  main.container.py-4 {
+    padding-bottom: calc(88px + env(safe-area-inset-bottom)) !important;
+  }
+}
+
+main.container {
+  min-height: calc(100vh - 140px);
+}
+
+/* === 種目名のカード === */
+.exercise-title-card {
+  background-color: #102236;   // 他カードと統一
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.exercise-title-card h3 {
+  color: $text-light;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }

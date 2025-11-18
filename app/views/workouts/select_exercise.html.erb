@@ -1,0 +1,7 @@
+<h2 class="mb-4"><%= @date %> のトレーニング</h2>
+
+<p class="text-light-50 mb-3">種目を選択してください</p>
+
+<div class="exercise-select-container">
+  <%= render "exercise_select", exercises_by_part: @exercises_by_part %>
+</div>

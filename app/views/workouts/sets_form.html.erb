@@ -1,0 +1,55 @@
+<div class="exercise-title-card text-center mb-4 p-3">
+  <h3 class="m-0"><%= @exercise.name %></h3>
+</div>
+
+<div class="exercise-card">
+
+  <%= form_with(model: @workout, url: workouts_path, local: true) do |f| %>
+
+    <%= f.hidden_field :workout_date %>
+    <%= hidden_field_tag "exercise_id", @exercise.id %>
+
+    <div data-controller="sets">
+      
+      <div data-sets-target="list">
+      </div>
+
+      <template data-sets-target="template">
+        <div class="set-input-row mb-3 p-3 rounded" style="background-color: #0f2033; border: 1px solid rgba(255,255,255,0.08);">
+          <div class="set-number-label mb-2 fw-bold text-light"
+              data-sets-target="number">
+            セット1
+          </div>
+
+          <div class="d-flex gap-3">
+            <div class="flex-fill">
+              <label class="form-label">重量(kg)</label>
+              <input type="number" step="0.5" class="form-control" data-sets-target="weight">
+            </div>
+
+            <div class="flex-fill">
+              <label class="form-label">回数</label>
+              <input type="number" class="form-control" data-sets-target="reps">
+            </div>
+          </div>
+
+          <div class="mt-2">
+            <label class="form-label">メモ</label>
+            <textarea class="form-control" rows="1" data-sets-target="memo"></textarea>
+          </div>
+        </div>
+      </template>
+
+      <button type="button"
+              class="btn btn-secondary w-100 mt-3"
+              data-action="sets#add">
+        ＋ セットを追加
+      </button>
+
+    </div>
+
+    <%= f.submit "保存する", class: "btn btn-primary w-100 mt-3" %>
+
+  <% end %>
+
+</div>

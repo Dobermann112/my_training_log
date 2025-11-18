@@ -1,0 +1,45 @@
+<div class="exercise-select-container" data-controller="exercise-select" data-exercise-select-data-value="<%= @date %>">
+
+  <% exercises_by_part.each do |body_part, exercises| %>
+
+    <div class="exercise-select-card mb-4 p-3">
+
+      <!-- 部位名 -->
+      <h4 class="part-title mb-2"><%= body_part.name %></h4>
+
+      <!-- 最初の2種目 -->
+      <% exercises.first(2).each do |ex| %>
+        <div class="exercise-option py-2"
+             data-action="click->exercise-select#select"
+             data-id="<%= ex.id %>">
+          <%= ex.name %>
+        </div>
+      <% end %>
+
+      <% remaining = exercises.drop(2) %>
+
+      <% if remaining.any? %>
+        <!-- 非表示の種目 -->
+        <div class="extra-exercise d-none">
+          <% remaining.each do |ex| %>
+            <div class="exercise-option py-2"
+                 data-action="click->exercise-select#select"
+                 data-id="<%= ex.id %>">
+              <%= ex.name %>
+            </div>
+          <% end %>
+        </div>
+
+        <!-- もっと見る / 閉じる -->
+        <button type="button"
+                class="toggle-btn mt-2"
+                data-action="click->exercise-select#toggle">
+          ▼ もっと見る
+        </button>
+      <% end %>
+
+    </div>
+
+  <% end %>
+
+</div>
