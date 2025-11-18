@@ -10,59 +10,53 @@
 
 <h3 class="mt-4">セット記録</h3>
 
-<%= link_to "種目を追加", new_workout_workout_set_path(@workout),
-            class: "btn btn-warning mb-3" %>
+<%= link_to "種目を追加", select_exercise_workouts_path(date: @workout.workout_date),
+            class: "btn btn-warning mt-2" %>
 
 <% if @exercise_sets.present? %>
+  <% @exercise_sets.each do |exercise, sets| %>
+    <div class="exercise-card mb-4">
 
-<% @workout.workout_sets.includes(:exercise).group_by(&:exercise).each do |exercise, sets| %>
-  <div class="exercise-card mb-4">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h4 class="m-0"><%= exercise.name %>（<%= sets.size %>セット）</h4>
+
+        <%= link_to edit_group_workout_workout_sets_path(
+            @workout,
+            exercise_id: exercise.id
+            ),
+            class: "btn btn-sm btn-outline-warning" do %>
+          <i class="bi bi-pencil"></i>
+        <% end %>
+      </div>
+
+      <% sets.each_with_index do |set, i| %>
+        <div class="set-row mb-2">
+
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex gap-3 align-items-center">
+              <span class="set-number"><%= i + 1 %></span>
+              <span class="set-weight"><%= set.weight %>kg</span>
+              <span class="set-reps"><%= set.reps %>回</span>
+            </div>
+
+            <div class="d-flex gap-2">
+              <%= link_to "削除",
+                  workout_workout_set_path(@workout, set),
+                  data: { turbo_method: :delete, turbo_confirm: "このセットを削除しますか？" },
+                  class: "btn btn-sm btn-outline-danger" %>
+            </div>
     
-    <!-- 種目名 + セット数 -->
-    <h4><%= exercise.name %>（<%= sets.size %>セット）</h4>
-
-    <% sets.each_with_index do |set, i| %>
-      <div class="set-row mb-2">
-
-        <!-- 1段目：番号 / 重量 / 回数 / 操作 -->
-        <div class="d-flex justify-content-between align-items-center">
-
-          <!-- 左側 -->
-          <div class="d-flex gap-3 align-items-center">
-            <span class="set-number"><%= i + 1 %></span>
-            <span class="set-weight"><%= set.weight %>kg</span>
-            <span class="set-reps"><%= set.reps %>回</span>
           </div>
 
-          <!-- 右側（編集/削除） -->
-          <div class="d-flex gap-2">
-            <%= link_to "編集",
-                edit_workout_workout_set_path(@workout, set),
-                class: "btn btn-sm btn-outline-warning" %>
-
-            <%= link_to "削除",
-                workout_workout_set_path(@workout, set),
-                data: { turbo_method: :delete, turbo_confirm: "このセットを削除しますか？" },
-                class: "btn btn-sm btn-outline-danger" %>
-          </div>
+          <% if set.memo.present? %>
+            <div class="set-memo ms-4 mt-1"><%= set.memo %></div>
+          <% end %>
 
         </div>
+      <% end %>
 
-        <!-- 2段目：メモ（ある時だけ） -->
-        <% if set.memo.present? %>
-          <div class="set-memo ms-4 mt-1"><%= set.memo %></div>
-        <% end %>
-
-      </div>
-    <% end %>
-
-    <!-- 下部の「＋セット追加」 -->
-    <%= link_to "+ セット追加",
-        new_workout_workout_set_path(@workout, exercise_id: exercise.id),
-        class: "btn btn-sm btn-warning mt-2" %>
-
-  </div>
-<% end %>
+    </div>
+  <% end %>
 <% else %>
   <p>まだセットが登録されていません。</p>
 <% end %>
