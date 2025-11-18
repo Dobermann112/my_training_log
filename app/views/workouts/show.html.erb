@@ -40,10 +40,11 @@
             </div>
 
             <div class="d-flex gap-2">
-              <%= link_to "削除",
-                  workout_workout_set_path(@workout, set),
+              <%= link_to workout_workout_set_path(@workout, set),
                   data: { turbo_method: :delete, turbo_confirm: "このセットを削除しますか？" },
-                  class: "btn btn-sm btn-outline-danger" %>
+                  class: "btn btn-sm btn-outline-danger" do %>
+                <i class="bi bi-trash"></i>
+              <% end %>
             </div>
     
           </div>
