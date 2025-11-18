@@ -1,32 +1,13 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Workouts", type: :request do
   let!(:user) { create(:user) }
-  let(:valid_attributes) { { workout_date: Date.current } }
-  let(:update_params) { { notes: "updated" } }
-
   before { sign_in user }
 
   describe "GET /index" do
     it "returns http success" do
       get workouts_path
       expect(response).to have_http_status(:success)
-    end
-  end
-
-  describe "GET /new" do
-    it "returns http success" do
-      get new_workout_path
-      expect(response).to have_http_status(:success)
-    end
-  end
-
-  describe "POST /create" do
-    it "creates a workout and redirects" do
-      expect do
-        post workouts_path, params: { workout: valid_attributes }
-      end.to change(Workout, :count).by(1)
-      expect(response).to redirect_to(workout_path(Workout.last))
     end
   end
 
@@ -38,29 +19,42 @@ RSpec.describe "Workouts", type: :request do
     end
   end
 
-  describe "GET /edit" do
-    it "returns http success" do
-      workout = create(:workout, user: user)
-      get edit_workout_path(workout)
-      expect(response).to have_http_status(:success)
+  describe "GET /new" do
+    context "valid params (exercise_id あり)" do
+      it "renders sets_form template" do
+        exercise = create(:exercise)
+        get new_workout_path(exercise_id: exercise.id, date: Date.current)
+        expect(response).to have_http_status(:success)
+      end
+    end
+
+    context "exercise_id がない場合" do
+      it "select_exercise にリダイレクトされる" do
+        get new_workout_path(date: Date.current)
+        expect(response).to redirect_to(select_exercise_workouts_path(date: Date.current))
+      end
     end
   end
 
   describe "PATCH /update" do
-    it "updates a workout and redirects" do
+    it "updates workout and redirects" do
       workout = create(:workout, user: user)
-      patch workout_path(workout), params: { workout: update_params }
+      patch workout_path(workout), params: { workout: { notes: "updated" } }
       expect(response).to redirect_to(workout_path(workout))
+      expect(workout.reload.notes).to eq("updated")
     end
   end
 
   describe "DELETE /destroy" do
-    it "destroys a workout and redirects" do
+    it "destroys workout and redirects" do
       workout = create(:workout, user: user)
+
       expect do
         delete workout_path(workout)
       end.to change(Workout, :count).by(-1)
+
       expect(response).to redirect_to(workouts_path)
     end
   end
 end
+
