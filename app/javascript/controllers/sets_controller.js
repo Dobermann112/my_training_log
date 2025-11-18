@@ -1,45 +1,74 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["list", "template"]
+  static targets = ["list", "template", "number", "weight", "reps", "memo"]
+  static values = { editMode: Boolean }
 
   connect() {
-    // 初回ロード時に4行作る
-    this.initializeRows()
-  }
-
-  initializeRows() {
-    // 既に行がある場合は何もしない（戻る → 入力保持用）
-    if (this.listTarget.children.length > 0) return
-
-    for (let i = 0; i < 4; i++) {
-      this.add()
+    if (!this.editModeValue) {
+      // 編集画面では listTarget に既存行が入っている → initializeRows を走らせない
+      if (this.listTarget.children.length === 0) {
+        this.initializeRows()
+      }
     }
   }
 
+  initializeRows() {
+    for (let i = 0; i < 4; i++) this.add()
+  }
+
   add() {
-    // テンプレートから行を複製
+    // テンプレート複製
     const fragment = this.templateTarget.content.cloneNode(true)
     const rowEl = fragment.querySelector(".set-input-row")
 
-    // セット行に data-index を付与（番号を管理しやすくする）
+    // 現在の行数
     const index = this.listTarget.children.length
     rowEl.dataset.index = index
 
-    // 番号の書き換え
-    const numberEl = rowEl.querySelector("[data-sets-target='number']")
-    numberEl.textContent = `セット${index + 1}`
+    // 編集モードかどうか判定
+    const isEditMode = this.isEditMode()
 
-    // 各 input に name 属性を付与
-    const weightInput = rowEl.querySelector("[data-sets-target='weight']")
-    const repsInput = rowEl.querySelector("[data-sets-target='reps']")
-    const memoInput = rowEl.querySelector("[data-sets-target='memo']")
+    // =====================
+    // name を付ける
+    // =====================
+    if (isEditMode) {
+      // 編集 → sets[new_x][weight]
+      rowEl.querySelector("[data-sets-target='weight']").name = `sets[new_${index}][weight]`
+      rowEl.querySelector("[data-sets-target='reps']").name   = `sets[new_${index}][reps]`
+      rowEl.querySelector("[data-sets-target='memo']").name   = `sets[new_${index}][memo]`
+    } else {
+      // 新規作成 → workout[sets][x][weight]
+      rowEl.querySelector("[data-sets-target='weight']").name = `workout[sets][${index}][weight]`
+      rowEl.querySelector("[data-sets-target='reps']").name   = `workout[sets][${index}][reps]`
+      rowEl.querySelector("[data-sets-target='memo']").name   = `workout[sets][${index}][memo]`
+    }
 
-    weightInput.name = `workout[sets][${index}][weight]`
-    repsInput.name   = `workout[sets][${index}][reps]`
-    memoInput.name   = `workout[sets][${index}][memo]`
-
-    // list 内に追加
+    // list 配下に追加
     this.listTarget.appendChild(rowEl)
+
+    // 番号振り直し
+    this.updateNumbers()
+  }
+
+  // ============================
+  // 編集モードかどうか判定する
+  // ============================
+  isEditMode() {
+    // 既存 hidden_field_tag がある → 編集モード
+    return this.editModeValue
+  }
+
+  // ============================
+  // 行番号（セット1, セット2…）を振り直す
+  // ============================
+  updateNumbers() {
+    this.listTarget.querySelectorAll(".set-input-row").forEach((row, i) => {
+      const numberEl = row.querySelector("[data-sets-target='number']")
+      if (numberEl) {
+        numberEl.textContent = `セット${i + 1}`
+      }
+      row.dataset.index = i
+    })
   }
 }
