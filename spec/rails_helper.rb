@@ -7,6 +7,8 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 
 require 'rspec/rails'
 
+Dir[Rails.root.join("spec/support/**/*.rb")].sort.each { |f| require f }
+
 begin
   ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e
@@ -21,6 +23,8 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
 
   config.include Devise::Test::IntegrationHelpers, type: :request
+
+  config.include SystemLoginHelper, type: :system
 
   config.full_backtrace = false
   config.filter_rails_from_backtrace!
