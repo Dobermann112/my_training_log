@@ -27,10 +27,6 @@ Rails.application.configure do
   # config.assets.css_compressor = :sass
   # Render 本番で public/assets を配信
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
-
-  # Rails 7 + esbuild の JS を正しく圧縮・配信する設定
-  config.assets.js_compressor = :terser
-  # config.assets.css_compressor = :sass  # 必要なら
   
   # Do not fall back to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
