@@ -7,7 +7,7 @@ class WorkoutsController < ApplicationController
   end
 
   def show
-    @exercise_sets = @workout.workout_sets.includes(:exercise).order(:exercise_id, :created_at).group_by { |ws| ws.exercise }
+    @exercise_sets = @workout.workout_sets.includes(:exercise).order(:exercise_id, :created_at).group_by(&:exercise)
   end
 
   def new
@@ -15,7 +15,7 @@ class WorkoutsController < ApplicationController
 
     unless @exercise
       redirect_to select_exercise_workouts_path(date: params[:date]),
-      alert: "種目が選択されていません"
+                  alert: "種目が選択されていません"
       return
     end
 
@@ -33,13 +33,13 @@ class WorkoutsController < ApplicationController
       exercise_id: params[:exercise_id],
       sets_params: params[:workout][:sets]
     ).call
-  
+
     redirect_to @workout, notice: "トレーニングを記録しました。"
   rescue WorkoutCreationService::CreationError => e
     flash.now[:alert] = e.message
     @exercise = Exercise.find_by(id: params[:exercise_id])
     render :sets_form, status: :unprocessable_entity
-  end  
+  end
 
   def update
     if @workout.update(workout_params)

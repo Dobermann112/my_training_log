@@ -14,7 +14,7 @@ class WorkoutCreationService
       create_sets!(workout)
       workout
     end
-  rescue => e
+  rescue StandardError => e
     raise CreationError, "保存に失敗しました: #{e.message}"
   end
 
@@ -23,7 +23,7 @@ class WorkoutCreationService
   def create_workout
     workout = @user.workouts.find_by(workout_date: @date)
     return workout if workout
-    
+
     @user.workouts.create!(
       workout_date: @date,
       notes: ""
@@ -31,7 +31,7 @@ class WorkoutCreationService
   end
 
   def create_sets!(workout)
-    @sets_params.each do |_index, row|
+    @sets_params.each_value do |row|
       next if skip_row?(row)
 
       workout.workout_sets.create!(
