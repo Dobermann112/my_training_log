@@ -7,15 +7,15 @@ RSpec.describe WorkoutSet, type: :model do
   let(:exercise)  { create(:exercise, body_part: body_part) }
 
   describe "associations" do
-    it { should belong_to(:workout) }
-    it { should belong_to(:exercise) }
+    it { is_expected.to belong_to(:workout) }
+    it { is_expected.to belong_to(:exercise) }
   end
 
   describe "validations" do
-    it { should validate_numericality_of(:set_number).is_greater_than(0) }
+    it { is_expected.to validate_numericality_of(:set_number).is_greater_than(0) }
 
-    it { should validate_numericality_of(:weight).is_greater_than(0).allow_nil }
-    it { should validate_numericality_of(:reps).is_greater_than_or_equal_to(1).allow_nil }
+    it { is_expected.to validate_numericality_of(:weight).is_greater_than(0).allow_nil }
+    it { is_expected.to validate_numericality_of(:reps).is_greater_than_or_equal_to(1).allow_nil }
 
     it "memo は100文字以内なら有効" do
       set = build(:workout_set, memo: "a" * 100)
@@ -29,10 +29,9 @@ RSpec.describe WorkoutSet, type: :model do
 
     it "weight・reps・memo がすべて空の場合は無効（カスタムバリデーション）" do
       set = build(:workout_set,
-        workout: workout,
-        exercise: exercise,
-        weight: nil, reps: nil, memo: nil
-      )
+                  workout: workout,
+                  exercise: exercise,
+                  weight: nil, reps: nil, memo: nil)
       expect(set).to be_invalid
       expect(set.errors[:base]).to include("重量、回数、メモのいずれかを入力してください")
     end

@@ -7,8 +7,7 @@ RSpec.describe WorkoutCreationService, type: :service do
   let(:date)       { Date.current }
 
   describe "#call" do
-
-    context "正常なパラメータの場合" do
+    context "when 正常なパラメータの場合" do
       let(:valid_sets_params) do
         {
           "0" => { weight: "60", reps: "10", memo: "warmup" },
@@ -17,7 +16,7 @@ RSpec.describe WorkoutCreationService, type: :service do
       end
 
       let(:service) do
-        WorkoutCreationService.new(
+        described_class.new(
           user: user,
           date: date,
           exercise_id: exercise.id,
@@ -26,11 +25,11 @@ RSpec.describe WorkoutCreationService, type: :service do
       end
 
       it "Workout を1件作成する" do
-        expect { service.call }.to change { Workout.count }.by(1)
+        expect { service.call }.to change(Workout, :count).by(1)
       end
 
       it "WorkoutSet を2件作成する" do
-        expect { service.call }.to change { WorkoutSet.count }.by(2)
+        expect { service.call }.to change(WorkoutSet, :count).by(2)
       end
 
       it "返された Workout とセット内容が正しい" do
@@ -38,7 +37,7 @@ RSpec.describe WorkoutCreationService, type: :service do
 
         expect do
           workout = service.call
-        end.to change { WorkoutSet.count }.by(2)
+        end.to change(WorkoutSet, :count).by(2)
 
         sets = workout.workout_sets
 
@@ -51,7 +50,7 @@ RSpec.describe WorkoutCreationService, type: :service do
       end
     end
 
-    context "空行が含まれる場合" do
+    context "when 空行が含まれる場合" do
       let(:empty_sets_params) do
         {
           "0" => { weight: nil, reps: nil, memo: nil },  # ← skip 対象
@@ -60,7 +59,7 @@ RSpec.describe WorkoutCreationService, type: :service do
       end
 
       let(:service) do
-        WorkoutCreationService.new(
+        described_class.new(
           user: user,
           date: date,
           exercise_id: exercise.id,
@@ -73,7 +72,7 @@ RSpec.describe WorkoutCreationService, type: :service do
 
         expect do
           workout = service.call
-        end.to change { WorkoutSet.count }.by(1)
+        end.to change(WorkoutSet, :count).by(1)
 
         sets = workout.workout_sets
         expect(sets.size).to eq(1)
@@ -82,7 +81,7 @@ RSpec.describe WorkoutCreationService, type: :service do
       end
     end
 
-    context "同じ日付に2回呼び出された場合" do
+    context "when 同じ日付に2回呼び出された場合" do
       let(:sets_params_first) do
         { "0" => { weight: "60", reps: "10", memo: "first" } }
       end
@@ -92,80 +91,60 @@ RSpec.describe WorkoutCreationService, type: :service do
       end
 
       it "1回目はWorkout作成、2回目は既存Workoutを再利用する" do
-        # --- 1回目 ---
-        first_service = WorkoutCreationService.new(
-          user: user,
-          date: date,
-          exercise_id: exercise.id,
-          sets_params: sets_params_first
-        )
+        first_service = described_class.new(user: user, date: date, exercise_id: exercise.id, sets_params: sets_params_first)
 
         first_workout = nil
 
         expect do
           first_workout = first_service.call
-        end.to change { Workout.count }.by(1)
-         .and change { WorkoutSet.count }.by(1)
+        end.to change(Workout, :count).by(1).and change(WorkoutSet, :count).by(1)
 
-        # --- 2回目 ---
-        second_service = WorkoutCreationService.new(
-          user: user,
-          date: date,
-          exercise_id: exercise.id,
-          sets_params: sets_params_second
-        )
+        second_service = described_class.new(user: user, date: date, exercise_id: exercise.id, sets_params: sets_params_second)
 
         second_workout = nil
 
-        expect do
-          second_workout = second_service.call
-        end.to change { Workout.count }.by(0)
-         .and change { WorkoutSet.count }.by(1)
-
-        # --- 同じWorkoutであることの確認 ---
+        expect { second_workout = second_service.call }.to change(WorkoutSet, :count).by(1)
+        expect(Workout.count).to eq(1)
         expect(second_workout.id).to eq(first_workout.id)
-
-        # --- セットが合計2件になっていること ---
         expect(first_workout.workout_sets.count).to eq(2)
 
-        # --- 2回目のセットの値を確認 ---
         last_set = first_workout.workout_sets.order(:id).last
         expect(last_set.weight).to eq(70)
         expect(last_set.reps).to eq(8)
       end
     end
 
-    context "セット作成中に例外が発生した場合" do
-        let(:valid_sets_params) do
-          {
-            "0" => { weight: "60", reps: "10", memo: "warmup" }
-          }
-        end
-      
-        let(:service) do
-          WorkoutCreationService.new(
-            user: user,
-            date: date,
-            exercise_id: exercise.id,
-            sets_params: valid_sets_params
-          )
-        end
-      
-        before do
-          # create_sets! を強制的に例外を起こすようにする
-          allow_any_instance_of(WorkoutCreationService)
-            .to receive(:create_sets!)
-            .and_raise(StandardError.new("forced error"))
-        end
-      
-        it "トランザクションが rollback され、Workout も WorkoutSet も保存されない" do
-          expect do
-            service.call
-          end.to raise_error(WorkoutCreationService::CreationError)
-      
-          expect(Workout.count).to eq(0)
-          expect(WorkoutSet.count).to eq(0)
-        end
-      end      
+    context "when セット作成中に例外が発生した場合" do
+      let(:valid_sets_params) do
+        {
+          "0" => { weight: "60", reps: "10", memo: "warmup" }
+        }
+      end
+
+      let(:service) do
+        described_class.new(
+          user: user,
+          date: date,
+          exercise_id: exercise.id,
+          sets_params: valid_sets_params
+        )
+      end
+
+      before do
+        # create_sets! を強制的に例外を起こすようにする
+        allow_any_instance_of(described_class)
+          .to receive(:create_sets!)
+          .and_raise(StandardError.new("forced error"))
+      end
+
+      it "トランザクションが rollback され、Workout も WorkoutSet も保存されない" do
+        expect do
+          service.call
+        end.to raise_error(WorkoutCreationService::CreationError)
+
+        expect(Workout.count).to eq(0)
+        expect(WorkoutSet.count).to eq(0)
+      end
+    end
   end
 end

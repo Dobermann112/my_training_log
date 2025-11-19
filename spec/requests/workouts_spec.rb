@@ -2,6 +2,7 @@ require "rails_helper"
 
 RSpec.describe "Workouts", type: :request do
   let!(:user) { create(:user) }
+
   before { sign_in user }
 
   describe "GET /index" do
@@ -20,7 +21,7 @@ RSpec.describe "Workouts", type: :request do
   end
 
   describe "GET /new" do
-    context "valid params (exercise_id あり)" do
+    context "when params are valid" do
       it "renders sets_form template" do
         exercise = create(:exercise)
         get new_workout_path(exercise_id: exercise.id, date: Date.current)
@@ -28,7 +29,7 @@ RSpec.describe "Workouts", type: :request do
       end
     end
 
-    context "exercise_id がない場合" do
+    context "when exercise_id がない場合" do
       it "select_exercise にリダイレクトされる" do
         get new_workout_path(date: Date.current)
         expect(response).to redirect_to(select_exercise_workouts_path(date: Date.current))
@@ -57,4 +58,3 @@ RSpec.describe "Workouts", type: :request do
     end
   end
 end
-

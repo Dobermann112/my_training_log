@@ -15,14 +15,13 @@ class WorkoutSetsController < ApplicationController
       exercise: @exercise,
       sets_params: params[:sets]
     ).call
-  
+
     redirect_to @workout, notice: "セット内容を更新しました。"
-  
-  rescue => e
+  rescue StandardError => e
     flash.now[:alert] = "更新に失敗しました: #{e.message}"
     edit_group
     render :edit_group, status: :unprocessable_entity
-  end  
+  end
 
   def destroy
     @workout_set = @workout.workout_sets.find(params[:id])

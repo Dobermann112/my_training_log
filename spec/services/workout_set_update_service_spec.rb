@@ -7,8 +7,7 @@ RSpec.describe WorkoutSetUpdateService, type: :service do
   let(:exercise)  { create(:exercise, body_part: body_part) }
 
   describe "#call" do
-
-    context "既存セットを更新する場合" do
+    context "when 既存セットを更新する場合" do
       let!(:set1) do
         create(:workout_set, workout: workout, exercise: exercise, weight: 60, reps: 10, memo: "old")
       end
@@ -20,7 +19,7 @@ RSpec.describe WorkoutSetUpdateService, type: :service do
       end
 
       let(:service) do
-        WorkoutSetUpdateService.new(
+        described_class.new(
           workout: workout,
           exercise: exercise,
           sets_params: params
@@ -36,7 +35,7 @@ RSpec.describe WorkoutSetUpdateService, type: :service do
       end
     end
 
-    context "new_x の新しい行が含まれる場合" do
+    context "when new_x の新しい行が含まれる場合" do
       let(:params) do
         {
           "new_0" => { weight: "40", reps: "12", memo: "added" }
@@ -44,7 +43,7 @@ RSpec.describe WorkoutSetUpdateService, type: :service do
       end
 
       let(:service) do
-        WorkoutSetUpdateService.new(
+        described_class.new(
           workout: workout,
           exercise: exercise,
           sets_params: params
@@ -54,7 +53,7 @@ RSpec.describe WorkoutSetUpdateService, type: :service do
       it "新規 WorkoutSet が作成される" do
         expect do
           service.call
-        end.to change { WorkoutSet.count }.by(1)
+        end.to change(WorkoutSet, :count).by(1)
 
         new_set = workout.workout_sets.last
         expect(new_set.weight).to eq(40)
@@ -63,7 +62,7 @@ RSpec.describe WorkoutSetUpdateService, type: :service do
       end
     end
 
-    context "空行が含まれる場合" do
+    context "when 空行が含まれる場合" do
       let(:params) do
         {
           "new_0" => { weight: nil, reps: nil, memo: nil },    # skip対象
@@ -72,7 +71,7 @@ RSpec.describe WorkoutSetUpdateService, type: :service do
       end
 
       let(:service) do
-        WorkoutSetUpdateService.new(
+        described_class.new(
           workout: workout,
           exercise: exercise,
           sets_params: params
@@ -82,7 +81,7 @@ RSpec.describe WorkoutSetUpdateService, type: :service do
       it "空行はスキップされ、有効行のみ作成される" do
         expect do
           service.call
-        end.to change { WorkoutSet.count }.by(1)
+        end.to change(WorkoutSet, :count).by(1)
 
         new_set = workout.workout_sets.last
         expect(new_set.weight).to eq(50)
@@ -90,7 +89,7 @@ RSpec.describe WorkoutSetUpdateService, type: :service do
       end
     end
 
-    context "既存セットと new_x が混在する場合" do
+    context "when 既存セットと new_x が混在する場合" do
       let!(:set1) do
         create(:workout_set, workout: workout, exercise: exercise, weight: 60, reps: 10)
       end
@@ -103,7 +102,7 @@ RSpec.describe WorkoutSetUpdateService, type: :service do
       end
 
       let(:service) do
-        WorkoutSetUpdateService.new(
+        described_class.new(
           workout: workout,
           exercise: exercise,
           sets_params: params
@@ -113,7 +112,7 @@ RSpec.describe WorkoutSetUpdateService, type: :service do
       it "既存は update、新規行は create される" do
         expect do
           service.call
-        end.to change { WorkoutSet.count }.by(1)
+        end.to change(WorkoutSet, :count).by(1)
 
         expect(set1.reload.weight).to eq(70)
         expect(set1.reps).to eq(8)
@@ -124,7 +123,7 @@ RSpec.describe WorkoutSetUpdateService, type: :service do
       end
     end
 
-    context "異常が発生した場合" do
+    context "when 異常が発生した場合" do
       let!(:set1) do
         create(:workout_set, workout: workout, exercise: exercise, weight: 60, reps: 10)
       end
@@ -137,7 +136,7 @@ RSpec.describe WorkoutSetUpdateService, type: :service do
       end
 
       let(:service) do
-        WorkoutSetUpdateService.new(
+        described_class.new(
           workout: workout,
           exercise: exercise,
           sets_params: params
@@ -152,12 +151,14 @@ RSpec.describe WorkoutSetUpdateService, type: :service do
       end
 
       it "トランザクションが rollback され、変更が一切反映されない" do
-        expect do
-          expect { service.call }.to raise_error(WorkoutSetUpdateService::UpdateError)
-        end.to change { WorkoutSet.count }.by(0)
-         .and change { set1.reload.weight }.by(0)
+        count_before = WorkoutSet.count
+        weight_before = set1.weight
+
+        expect { service.call }.to raise_error(WorkoutSetUpdateService::UpdateError)
+
+        expect(WorkoutSet.count).to eq(count_before)
+        expect(set1.reload.weight).to eq(weight_before)
       end
     end
-
   end
 end
