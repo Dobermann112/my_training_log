@@ -2,7 +2,13 @@ class CalendarsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @events = load_events
+    @today = Date.current
+
+    @today_workout = current_user.workouts
+      .includes(workout_sets: :exercise)
+      .find_by(workout_date: @today)
+
+    load_events
   end
 
   private

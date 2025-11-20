@@ -1,0 +1,70 @@
+/* --- FullCalendar ヘッダー白帯削除（最重要） --- */
+.fc-scrollgrid-section-sticky {
+    background: transparent !important;
+    border-color: transparent !important;
+  }
+  
+  /* カレンダー全体のカード */
+  #calendar {
+    background: #102236;
+    border-radius: 20px;
+    padding: 1.4rem;
+    border: 1px solid rgba(255,255,255,0.10);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+  }
+  
+  /* タイトル */
+  .fc-toolbar-title {
+    font-size: 1.45rem !important;
+    color: rgba(255,255,255,0.92);
+    font-weight: 700;
+  }
+  
+  /* 曜日ラベル */
+  .fc-col-header-cell-cushion {
+    font-size: 0.83rem !important;
+    font-weight: 600 !important;
+    color: rgba(255,255,255,0.75) !important;
+    text-decoration: none !important;
+  }
+  
+  /* 日付セル */
+  .fc-daygrid-day {
+    background: transparent !important;
+    border-color: rgba(255,255,255,0.07) !important;
+  }
+  
+  /* 日付数字 */
+  .fc-daygrid-day-number {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.75);
+    margin: 4px;
+    padding: 3px 5px;
+    border-radius: 8px;
+  }
+  
+  /* 今日 */
+  .fc-day-today .fc-daygrid-day-number {
+    background: rgba(58,134,255,0.25) !important;
+    border: 2px solid #3a86ff !important;
+    color: white !important;
+    border-radius: 50% !important;
+  }
+  
+  /* イベント */
+  .fc-event {
+    background: linear-gradient(90deg, #4f9eff, #3a86ff);
+    border-radius: 10px;
+    padding: 4px 6px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: white;
+  }
+  
+  .fc-theme-standard th {
+    background: transparent !important;
+  }
+
+  
+  

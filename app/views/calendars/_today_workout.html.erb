@@ -1,0 +1,26 @@
+<div class="today-workout-card">
+
+  <div class="today-workout-title">今日のトレーニング</div>
+
+  <% workout.workout_sets.includes(:exercise).group_by(&:exercise).each do |exercise, sets| %>
+
+    <div class="today-exercise-name"><%= exercise.name %></div>
+
+    <% sets.sort_by(&:set_number).each do |set| %>
+      <div class="today-set-row">
+        <div class="num"><%= set.set_number %>:</div>
+
+        <div class="weight">
+          <%= set.weight.present? ? "#{set.weight}kg" : "-" %>
+        </div>
+
+        <div class="reps">
+          <%= set.reps.present? ? "#{set.reps}回" : "-" %>
+        </div>
+      </div>
+    <% end %>
+
+    <div style="margin-bottom: 1rem;"></div>
+  <% end %>
+
+</div>
