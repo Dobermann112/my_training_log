@@ -17,3 +17,7 @@
   <% end %>
 
 </div>
+
+<% if @today_workout.present? %>
+  <%= render "calendars/today_workout", workout: @today_workout %>
+<% end %>

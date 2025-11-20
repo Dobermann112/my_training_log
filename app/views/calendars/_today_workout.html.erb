@@ -1,0 +1,22 @@
+<div class="card mt-3">
+  <div class="card-body">
+
+    <h5 class="mb-3">今日のトレーニング</h5>
+
+    <% workout.workout_sets.includes(:exercise).group_by(&:exercise).each do |exercise, sets| %>
+      <div class="mb-3">
+        <strong><%= exercise.name %></strong>
+
+        <% sets.sort_by(&:set_number).each do |set| %>
+          <div>
+            <%= set.set_number %>:
+            <%= set.weight.present? ? "#{set.weight}kg" : "-" %> /
+            <%= set.reps.present? ? "#{set.reps}回" : "-" %>
+          </div>
+        <% end %>
+
+      </div>
+    <% end %>
+
+  </div>
+</div>
