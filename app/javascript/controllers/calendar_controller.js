@@ -14,6 +14,7 @@ export default class extends Controller {
       locale: "en",
       firstDay: 0,
       height: "auto",
+      stickyHeaderDates: false,
       events: "/calendars.json",
       eventColor: "#3a86ff",
       headerToolbar: {
