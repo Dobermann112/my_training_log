@@ -1,22 +1,26 @@
-<div class="card mt-3">
-  <div class="card-body">
+<div class="today-workout-card">
 
-    <h5 class="mb-3">今日のトレーニング</h5>
+  <div class="today-workout-title">今日のトレーニング</div>
 
-    <% workout.workout_sets.includes(:exercise).group_by(&:exercise).each do |exercise, sets| %>
-      <div class="mb-3">
-        <strong><%= exercise.name %></strong>
+  <% workout.workout_sets.includes(:exercise).group_by(&:exercise).each do |exercise, sets| %>
 
-        <% sets.sort_by(&:set_number).each do |set| %>
-          <div>
-            <%= set.set_number %>:
-            <%= set.weight.present? ? "#{set.weight}kg" : "-" %> /
-            <%= set.reps.present? ? "#{set.reps}回" : "-" %>
-          </div>
-        <% end %>
+    <div class="today-exercise-name"><%= exercise.name %></div>
 
+    <% sets.sort_by(&:set_number).each do |set| %>
+      <div class="today-set-row">
+        <div class="num"><%= set.set_number %>:</div>
+
+        <div class="weight">
+          <%= set.weight.present? ? "#{set.weight}kg" : "-" %>
+        </div>
+
+        <div class="reps">
+          <%= set.reps.present? ? "#{set.reps}回" : "-" %>
+        </div>
       </div>
     <% end %>
 
-  </div>
+    <div style="margin-bottom: 1rem;"></div>
+  <% end %>
+
 </div>

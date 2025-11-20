@@ -6,12 +6,12 @@
 
   <% if @today_workout.present? %>
     <%= link_to workout_path(@today_workout),
-                class: "btn btn-warning w-100 mb-3" do %>
+                class: "btn btn-primary w-100 mb-3" do %>
       今日のトレーニングを記録する
     <% end %>
   <% else %>
     <%= link_to select_exercise_workouts_path(date: @today),
-                class: "btn btn-warning w-100 mb-3" do %>
+                class: "btn btn-primary w-100 mb-3" do %>
       今日のトレーニングを記録する
     <% end %>
   <% end %>
