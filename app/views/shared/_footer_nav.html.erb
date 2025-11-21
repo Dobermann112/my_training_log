@@ -12,7 +12,7 @@
       <i data-lucide="user"></i>
       <span>プロフィール</span>
     <% end %>
-    <%= link_to "#", class: "text-light" do %>
+    <%= link_to dashboard_setting_path, class: "text-light #{'active' if current_page?(dashboard_setting_path)}" do %>
       <i data-lucide="settings"></i>
       <span>設定</span>
     <% end %>
