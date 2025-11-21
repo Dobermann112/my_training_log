@@ -2,8 +2,6 @@ Rails.application.routes.draw do
   devise_for :users
 
   devise_scope :user do
-    get "account_edit", to: "devise/registrations#edit", as: :account_edit_user
-
     authenticated :user do
       root "dashboard/calendars#index", as: :authenticated_root
     end
@@ -14,6 +12,10 @@ Rails.application.routes.draw do
   end
 
   resource :user, only: [:show, :edit, :update]
+
+  get "account_edit", to: "users#account_edit", as: :account_edit_user
+  patch "users/update_email", to: "users#update_email", as: :users_update_email
+  patch "users/update_password", to: "users#update_password", as: :users_update_password
 
   resources :workouts do
     collection do
