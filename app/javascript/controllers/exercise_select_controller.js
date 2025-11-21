@@ -17,7 +17,10 @@ export default class extends Controller {
   // もっと見る/閉じる
   toggle(event) {
     const button = event.currentTarget
-    const extraArea = button.previousElementSibling
+    const card = button.closest(".exercise-select-card")
+    const extraArea = card.querySelector(".extra-exercise")
+
+    if (!extraArea) return
 
     const isHidden = extraArea.classList.contains("d-none")
 
