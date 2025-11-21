@@ -14,12 +14,12 @@
 
             <div class="mb-3">
               <%= f.label :email, "新しいメールアドレス", class: "form-label" %>
-              <%= f.email_field :email, value: current_user.email, class: "form-control" %>
+              <%= f.email_field :email, value: current_user.email, class: "form-control bg-dark text-light border-secondary" %>
             </div>
 
             <div class="mb-4">
               <%= f.label :current_password, "現在のパスワード（確認）", class: "form-label" %>
-              <%= f.password_field :current_password, class: "form-control" %>
+              <%= f.password_field :current_password, class: "form-control bg-dark text-light border-secondary" %>
             </div>
 
             <div class="d-grid">
@@ -42,17 +42,17 @@
 
             <div class="mb-3">
               <%= f.label :password, "新しいパスワード", class: "form-label" %>
-              <%= f.password_field :password, class: "form-control" %>
+              <%= f.password_field :password, class: "form-control bg-dark text-light border-secondary" %>
             </div>
 
             <div class="mb-3">
               <%= f.label :password_confirmation, "新しいパスワード（確認）", class: "form-label" %>
-              <%= f.password_field :password_confirmation, class: "form-control" %>
+              <%= f.password_field :password_confirmation, class: "form-control bg-dark text-light border-secondary" %>
             </div>
 
             <div class="mb-4">
               <%= f.label :current_password, "現在のパスワード（確認）", class: "form-label" %>
-              <%= f.password_field :current_password, class: "form-control" %>
+              <%= f.password_field :current_password, class: "form-control bg-dark text-light border-secondary" %>
             </div>
 
             <div class="d-grid">
@@ -64,11 +64,16 @@
       </div>
 
       <!-- アカウント削除 -->
-      <div class="text-center mt-4">
+      <div class="text-center mt-4 mb-4">
         <%= link_to "アカウントを削除する",
                     registration_path(:user),
                     data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" },
                     class: "text-danger small text-decoration-none" %>
+      </div>
+
+      <!-- 戻るボタン -->
+      <div class="text-center mb-4">
+        <%= link_to "戻る", dashboard_profile_path, class: "btn btn-secondary w-100" %>
       </div>
 
     </div>
