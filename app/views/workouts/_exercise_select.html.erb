@@ -29,14 +29,25 @@
             </div>
           <% end %>
         </div>
-
-        <!-- もっと見る / 閉じる -->
-        <button type="button"
-                class="toggle-btn mt-2"
-                data-action="click->exercise-select#toggle">
-          ▼ もっと見る
-        </button>
       <% end %>
+
+      <div class="d-flex justify-content-between align-items-center mt-2">
+
+        <% if remaining.any? %>
+          <button type="button"
+                  class="toggle-btn"
+                  data-action="click->exercise-select#toggle">
+            ▼ もっと見る
+          </button>
+        <% else %>
+          <!-- バランス調整用ダミー -->
+          <span></span>
+        <% end %>
+
+        <%= link_to "＋ 種目を追加",
+            new_body_part_exercise_path(body_part, date: @date),
+            class: "add-exercise_btn" %>
+      </div>
 
     </div>
 
