@@ -400,28 +400,6 @@ main.container {
   }
 }
 
-.exercise-modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-.exercise-modal-content {
-  background: #222;
-  color: #fff;
-  padding: 24px;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 400px;
-}
-
 .add-exercise_btn {
   background-color: rgba(58, 134, 255, 0.25);
   color: $text-light;
