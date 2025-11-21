@@ -1,32 +1,46 @@
-<%= render "devise/shared/auth_container" do %>
-  <h2 class="text-center mb-4 text-warning fw-semibold">ログイン</h2>
+<div class="container my-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card bg-dark text-light shadow-sm border-secondary">
+        <div class="card-body">
 
-  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-    <div class="mb-3">
-      <%= f.label :name, "名前", class: "form-label" %>
-      <%= f.text_field :name, autofocus: true, autocomplete: "email",
-            class: "form-control bg-dark text-light border-secondary" %>
-    </div>
+          <h3 class="mb-4 text-center border-bottom pb-2">ログイン</h3>
 
-    <div class="mb-3">
-      <%= f.label :password, "パスワード", class: "form-label" %>
-      <%= f.password_field :password, autocomplete: "current-password",
-            class: "form-control bg-dark text-light border-secondary" %>
-    </div>
+          <%= form_with scope: resource_name, url: session_path(resource_name), local: true do |f| %>
 
-    <% if devise_mapping.rememberable? %>
-      <div class="form-check mb-3">
-        <%= f.check_box :remember_me, class: "form-check-input" %>
-        <%= f.label :remember_me, "ログイン情報を記憶する", class: "form-check-label" %>
+            <div class="mb-3">
+              <%= f.label :name, "名前", class: "form-label" %>
+              <%= f.text_field :name,
+                    autofocus: true,
+                    class: "form-control" %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :password, "パスワード", class: "form-label" %>
+              <%= f.password_field :password,
+                    autocomplete: "current-password",
+                    class: "form-control" %>
+            </div>
+
+            <% if devise_mapping.rememberable? %>
+              <div class="form-check mb-3">
+                <%= f.check_box :remember_me, class: "form-check-input" %>
+                <%= f.label :remember_me, "ログイン情報を記憶する", class: "form-check-label" %>
+              </div>
+            <% end %>
+
+            <div class="d-grid">
+              <%= f.submit "ログイン", class: "btn btn-primary" %>
+            </div>
+
+          <% end %>
+
+          <div class="text-center mt-3">
+            <%= render "devise/shared/links" %>
+          </div>
+
+        </div>
       </div>
-    <% end %>
-
-    <div class="d-grid">
-      <%= f.submit "ログイン", class: "btn btn-warning text-dark fw-semibold" %>
     </div>
-  <% end %>
-
-  <div class="text-center mt-4">
-    <%= render "devise/shared/links" %>
   </div>
-<% end %>
+</div>
