@@ -400,3 +400,18 @@ main.container {
   }
 }
 
+.add-exercise_btn {
+  background-color: rgba(58, 134, 255, 0.25);
+  color: $text-light;
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  text-decoration: none !important;
+  border: none;
+
+  &:hover {
+    background-color: rgba(58, 134, 255, 0.35);
+    text-decoration: none !important;
+  }
+}
