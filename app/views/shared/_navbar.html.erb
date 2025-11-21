@@ -18,16 +18,13 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <% if user_signed_in? %>
-          <li class="nav-item"><%= link_to "マイページ", dashboard_profile_path, class: "nav-link text-light" %></li>
-          <li class="nav-item"><%= link_to "アカウント編集", account_edit_user_path, class: "nav-link text-light" %></li>
-         <li class="nav-item"><%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete }, class: "nav-link text-warning" %></li>
-          <li class="nav-item"><%= link_to "利用規約", "#", class: "nav-link text-light" %></li>
-          <li class="nav-item"><%= link_to "プライバシーポリシー", "#", class: "nav-link text-light" %></li>
+          <li class="nav-item"><%= link_to "カレンダー", dashboard_calendar_path, class: "nav-link text-light" %></li>
+          <li class="nav-item"><%= link_to "レポート",   dashboard_report_path,   class: "nav-link text-light" %></li>
+          <li class="nav-item"><%= link_to "マイページ", dashboard_profile_path,   class: "nav-link text-light" %></li>
+          <li class="nav-item"><%= link_to "設定",       dashboard_setting_path,  class: "nav-link text-light" %></li>
         <% else %>
-          <li class="nav-item"><%= link_to "ログイン", new_user_session_path, class: "nav-link text-light" %></li>
-          <li class="nav-item"><%= link_to "新規登録", new_user_registration_path, class: "nav-link text-warning fw-semibold" %></li>
-          <li class="nav-item"><%= link_to "利用規約", "#", class: "nav-link text-light" %></li>
-          <li class="nav-item"><%= link_to "プライバシーポリシー", "#", class: "nav-link text-light" %></li>
+          <li class="nav-item"><%= link_to "ログイン",     new_user_session_path,        class: "nav-link text-light" %></li>
+          <li class="nav-item"><%= link_to "新規登録",     new_user_registration_path,   class: "nav-link text-warning fw-semibold" %></li>
         <% end %>
       </ul>
     </div>
