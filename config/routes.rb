@@ -11,6 +11,10 @@ Rails.application.routes.draw do
     end
   end
 
+  get "/terms",   to: "static_pages#terms"
+  get "/privacy", to: "static_pages#privacy"
+  get "/help",    to: "static_pages#help"
+
   resource :user, only: [:show, :edit, :update]
 
   get "account_edit", to: "users#account_edit", as: :account_edit_user
