@@ -3,7 +3,7 @@
     <div class="col-md-6 col-lg-5">
 
       <!-- メールアドレス変更カード -->
-      <div class="card bg-dark text-light shadow-sm border-secondary mb-4">
+      <div class="card shadow-sm border-secondary mb-4">
         <div class="card-body">
           <h4 class="mb-3 pb-2 border-bottom">メールアドレスの変更</h4>
 
@@ -14,12 +14,12 @@
 
             <div class="mb-3">
               <%= f.label :email, "新しいメールアドレス", class: "form-label" %>
-              <%= f.email_field :email, value: current_user.email, class: "form-control bg-dark text-light border-secondary" %>
+              <%= f.email_field :email, value: current_user.email, class: "form-control bg-transparent text-light border-secondary" %>
             </div>
 
             <div class="mb-4">
               <%= f.label :current_password, "現在のパスワード（確認）", class: "form-label" %>
-              <%= f.password_field :current_password, class: "form-control bg-dark text-light border-secondary" %>
+              <%= f.password_field :current_password, class: "form-control bg-transparent text-light border-secondary" %>
             </div>
 
             <div class="d-grid">
@@ -31,7 +31,7 @@
       </div>
 
       <!-- パスワード変更カード -->
-      <div class="card bg-dark text-light shadow-sm border-secondary mb-4">
+      <div class="card shadow-sm border-secondary mb-4">
         <div class="card-body">
           <h4 class="mb-3 pb-2 border-bottom">パスワードの変更</h4>
 
@@ -42,17 +42,17 @@
 
             <div class="mb-3">
               <%= f.label :password, "新しいパスワード", class: "form-label" %>
-              <%= f.password_field :password, class: "form-control bg-dark text-light border-secondary" %>
+              <%= f.password_field :password, class: "form-control bg-transparent text-light border-secondary" %>
             </div>
 
             <div class="mb-3">
               <%= f.label :password_confirmation, "新しいパスワード（確認）", class: "form-label" %>
-              <%= f.password_field :password_confirmation, class: "form-control bg-dark text-light border-secondary" %>
+              <%= f.password_field :password_confirmation, class: "form-control bg-transparent text-light border-secondary" %>
             </div>
 
             <div class="mb-4">
               <%= f.label :current_password, "現在のパスワード（確認）", class: "form-label" %>
-              <%= f.password_field :current_password, class: "form-control bg-dark text-light border-secondary" %>
+              <%= f.password_field :current_password, class: "form-control bg-transparent text-light border-secondary" %>
             </div>
 
             <div class="d-grid">
