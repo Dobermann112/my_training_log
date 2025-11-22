@@ -26,6 +26,8 @@ services:
       DATABASE_USERNAME: postgres
       DATABASE_PASSWORD: password
       DATABASE_NAME: my_training_log_development
+      SMTP_USERNAME: mytraininglog.dev@gmail.com
+      SMTP_PASSWORD: qwrwqummhmipftxw
     stdin_open: true
     tty: true
 
