@@ -1,25 +1,42 @@
-<%= render "devise/shared/auth_container" do %>
-  <h2 class="text-center mb-4 text-warning fw-semibold">新しいパスワード設定</h2>
+<div class="container my-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
 
-  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
-    <%= f.hidden_field :reset_password_token %>
+      <div class="card shadow-sm border-secondary">
+        <div class="card-body">
 
-    <div class="mb-3">
-      <%= f.label :password, "新しいパスワード", class: "form-label" %>
-      <%= f.password_field :password, autocomplete: "new-password", class: "form-control bg-dark text-light border-secondary" %>
+          <h4 class="mb-3 pb-2 border-bottom">新しいパスワード設定</h4>
+
+          <%= form_for(resource, as: resource_name,
+               url: password_path(resource_name), html: { method: :put, data: { turbo: false } }) do |f| %>
+
+            <%= f.hidden_field :reset_password_token %>
+
+            <div class="mb-3">
+              <%= f.label :password, "新しいパスワード", class: "form-label" %>
+              <%= f.password_field :password, autocomplete: "new-password",
+                    class: "form-control bg-transparent text-light border-secondary" %>
+            </div>
+
+            <div class="mb-4">
+              <%= f.label :password_confirmation, "新しいパスワード（確認）", class: "form-label" %>
+              <%= f.password_field :password_confirmation, autocomplete: "new-password",
+                    class: "form-control bg-transparent text-light border-secondary" %>
+            </div>
+
+            <div class="d-grid mt-4">
+              <%= f.submit "パスワードを更新", class: "btn btn-primary" %>
+            </div>
+
+          <% end %>
+
+          <div class="text-center mt-4">
+            <%= render "devise/shared/links" %>
+          </div>
+
+        </div>
+      </div>
+
     </div>
-
-    <div class="mb-4">
-      <%= f.label :password_confirmation, "新しいパスワード（確認）", class: "form-label" %>
-      <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control bg-dark text-light border-secondary" %>
-    </div>
-
-    <div class="d-grid">
-      <%= f.submit "パスワードを更新", class: "btn btn-warning text-dark fw-semibold" %>
-    </div>
-  <% end %>
-
-  <div class="text-center mt-4">
-    <%= render "devise/shared/links" %>
   </div>
-<% end %>
+</div>
