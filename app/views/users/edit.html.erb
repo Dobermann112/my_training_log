@@ -2,7 +2,7 @@
   <div class="row justify-content-center">
     <div class="col-md-6 col-lg-5">
 
-      <div class="card bg-dark text-light shadow-sm border-secondary">
+      <div class="card shadow-sm border-secondary">
         <div class="card-body">
 
           <h4 class="mb-3 pb-2 border-bottom">プロフィール編集</h4>
@@ -15,7 +15,7 @@
 
             <div class="mb-3">
               <%= f.label :name, "名前", class: "form-label" %>
-              <%= f.text_field :name, class: "form-control bg-dark text-light border-secondary" %>
+              <%= f.text_field :name, class: "form-control bg-transparent text-light border-secondary" %>
             </div>
 
             <div class="mb-3">
@@ -23,12 +23,12 @@
               <%= f.select :gender,
                            User.genders.keys.map { |k| [k, k] },
                            {},
-                           class: "form-select bg-dark text-light border-secondary" %>
+                           class: "form-select bg-transparent text-light border-secondary" %>
             </div>
 
             <div class="mb-3">
               <%= f.label :goal, "目標", class: "form-label" %>
-              <%= f.text_area :goal, rows: 3, class: "form-control bg-dark text-light border-secondary" %>
+              <%= f.text_area :goal, rows: 3, class: "form-control bg-transparent text-light border-secondary" %>
             </div>
 
             <div class="d-flex justify-content-between mt-4">

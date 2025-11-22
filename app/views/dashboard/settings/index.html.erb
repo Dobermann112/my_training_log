@@ -1,20 +1,18 @@
 <div class="container my-4">
-  <div class="card bg-dark text-light shadow-sm border-secondary">
+  <div class="card shadow-sm border-secondary">
     <div class="card-body">
 
       <h4 class="mb-3 pb-2 border-bottom">設定</h4>
 
-      <p class="text-secondary mb-4">アプリに関する情報や各種ポリシーへのリンクを配置する予定です。</p>
-
       <ul class="list-group list-group-flush">
-        <li class="list-group-item bg-dark text-light border-secondary">
-          <span class="text-secondary">・利用規約（準備中）</span>
+        <li class="list-group-item bg-transparent text-light border-secondary">
+          <%= link_to "・利用規約", terms_path, class: "text-light text-decoration-none" %>
         </li>
-        <li class="list-group-item bg-dark text-light border-secondary">
-          <span class="text-secondary">・プライバシーポリシー（準備中）</span>
+        <li class="list-group-item bg-transparent text-light border-secondary">
+          <%= link_to "・プライバシーポリシー", privacy_path, class: "text-light text-decoration-none" %>
         </li>
-        <li class="list-group-item bg-dark text-light border-secondary">
-          <span class="text-secondary">・ヘルプ / 使い方（準備中）</span>
+        <li class="list-group-item bg-transparent text-light border-secondary">
+          <%= link_to "・ヘルプ / 使い方", help_path, class: "text-light text-decoration-none" %>
         </li>
       </ul>
 
