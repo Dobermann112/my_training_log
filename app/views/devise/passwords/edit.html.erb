@@ -8,7 +8,7 @@
           <h4 class="mb-3 pb-2 border-bottom">新しいパスワード設定</h4>
 
           <%= form_for(resource, as: resource_name,
-               url: password_path(resource_name), html: { method: :put }) do |f| %>
+               url: password_path(resource_name), html: { method: :put, data: { turbo: false } }) do |f| %>
 
             <%= f.hidden_field :reset_password_token %>
 

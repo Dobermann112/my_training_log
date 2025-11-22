@@ -11,7 +11,7 @@
             パスワード再設定リンクをメールでお送りします。
           </p>
 
-          <%= form_for(resource, as: resource_name, url: password_path(resource_name)) do |f| %>
+          <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { data: { turbo: false } }) do |f| %>
             <div class="mb-3">
               <%= f.label :email, "メールアドレス", class: "form-label" %>
               <%= f.email_field :email, autofocus: true, autocomplete: "email",
