@@ -23,7 +23,7 @@ class ExercisesController < ApplicationController
     @exercise.user = current_user if user_signed_in?
     @exercise.is_default = false if @exercise.user.present?
 
-    date = params[:date]
+    params[:date]
 
     if @exercise.save
       redirect_to select_exercise_workouts_path(date: params[:date]), notice: "種目を登録しました。"
@@ -58,9 +58,7 @@ class ExercisesController < ApplicationController
   end
 
   def authorize_exercise!
-    unless @exercise.user.nil? || @exercise.user == current_user
-      redirect_to body_part_exercise_path(@body_part, date: params[:date]), alert: "権限がありません。"
-    end
+    redirect_to body_part_exercise_path(@body_part, date: params[:date]), alert: "権限がありません。" unless @exercise.user.nil? || @exercise.user == current_user
   end
 
   def exercise_params

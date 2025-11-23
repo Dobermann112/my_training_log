@@ -6,12 +6,12 @@ RSpec.describe WorkoutSet, type: :model do
   let(:body_part) { create(:body_part) }
   let(:exercise)  { create(:exercise, body_part: body_part) }
 
-  describe "associations" do
+  describe "アソシエーションチェック" do
     it { is_expected.to belong_to(:workout) }
     it { is_expected.to belong_to(:exercise) }
   end
 
-  describe "validations" do
+  describe "バリデーションチェック" do
     it { is_expected.to validate_numericality_of(:set_number).is_greater_than(0) }
 
     it { is_expected.to validate_numericality_of(:weight).is_greater_than(0).allow_nil }
@@ -37,7 +37,7 @@ RSpec.describe WorkoutSet, type: :model do
     end
   end
 
-  describe "callbacks" do
+  describe "コールバックチェック" do
     it "set_number が未指定の場合、自動的に連番が付与される" do
       set1 = create(:workout_set, workout: workout, exercise: exercise, set_number: nil)
       set2 = create(:workout_set, workout: workout, exercise: exercise, set_number: nil)
