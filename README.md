@@ -118,11 +118,10 @@
 - **MVP（Railsのみ/アバターなし）**  
   - `Ruby on Rails`: 7.1.5
   - `PostgreSQL 16`: データベース
-  - `Heroku`: デプロイサーバー
+  - `Render`: デプロイサーバー
   - `devise`: 認証機能
-  - `chartkick`+`groupdate`: 週次/種目別グラフの表示  
-  - `groupdate`: 日付ごとの集計  
-  - `simple_calendar`: カレンダー表示  
+  - `ApexCharts`: 週次/種目別グラフの表示  
+  - `FullCalendar`: カレンダー表示  
 - **本リリース・React導入（Rails API化）**  
   - `Rails（APIモード）`: 認証・集計APIの提供
   - `React`: 画面遷移
