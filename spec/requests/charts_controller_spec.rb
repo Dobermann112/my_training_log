@@ -5,8 +5,8 @@ RSpec.describe "ChartsController", type: :request do
 
   before { sign_in user }
 
-  describe "GET /stats/graphs" do
-    context "when workout data exists" do
+  describe "グラフ画面が表示される" do
+    context "when Workoutデータがある場合" do
       before do
         workout = create(:workout, user: user, workout_date: Time.zone.today)
         create(:workout_set, workout: workout, weight: 60, reps: 10)
@@ -14,7 +14,7 @@ RSpec.describe "ChartsController", type: :request do
       end
 
       it "returns a successful response" do
-        get "/stats/graphs", params: { range: "month" }
+        get "/dashboard/report", params: { range: "month" }
         expect(response).to have_http_status(:ok)
       end
 
@@ -31,7 +31,7 @@ RSpec.describe "ChartsController", type: :request do
       end
     end
 
-    context "when no workout data exists" do
+    context "when Workoutデータがない場合" do
       it "returns empty arrays in chart data" do
         get "/stats/graphs", params: { range: "month" }
         json = response.parsed_body
@@ -42,11 +42,11 @@ RSpec.describe "ChartsController", type: :request do
       end
     end
 
-    context "when not signed in" do
+    context "when サインインしていない場合" do
       before { sign_out user }
 
       it "redirects to login" do
-        get "/stats/graphs"
+        get "/dashboard/report"
         expect(response).to redirect_to(new_user_session_path)
       end
     end

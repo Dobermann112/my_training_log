@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "Calendars", type: :request do
-  describe "GET /index" do
+  describe "カレンダーが表示される" do
     let(:user) { create(:user) }
 
     before do
@@ -9,7 +9,7 @@ RSpec.describe "Calendars", type: :request do
     end
 
     it "returns http success" do
-      get "/calendars"
+      get "/dashboard/calendar"
       expect(response).to have_http_status(:success)
     end
   end
