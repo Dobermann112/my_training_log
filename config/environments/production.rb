@@ -27,6 +27,21 @@ Rails.application.configure do
   # config.assets.css_compressor = :sass
   # Render 本番で public/assets を配信
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
+
+  config.action_mailer.default_url_options = { host: "my-training-log.onrender.com", protocol: "https" }
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address: "smtp.sendgrid.net",
+    port: 587,
+    domain: "my-training-log.onrender.com",
+    user_name: "apikey",
+    password: ENV["SENDGRID_API_KEY"],
+    authentication: :plain,
+    enable_starttls_auto: true
+  }
+
+  config.action_mailer.default_options = { from: ENV["MAILER_SENDER"] }
   
   # Do not fall back to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
