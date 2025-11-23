@@ -38,7 +38,7 @@ Rails.application.configure do
     user_name: "apikey",
     password: ENV["SENDGRID_API_KEY"],
     authentication: :plain,
-    enabled_starttls_auto: true
+    enable_starttls_auto: true
   }
 
   config.action_mailer.default_options = { from: ENV["MAILER_SENDER"] }
