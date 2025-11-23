@@ -62,21 +62,21 @@ RSpec.describe Exercise, type: :model do
 
     describe ".defaults" do
       it "デフォルト種目のみ返す" do
-        expect(Exercise.defaults).to include(default_ex)
-        expect(Exercise.defaults).not_to include(custom_ex)
+        expect(described_class.defaults).to include(default_ex)
+        expect(described_class.defaults).not_to include(custom_ex)
       end
     end
 
     describe ".custom_of" do
       it "指定ユーザーの種目のみ返す" do
-        expect(Exercise.custom_of(user)).to include(custom_ex)
-        expect(Exercise.custom_of(user)).not_to include(default_ex)
+        expect(described_class.custom_of(user)).to include(custom_ex)
+        expect(described_class.custom_of(user)).not_to include(default_ex)
       end
     end
 
     describe ".for_user" do
       it "デフォルト種目 + ユーザーのカスタム種目を返す" do
-        result = Exercise.for_user(user)
+        result = described_class.for_user(user)
         expect(result).to include(default_ex, custom_ex)
       end
     end
@@ -85,12 +85,12 @@ RSpec.describe Exercise, type: :model do
   describe "#default_exercise?" do
     it "デフォルト種目なら true を返す" do
       exercise = build(:exercise, is_default: true, user_id: nil)
-      expect(exercise.default_exercise?).to eq(true)
+      expect(exercise.default_exercise?).to be(true)
     end
 
     it "ユーザー種目なら false を返す" do
       exercise = build(:exercise, is_default: false, user_id: user.id)
-      expect(exercise.default_exercise?).to eq(false)
+      expect(exercise.default_exercise?).to be(false)
     end
   end
 end
