@@ -1,6 +1,7 @@
 <div class="exercise-select-container" data-controller="exercise-select" data-exercise-select-data-value="<%= @date %>">
 
-  <% exercises_by_part.each do |body_part, exercises| %>
+  <% @body_parts.each do |body_part| %>
+    <% exercises = @exercises_by_part[body_part] || [] %>
 
     <div class="exercise-select-card mb-4 p-3">
 
@@ -40,7 +41,6 @@
             ▼ もっと見る
           </button>
         <% else %>
-          <!-- バランス調整用ダミー -->
           <span></span>
         <% end %>
 

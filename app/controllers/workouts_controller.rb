@@ -57,7 +57,9 @@ class WorkoutsController < ApplicationController
 
   def select_exercise
     @date = params[:date]
-    @exercises_by_part = Exercise.includes(:body_part).group_by(&:body_part)
+    @body_parts = BodyPart.order(:display_order)
+    exercises = Exercise.includes(:body_part)
+    @exercises_by_part = exercises.group_by(&:body_part)
   end
 
   private
