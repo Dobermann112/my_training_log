@@ -5,7 +5,8 @@
     "esbuild": "^0.25.10"
   },
   "scripts": {
-    "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets"
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets",
+    "build:css": "sass ./app/javascript/styles/application.scss:./app/assets/builds/application.css --no-source-map --load-path=node_modules"
   },
   "dependencies": {
     "@fullcalendar/core": "6.1.19",
@@ -16,6 +17,7 @@
     "@popperjs/core": "^2.11.8",
     "apexcharts": "^5.3.6",
     "bootstrap": "^5.3.8",
-    "lucide": "^0.553.0"
+    "lucide": "^0.553.0",
+    "sass": "^1.94.2"
   }
 }
