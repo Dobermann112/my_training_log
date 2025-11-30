@@ -6,14 +6,8 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <!-- ★ 新CSSを強制的に読み込む -->
-    <link rel="stylesheet" href="/assets/application.css" data-turbo-track="reload">
-
-    <% if Rails.env.production? %>
-      <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
-    <% else %>
-      <script type="module" src="/assets/application.js"></script>
-    <% end %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
   </head>
