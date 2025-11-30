@@ -6,7 +6,9 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <!-- ★ 新CSSを強制的に読み込む -->
+    <link rel="stylesheet" href="/assets/application.css" data-turbo-track="reload">
+
     <% if Rails.env.production? %>
       <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
     <% else %>
