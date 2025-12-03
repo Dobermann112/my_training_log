@@ -10,7 +10,7 @@
   },
   "scripts": {
     "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets --loader:.tsx=tsx --loader:.jsx=jsx",
-    "build:css": "sass ./app/javascript/styles/application.scss:./app/assets/builds/application.css --no-source-map --load-path=node_modules"
+    "build:css": "sass ./app/javascript/styles/application.scss ./app/assets/builds/application.css --no-source-map --load-path=node_modules"
   },
   "dependencies": {
     "@fullcalendar/core": "6.1.19",
