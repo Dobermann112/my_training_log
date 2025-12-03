@@ -1,5 +1,6 @@
 import { createRoot } from "react-dom/client";
 import Counter from "./Counter";
+import Parent from "./components/Parent";
 
 function HelloReact() {
   return <div>Hello React from TSX!</div>;
@@ -16,6 +17,7 @@ document.addEventListener("turbo:load", () => {
         <>
           <HelloReact />
           <Counter />
+          <Parent />
         </>
       );
     }
