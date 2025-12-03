@@ -5,6 +5,7 @@
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "esbuild": "^0.25.10",
+    "sass": "1.69.5",
     "typescript": "^5.9.3"
   },
   "scripts": {
@@ -21,9 +22,8 @@
     "@popperjs/core": "^2.11.8",
     "apexcharts": "^5.3.6",
     "bootstrap": "^5.3.8",
-    "lucide": "^0.553.0",
+    "lucide": "0.344.0",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "sass": "^1.94.2"
+    "react-dom": "^19.2.0"
   }
 }
