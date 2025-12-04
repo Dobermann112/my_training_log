@@ -42,6 +42,10 @@ Rails.application.routes.draw do
     get "graphs", to: "graphs#index"
   end
 
+  namespace :api do
+    get :sample, to: "samples#index"
+  end
+
   namespace :dashboard do
     get "calendar", to: "calendars#index"
     get "report",   to: "reports#index"
