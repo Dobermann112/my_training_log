@@ -10,8 +10,12 @@ export default function ApiSample() {
   useEffect(() => {
     const load = async () => {
       try {
-        const result = await fetchSample();
-        setData(result);
+        const res = await fetch("/api/not_found");
+
+        if (!res.ok) {
+          throw new Error(`API Error: ${res.status}`);
+        }
+        
       } catch (err: unknown) {
         if (err instanceof Error) setError(err.message);
         else setError("Unknown error");
