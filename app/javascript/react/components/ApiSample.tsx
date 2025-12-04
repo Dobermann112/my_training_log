@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-
-type SampleResponse = {
-  message: string;
-};
+import { fetchSample } from "react/services/sampleApi";
+import { SampleResponse } from "react/types/api";
 
 export default function ApiSample() {
   const [data, setData] = useState<SampleResponse | null>(null);
@@ -10,22 +8,19 @@ export default function ApiSample() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("/api/sample")
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("API request failed");
-        }
-        return res.json();
-      })
-      .then((json: SampleResponse) => {
-        setData(json);
-      })
-      .catch((err) => {
-        setError(err.message);
-      })
-      .finally(() => {
+    const load = async () => {
+      try {
+        const result = await fetchSample();
+        setData(result);
+      } catch (err: unknown) {
+        if (err instanceof Error) setError(err.message);
+        else setError("Unknown error");
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    load();
   }, []);
 
   if (loading) return <div>Loading...</div>;
