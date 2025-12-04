@@ -8,14 +8,14 @@ import CalendarPage from "./pages/CalendarPage";
 document.addEventListener("turbo:load", () => {
   // API Sample
   const apiRoot = document.getElementById("api-sample-root");
-  if (apiRoot && !apiRoot?.hasChildNodes()) {
+  if (apiRoot && !apiRoot.hasChildNodes()) {
     const root = createRoot(apiRoot);
     root.render(<ApiSample />);
   }
 
   // Calendar (PoC)
   const calendarRoot = document.getElementById("calendar-root");
-  if (calendarRoot) {
+  if (calendarRoot && !calendarRoot.hasChildNodes()) {
     const root = createRoot(calendarRoot);
     // root.render(<CalendarPage />);
     root.render(<CalendarPage />); // ←仮描画（FullCalendar PoC の前まで使う）
