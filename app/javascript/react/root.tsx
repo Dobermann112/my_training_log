@@ -1,25 +1,15 @@
 import { createRoot } from "react-dom/client";
-import Counter from "./Counter";
-import Parent from "./components/Parent";
+import CalendarPage from "./pages/CalendarPage";
 
-function HelloReact() {
-  return <div>Hello React from TSX!</div>;
-}
+// ---- 今後実装するページを仮 import （作成前なのでコメントでOK） ----
+// import CalendarPage from "./pages/CalendarPage";
 
 document.addEventListener("turbo:load", () => {
-  const rootElement = document.getElementById("react-root");
-
-  if (rootElement) {
-    // 初期化済みかどうかのチェック（重複レンダリングの防止）
-    if (!rootElement.hasChildNodes()) {
-      const root = createRoot(rootElement);
-      root.render(
-        <>
-          <HelloReact />
-          <Counter />
-          <Parent />
-        </>
-      );
-    }
+  // calendar-root があれば CalendarPage を描画
+  const calendarRoot = document.getElementById("calendar-root");
+  if (calendarRoot) {
+    const root = createRoot(calendarRoot);
+    // root.render(<CalendarPage />);
+    root.render(<CalendarPage />); // ←仮描画（FullCalendar PoC の前まで使う）
   }
 });
