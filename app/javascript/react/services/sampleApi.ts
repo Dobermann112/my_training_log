@@ -1,5 +1,11 @@
 import { SampleResponse } from "react/types/api";
 
 export async function fetchSample(): Promise<SampleResponse> {
-  throw new Error("Manual error test");
+  const res = await fetch("/api/sample");
+
+  if (!res.ok) {
+    throw new Error(`API Error: ${res.status}`);
+  }
+
+  return res.json() as Promise<SampleResponse>;
 }
