@@ -1,7 +1,7 @@
-import { CalendarEvent } from "react/types/calendar";
+import type { CalendarEvent } from "../types/calendar";
 
-export async function fetchCalendarEvents(year: number, month: number): Promise<CalendarEvent[]> {
-  const url = `/api/events?year=${year}&month=${month}`;
+export async function fetchCalendarEvents(start: string,end: string): Promise<CalendarEvent[]> {
+  const url = `/api/events?start=${start}&end=${end}`;
 
   const res = await fetch(url);
 
