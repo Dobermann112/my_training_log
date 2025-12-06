@@ -1,9 +1,13 @@
-import { CalendarEvent } from "react/types/calendar";
+import type { CalendarEvent } from "../types/calendar";
 
-export async function fetchCalendarEvents(month: string): Promise<CalendarEvent[]> {
-  console.log("fetchCalendarEvents called:", month);
+export async function fetchCalendarEvents(start: string,end: string): Promise<CalendarEvent[]> {
+  const url = `/api/events?start=${start}&end=${end}`;
 
-  return [
-    { id: 1, date: "2025-12-05", title: "Dummy Event" }
-  ];
+  const res = await fetch(url);
+
+  if (!res.ok) {
+    throw new Error(`API Error: ${res.status}`);
+  }
+
+  return res.json();
 }
