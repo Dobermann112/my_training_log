@@ -14,6 +14,8 @@ export default function CalendarGrid() {
           center: "title",
           right: "prev,next today"
         }}
+        height={700}
+        dayCellClassNames="fc-daycell"
       />
     </div>
   );
