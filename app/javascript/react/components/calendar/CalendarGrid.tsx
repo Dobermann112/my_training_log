@@ -9,6 +9,11 @@ export default function CalendarGrid() {
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
         initialDate={new Date()}
+        headerToolbar={{
+          left: "",
+          center: "title",
+          right: "prev,next today"
+        }}
       />
     </div>
   );
