@@ -1,7 +1,15 @@
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
+
 export default function CalendarGrid() {
   return (
-    <div style={{ padding: "1rem", color: "white" }}>
-      <p>Calendar Grid (FullCalendar導入前の仮) </p>
+    <div style={{ marginTop: "1rem" }}>
+      <FullCalendar
+        plugins={[dayGridPlugin, interactionPlugin]}
+        initialView="dayGridMonth"
+        initialDate={new Date()}
+      />
     </div>
   );
 }
