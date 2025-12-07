@@ -2,22 +2,17 @@ class Api::EventsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    year  = params[:year].to_i
-    month = params[:month].to_i
+    start_date = params[:start]
+    end_date = params[:end]
 
-    # year/month が来なかった場合の fallback
-    date = Date.new(year.zero? ? Date.today.year : year,
-                    month.zero? ? Date.today.month : month, 1)
+    return head :bad_request if start_date.blank? || end_date.blank?
 
-    start_date = date.beginning_of_month
-    end_date   = date.end_of_month
+    # Workout が存在する日だけをイベントとして返却する
+    workouts = current_user.workouts.where(workout_date: start_date..end_date).order(:workout_date)
 
-    # 今は仮データを返す（本番では Workout から引く）
-    events = [
-      { id: 1, start: start_date.to_s,         end: nil },
-      { id: 2, start: (start_date + 5).to_s,   end: nil },
-      { id: 3, start: (start_date + 12).to_s,  end: nil }
-    ]
+    events = workouts.map do |w|
+      { id: w.id, title: "Training", start: w.workout_date.to_s, end: nil, body_part: nil }
+    end
 
     render json: events
   end
