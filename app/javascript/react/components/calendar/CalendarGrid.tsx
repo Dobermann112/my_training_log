@@ -29,8 +29,6 @@ export default function CalendarGrid() {
       setLoading(true);
 
       try {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-
         const events = await fetchCalendarEvents(info.startStr, info.endStr);
         successCallBack(events);
       } finally {
