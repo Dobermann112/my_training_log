@@ -1,5 +1,5 @@
 export type CalendarEvent = {
-  id: number;    // workout の ID
+  id: string;    // workout の ID
   start: string;
-  end: string | null;
+  end?: string;
 };
