@@ -11,7 +11,7 @@ class Api::EventsController < ApplicationController
     workouts = current_user.workouts.where(workout_date: start_date..end_date).order(:workout_date)
 
     events = workouts.map do |w|
-      { id: w.id, start: w.workout_date.to_s, end: nil }
+      { id: w.id, start: w.workout_date.to_s }
     end
 
     render json: events

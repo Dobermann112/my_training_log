@@ -11,7 +11,13 @@ export async function fetchCalendarEvents(start: string,end: string): Promise<Ca
       return [];
     }
 
-    return res.json();
+    const data = await res.json();
+
+    return data.map((e: any) => ({
+      id: String(e.id),
+      start: e.start,
+      end: e.end ?? undefined
+    }));
   } catch (err) {
     console.error("Network Error:", err);
     return [];
