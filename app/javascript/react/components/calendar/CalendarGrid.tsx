@@ -66,7 +66,7 @@ export default function CalendarGrid() {
           center: "title",
           right: "prev,next today"
         }}
-        height={700}
+        height="auto"
         dayCellClassNames="fc-daycell"
         events={handleEvents}
         dateClick={handleDateClick}
