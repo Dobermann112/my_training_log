@@ -1,5 +1,5 @@
 /* --- FullCalendar ヘッダー白帯削除（最重要） --- */
-.fc-scrollgrid-section-sticky {
+  .fc-scrollgrid-section-sticky {
     background: transparent !important;
     border-color: transparent !important;
   }
@@ -66,5 +66,32 @@
     background: transparent !important;
   }
 
+  @media (max-width: 480px) {
+
+    /* 日付セルの高さ調整（最重要） */
+    .fc .fc-daygrid-day-frame.fc-scrollgrid-sync-inner {
+      height: 42px !important;
+      min-height: 42px !important;
+      padding: 0 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+  
+    /* 日付数字の位置＋サイズ調整 */
+    .fc .fc-daygrid-day-number {
+      font-size: 0.8rem !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      line-height: 42px !important;
+      display: inline-block !important;
+    }
+  
+    /* イベントが縦方向に押しつぶさないよう縮小 */
+    .fc .fc-daygrid-event {
+      font-size: 0.6rem !important;
+      padding: 1px 3px !important;
+    }
+  }
   
   
