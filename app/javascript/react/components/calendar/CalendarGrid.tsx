@@ -3,7 +3,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { fetchCalendarEvents } from "react/services/calendarApi";
-import type { EventSourceFuncArg, EventInput } from "@fullcalendar/core";
+import type { EventSourceFuncArg, EventInput, EventClickArg } from "@fullcalendar/core";
 import type { DateClickArg } from "@fullcalendar/interaction";
 
 export default function CalendarGrid() {
@@ -50,6 +50,11 @@ export default function CalendarGrid() {
     }
   };
 
+  const handleEventClick = (info: EventClickArg ) => {
+    const workoutId = info.event.id;
+    window.location.href = `/workouts/${workoutId}`;
+  };
+
   return (
     <div style={{ marginTop: "1rem", position: "relative" }}>
       <FullCalendar
@@ -65,6 +70,7 @@ export default function CalendarGrid() {
         dayCellClassNames="fc-daycell"
         events={handleEvents}
         dateClick={handleDateClick}
+        eventClick={handleEventClick}
       />
       {loading && <div style={overlayStyle}>Loading...</div>}
     </div>
