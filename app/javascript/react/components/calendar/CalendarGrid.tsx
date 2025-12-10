@@ -39,9 +39,15 @@ export default function CalendarGrid() {
     []
   );
 
-  const handleDateClick = (info: DateClickArg) => {
+  const handleDateClick = async (info: DateClickArg) => {
     const date = info.dateStr;
-    window.location.href = `/workouts/select_exercise?date=${date}`;
+    const events = await fetchCalendarEvents(date, date);
+    if (events.length > 0) {
+      const workoutId = events[0].id;
+      window.location.href = `/workouts/${workoutId}`;
+    } else {
+      window.location.href = `/workouts/select_exercise?date=${date}`;
+    }
   };
 
   return (
