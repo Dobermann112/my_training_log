@@ -18,11 +18,12 @@ export default function CalendarHeader({
 
   return (
     <div className="calendar-header">
-      <h2>{label}</h2>
-      <div className="nav-buttons">
-        <button onClick={onPrev}>〈</button>
-        <button onClick={onNext}>〉</button>
-        <button onClick={onToday}>today</button>
+      <h2 className="calendar-title">{label}</h2>
+      
+      <div className="calendar-nav">
+        <button className="nav-btn" onClick={onPrev}>〈</button>
+        <button className="nav-btn" onClick={onNext}>〉</button>
+        <button className="nav-btn" onClick={onToday}>today</button>
       </div>
     </div>
   );
