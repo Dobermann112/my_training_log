@@ -1,97 +1,116 @@
-/* --- FullCalendar ヘッダー白帯削除（最重要） --- */
-  .fc-scrollgrid-section-sticky {
-    background: transparent !important;
-    border-color: transparent !important;
+/* --- FullCalendar ヘッダー白帯削除 --- */
+.fc-scrollgrid-section-sticky {
+  background: transparent !important;
+  border-color: transparent !important;
+}
+
+/* カレンダーカード */
+#calendar {
+  background: #102236;
+  border-radius: 20px;
+  padding: 1.4rem;
+  border: 1px solid rgba(255,255,255,0.10);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+}
+
+/* タイトル */
+.fc-toolbar-title {
+  font-size: 1.45rem !important;
+  color: rgba(255,255,255,0.92);
+  font-weight: 700;
+}
+
+/* 曜日 */
+.fc-col-header-cell-cushion {
+  font-size: 0.83rem !important;
+  font-weight: 600 !important;
+  color: rgba(255,255,255,0.75) !important;
+  text-decoration: none !important;
+}
+
+/* --- 四角いセルの枠を完全に消す --- */
+.fc-daygrid-day,
+.fc-scrollgrid,
+.fc-scrollgrid td,
+.fc-scrollgrid th {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* --- 丸セルの本体（日付フレーム） --- */
+.fc-daygrid-day-frame {
+  width: 48px;
+  height: 48px;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 4px auto !important;
+
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+/* --- 日付数字（丸の中の文字） --- */
+.fc-daygrid-day-number {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  color: rgba(255,255,255,0.85);
+  text-decoration: none !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* --- 今日の日付 --- */
+.fc-day-today .fc-daygrid-day-frame {
+  background: rgba(255,255,255,0.2) !important;
+  border: 1px solid rgba(255,255,255,0.5) !important;
+  color: white !important;
+}
+
+/* --- Workout のある日（React 側で classNames: ["workout-day"] を付与） --- */
+.workout-day .fc-daygrid-day-frame {
+  background: #3a86ff !important;
+  border: none !important;
+}
+.workout-day .fc-daygrid-day-number {
+  color: white !important;
+}
+
+.fc-daygrid-day-frame.fc-has-workout {
+  background: rgba(58,134,255,0.35);
+  border: 2px solid #3a86ff;
+}
+
+.fc-daygrid-day-frame.fc-has-workout .fc-daygrid-day-number {
+  color: white;
+}
+
+/* --- イベントバブル（今後丸セルに統合するため縮小 or 非表示推奨） --- */
+.fc-event {
+  display: none !important; /* ← 丸セルだけにする場合は非表示 */
+}
+
+/* --- スマホ調整 --- */
+@media (max-width: 480px) {
+  .fc-daygrid-day-frame {
+    width: 42px;
+    height: 42px;
+    margin: 2px auto !important;
   }
-  
-  /* カレンダー全体のカード */
-  #calendar {
-    background: #102236;
-    border-radius: 20px;
-    padding: 1.4rem;
-    border: 1px solid rgba(255,255,255,0.10);
-    box-shadow: 0 4px 14px rgba(0,0,0,0.35);
-  }
-  
-  /* タイトル */
-  .fc-toolbar-title {
-    font-size: 1.45rem !important;
-    color: rgba(255,255,255,0.92);
-    font-weight: 700;
-  }
-  
-  /* 曜日ラベル */
-  .fc-col-header-cell-cushion {
-    font-size: 0.83rem !important;
-    font-weight: 600 !important;
-    color: rgba(255,255,255,0.75) !important;
-    text-decoration: none !important;
-  }
-  
-  /* 日付セル */
-  .fc-daygrid-day {
-    background: transparent !important;
-    border-color: rgba(255,255,255,0.07) !important;
-  }
-  
-  /* 日付数字 */
+
   .fc-daygrid-day-number {
-    font-size: 0.92rem;
-    font-weight: 600;
-    color: rgba(255,255,255,0.75);
-    margin: 4px;
-    padding: 3px 5px;
-    border-radius: 8px;
+    font-size: 0.82rem !important;
   }
-  
-  /* 今日 */
-  .fc-day-today .fc-daygrid-day-number {
-    background: rgba(58,134,255,0.25) !important;
-    border: 2px solid #3a86ff !important;
-    color: white !important;
-    border-radius: 50% !important;
-  }
-  
-  /* イベント */
-  .fc-event {
-    background: linear-gradient(90deg, #4f9eff, #3a86ff);
-    border-radius: 10px;
-    padding: 4px 6px;
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: white;
-  }
-  
-  .fc-theme-standard th {
-    background: transparent !important;
-  }
+}
 
-  @media (max-width: 480px) {
-
-    /* 日付セルの高さ調整（最重要） */
-    .fc .fc-daygrid-day-frame.fc-scrollgrid-sync-inner {
-      height: 42px !important;
-      min-height: 42px !important;
-      padding: 0 !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-    }
-  
-    /* 日付数字の位置＋サイズ調整 */
-    .fc .fc-daygrid-day-number {
-      font-size: 0.8rem !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      line-height: 42px !important;
-      display: inline-block !important;
-    }
-  
-    /* イベントが縦方向に押しつぶさないよう縮小 */
-    .fc .fc-daygrid-event {
-      font-size: 0.6rem !important;
-      padding: 1px 3px !important;
-    }
-  }
-  
-  
