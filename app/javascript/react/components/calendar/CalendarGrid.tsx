@@ -78,11 +78,8 @@ export default function CalendarGrid({
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
-        headerToolbar={{
-          left: "",
-          center: "title",
-          right: "prev,next today",
-        }}
+        ref={calendarRef}
+        headerToolbar={false}
         height="auto"
         events={handleEvents}
         dateClick={handleDateClick}
