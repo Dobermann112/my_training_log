@@ -7,7 +7,6 @@ import type { DateClickArg } from "@fullcalendar/interaction";
 import { fetchCalendarEvents } from "react/services/calendarApi";
 
 type CalendarGridProps = {
-  currentDate: Date;
   loading: boolean;
   setLoading: (v: boolean) => void;
   setCurrentDate: (date: Date) => void;
@@ -15,7 +14,6 @@ type CalendarGridProps = {
 };
 
 export default function CalendarGrid({
-  currentDate,
   loading,
   setLoading,
   setCurrentDate,

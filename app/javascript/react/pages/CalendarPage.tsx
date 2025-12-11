@@ -24,7 +24,6 @@ export default function CalendarPage() {
       />
       
       <CalendarGrid 
-        currentDate={currentDate}
         setCurrentDate={setCurrentDate}
         loading={loading}
         setLoading={setLoading}
