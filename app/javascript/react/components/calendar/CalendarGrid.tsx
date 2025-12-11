@@ -85,7 +85,7 @@ export default function CalendarGrid({
         dateClick={handleDateClick}
         eventClick={handleEventClick}
         eventDidMount={handleEventDidMount}
-        datesSet={(info) => setCurrentDate(info.start)}
+        datesSet={(info) => setCurrentDate(info.view.currentStart)}
       />
       {loading && <div style={overlayStyle}>Loading...</div>}
     </div>
