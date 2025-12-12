@@ -101,6 +101,42 @@
   display: none !important; /* ← 丸セルだけにする場合は非表示 */
 }
 
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* ← 左右分割 */
+  margin-bottom: 1rem;
+}
+
+/* 月ラベル */
+.calendar-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.92);
+}
+
+/* ボタン群 */
+.calendar-nav {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.nav-btn,
+.today-btn {
+  padding: 0.4rem 0.8rem;
+  background: rgba(255,255,255,0.12);
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+}
+
+.nav-btn:hover,
+.today-btn:hover {
+  background: rgba(255,255,255,0.18);
+}
+
+
 /* --- スマホ調整 --- */
 @media (max-width: 480px) {
   .fc-daygrid-day-frame {

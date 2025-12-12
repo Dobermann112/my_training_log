@@ -1,0 +1,15 @@
+export const overlayStyle = {
+  position: "absolute" as const,
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  backgroundColor: "rgba(0, 0, 0, 0.25)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  color: "white",
+  fontSize: "1.2rem",
+  zIndex: 10,
+  pointerEvents: "none" as const,
+};
