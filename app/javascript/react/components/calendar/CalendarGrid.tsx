@@ -5,6 +5,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import type { EventSourceFuncArg, EventInput, EventClickArg, EventMountArg } from "@fullcalendar/core";
 import type { DateClickArg } from "@fullcalendar/interaction";
 import { fetchCalendarEvents } from "react/services/calendarApi";
+import { overlayStyle } from "./styles/overlayStyle";
 
 type CalendarGridProps = {
   loading: boolean;
@@ -19,21 +20,6 @@ export default function CalendarGrid({
   setCurrentDate,
   calendarRef,
 }: CalendarGridProps) {
-  const overlayStyle = {
-    position: "absolute" as const,
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "rgba(0, 0, 0, 0.25)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    color: "white",
-    fontSize: "1.2rem",
-    zIndex: 10,
-    pointerEvents: "none" as const,
-  };
 
   const handleEvents = useCallback(
     async (
