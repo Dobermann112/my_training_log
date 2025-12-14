@@ -2,66 +2,82 @@
   <div class="row justify-content-center">
     <div class="col-md-6 col-lg-5">
 
-      <!-- メールアドレス変更カード -->
-      <div class="card shadow-sm border-secondary mb-4">
-        <div class="card-body">
-          <h4 class="mb-3 pb-2 border-bottom">メールアドレスの変更</h4>
+      <%if current_user.provider.present? %>
+        <div class="card shadow-sm border-secondary mb-4">
+          <div class="card-body">
+            <h4 class="mb-3 pb-2 border-bottom">アカウント設定</h4>
 
-          <%= form_with model: current_user,
-                        url: users_update_email_path,
-                        method: :patch,
-                        local: true do |f| %>
-
-            <div class="mb-3">
-              <%= f.label :email, "新しいメールアドレス", class: "form-label" %>
-              <%= f.email_field :email, value: current_user.email, class: "form-control bg-transparent text-light border-secondary" %>
-            </div>
-
-            <div class="mb-4">
-              <%= f.label :current_password, "現在のパスワード（確認）", class: "form-label" %>
-              <%= f.password_field :current_password, class: "form-control bg-transparent text-light border-secondary" %>
-            </div>
-
-            <div class="d-grid">
-              <%= f.submit "メールアドレスを更新", class: "btn btn-primary" %>
-            </div>
-
-          <% end %>
+            <p class="mb-2">
+              このアカウントは <strong>Googleログイン</strong> を使用しています。
+            </p>
+            <p class="mb-2">
+              メールアドレスやパスワードの変更はできません。
+            </p>
+          </div>
         </div>
-      </div>
+      <% else %>
 
-      <!-- パスワード変更カード -->
-      <div class="card shadow-sm border-secondary mb-4">
-        <div class="card-body">
-          <h4 class="mb-3 pb-2 border-bottom">パスワードの変更</h4>
+        <!-- メールアドレス変更カード -->
+        <div class="card shadow-sm border-secondary mb-4">
+          <div class="card-body">
+            <h4 class="mb-3 pb-2 border-bottom">メールアドレスの変更</h4>
 
-          <%= form_with model: current_user,
-                        url: users_update_password_path,
-                        method: :patch,
-                        local: true do |f| %>
+            <%= form_with model: current_user,
+                          url: users_update_email_path,
+                          method: :patch,
+                          local: true do |f| %>
 
-            <div class="mb-3">
-              <%= f.label :password, "新しいパスワード", class: "form-label" %>
-              <%= f.password_field :password, class: "form-control bg-transparent text-light border-secondary" %>
-            </div>
+              <div class="mb-3">
+                <%= f.label :email, "新しいメールアドレス", class: "form-label" %>
+                <%= f.email_field :email, value: current_user.email, class: "form-control bg-transparent text-light border-secondary" %>
+              </div>
 
-            <div class="mb-3">
-              <%= f.label :password_confirmation, "新しいパスワード（確認）", class: "form-label" %>
-              <%= f.password_field :password_confirmation, class: "form-control bg-transparent text-light border-secondary" %>
-            </div>
+              <div class="mb-4">
+                <%= f.label :current_password, "現在のパスワード（確認）", class: "form-label" %>
+                <%= f.password_field :current_password, class: "form-control bg-transparent text-light border-secondary" %>
+              </div>
 
-            <div class="mb-4">
-              <%= f.label :current_password, "現在のパスワード（確認）", class: "form-label" %>
-              <%= f.password_field :current_password, class: "form-control bg-transparent text-light border-secondary" %>
-            </div>
+              <div class="d-grid">
+                <%= f.submit "メールアドレスを更新", class: "btn btn-primary" %>
+              </div>
 
-            <div class="d-grid">
-              <%= f.submit "パスワードを更新", class: "btn btn-primary" %>
-            </div>
-
-          <% end %>
+            <% end %>
+          </div>
         </div>
-      </div>
+
+        <!-- パスワード変更カード -->
+        <div class="card shadow-sm border-secondary mb-4">
+          <div class="card-body">
+            <h4 class="mb-3 pb-2 border-bottom">パスワードの変更</h4>
+
+            <%= form_with model: current_user,
+                          url: users_update_password_path,
+                          method: :patch,
+                          local: true do |f| %>
+
+              <div class="mb-3">
+                <%= f.label :password, "新しいパスワード", class: "form-label" %>
+                <%= f.password_field :password, class: "form-control bg-transparent text-light border-secondary" %>
+              </div>
+
+              <div class="mb-3">
+                <%= f.label :password_confirmation, "新しいパスワード（確認）", class: "form-label" %>
+                <%= f.password_field :password_confirmation, class: "form-control bg-transparent text-light border-secondary" %>
+              </div>
+
+              <div class="mb-4">
+                <%= f.label :current_password, "現在のパスワード（確認）", class: "form-label" %>
+                <%= f.password_field :current_password, class: "form-control bg-transparent text-light border-secondary" %>
+              </div>
+
+              <div class="d-grid">
+                <%= f.submit "パスワードを更新", class: "btn btn-primary" %>
+              </div>
+
+            <% end %>
+          </div>
+        </div>
+      <% end %>
 
       <!-- アカウント削除 -->
       <div class="text-center mt-4 mb-4">
