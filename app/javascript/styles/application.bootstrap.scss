@@ -415,3 +415,20 @@ main.container {
     text-decoration: none !important;
   }
 }
+
+.btn.btn-google {
+  --bs-btn-bg: #ffffff;
+  --bs-btn-color: #3c4043;
+  --bs-btn-border-color: #dadce0;
+
+  --bs-btn-hover-bg: #f7f8f8;
+  --bs-btn-hover-color: #3c4043;
+  --bs-btn-hover-border-color: #dadce0;
+
+  font-weight: 500;
+}
+
+.btn.btn-google:hover {
+  background-color: #f7f8f8;
+  color: #3c4043;
+}  
