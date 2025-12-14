@@ -28,7 +28,8 @@ services:
       DATABASE_NAME: my_training_log_development
       SMTP_USERNAME: mytraininglog.dev@gmail.com
       SMTP_PASSWORD: qwrwqummhmipftxw
-    stdin_open: true
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
     tty: true
 
 volumes:
