@@ -28,13 +28,13 @@ Rails.application.configure do
   # Render 本番で public/assets を配信
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
-  config.action_mailer.default_url_options = { host: "my-training-log.onrender.com", protocol: "https" }
+  config.action_mailer.default_url_options = { host: "my-training-log.com", protocol: "https" }
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     address: "smtp.sendgrid.net",
     port: 587,
-    domain: "my-training-log.onrender.com",
+    domain: "my-training-log.com",
     user_name: "apikey",
     password: ENV["SENDGRID_API_KEY"],
     authentication: :plain,
