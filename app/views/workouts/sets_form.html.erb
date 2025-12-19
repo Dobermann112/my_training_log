@@ -1,5 +1,14 @@
-<div class="exercise-title-card text-center mb-4 p-3">
-  <h3 class="m-0"><%= @exercise.name %></h3>
+<div class="exercise-title-card mb-3 p-3 position-relative text-center">
+    <h3 class="m-0"><%= @exercise.name %></h3>
+
+    <a
+      href="#"
+      data-bs-toggle="modal"
+      data-bs-target="#help-set-modal"
+      class="btn btn-secondary btn-sm position-absolute top-50 end-0 translate-middle-y me-3"
+    >
+      ？
+    </a>
 </div>
 
 <div class="exercise-card">
@@ -53,3 +62,5 @@
   <% end %>
 
 </div>
+
+<%= render "shared/help/set" %>
