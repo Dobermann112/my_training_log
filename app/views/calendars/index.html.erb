@@ -1,5 +1,11 @@
 <div id="calendar-root"></div>
 
+<div class="d-flex justify-content-end mt-2">
+  <a href="#" data-bs-toggle="modal" data-bs-target="#help-calendar-modal" class="btn btn-secondary btn-sm">
+    このカレンダーの見方
+  </a>
+</div>
+
 <div class="mt-4">
 
   <% if @today_workout.present? %>
@@ -19,3 +25,5 @@
 <% if @today_workout.present? %>
   <%= render "calendars/today_workout", workout: @today_workout %>
 <% end %>
+
+<%= render "shared/help/calendar" %>
