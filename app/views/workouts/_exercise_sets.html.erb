@@ -1,0 +1,43 @@
+<% if exercise_sets.present? %>
+  <% exercise_sets.each do |exercise, sets| %>
+    <div class="exercise-card mb-4">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h4 class="m-0"><%= exercise.name %>（<%= sets.size %>セット）</h4>
+
+        <%= link_to edit_group_workout_workout_sets_path(
+              workout,
+              exercise_id: exercise.id
+            ),
+            class: "btn btn-sm btn-outline-warning" do %>
+          <i class="bi bi-pencil"></i>
+        <% end %>
+      </div>
+
+      <% sets.each_with_index do |set, i| %>
+        <div class="set-row mb-2">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex gap-3 align-items-center">
+              <span class="set-number"><%= i + 1 %></span>
+              <span class="set-weight"><%= set.weight %>kg</span>
+              <span class="set-reps"><%= set.reps %>回</span>
+            </div>
+
+            <div class="d-flex gap-2">
+              <%= link_to workout_workout_set_path(workout, set),
+                    data: { turbo_method: :delete, turbo_confirm: "このセットを削除しますか？" },
+                    class: "btn btn-sm btn-outline-danger" do %>
+                <i class="bi bi-trash"></i>
+              <% end %>
+            </div>
+          </div>
+
+          <% if set.memo.present? %>
+            <div class="set-memo ms-4 mt-1"><%= set.memo %></div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% else %>
+  <p>まだセットが登録されていません。</p>
+<% end %>
