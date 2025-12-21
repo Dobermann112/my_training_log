@@ -36,9 +36,7 @@ class WorkoutsController < ApplicationController
 
     redirect_to @workout, notice: "トレーニングを記録しました。"
   rescue WorkoutCreationService::CreationError => e
-    flash.now[:alert] = e.message
-    @exercise = Exercise.find_by(id: params[:exercise_id])
-    render :sets_form, status: :unprocessable_entity
+    handle_creation_error(e)
   end
 
   def update
@@ -70,5 +68,23 @@ class WorkoutsController < ApplicationController
 
   def workout_params
     params.require(:workout).permit(:workout_date, :notes)
+  end
+
+  def handle_creation_error(error)
+    respond_to do |format|
+      format.html do
+        flash.now[:alert] = error.message
+        @exercise = Exercise.find_by(id: params[:exercise_id])
+        render :sets_form, status: :unprocessable_entity
+      end
+
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace(
+          "set_form_errors",
+          partial: "shared/form_errors",
+          locals: { message: error.message }
+        ), status: :unprocessable_entity
+      end
+    end
   end
 end
