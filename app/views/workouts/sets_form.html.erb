@@ -11,9 +11,11 @@
     </a>
 </div>
 
+<div id="set_form_errors"></div>
+
 <div class="exercise-card">
 
-  <%= form_with(model: @workout, url: workouts_path, local: true) do |f| %>
+  <%= form_with(model: @workout, url: workouts_path) do |f| %>
 
     <%= f.hidden_field :workout_date %>
     <%= hidden_field_tag "exercise_id", @exercise.id %>
