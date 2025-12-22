@@ -25,9 +25,45 @@ class WorkoutSetsController < ApplicationController
 
   def destroy
     @workout_set = @workout.workout_sets.find(params[:id])
-    @workout_set.destroy
-    redirect_to workout_path(@workout), notice: "セットを削除しました"
-  end
+  
+    if @workout_set.destroy
+      respond_to do |format|
+        format.html do
+          redirect_to workout_path(@workout), notice: "セットを削除しました"
+        end
+  
+        format.turbo_stream do
+          @exercise_sets = @workout.workout_sets
+                                  .includes(:exercise)
+                                  .order(:exercise_id, :created_at)
+                                  .group_by(&:exercise)
+  
+          render turbo_stream: [
+            turbo_stream.replace(
+              "workout_sets",
+              partial: "workouts/exercise_sets",
+              locals: { exercise_sets: @exercise_sets, workout: @workout }
+            ),
+            turbo_stream.update("set_form_errors", "")
+          ]
+        end
+      end
+    else
+      respond_to do |format|
+        format.html do
+          redirect_to workout_path(@workout), alert: "セット削除に失敗しました"
+        end
+  
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            "set_form_errors",
+            partial: "shared/form_errors",
+            locals: { message: "セット削除に失敗しました" }
+          ), status: :unprocessable_entity
+        end
+      end
+    end
+  end  
 
   private
 
