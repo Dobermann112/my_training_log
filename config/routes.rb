@@ -28,7 +28,7 @@ Rails.application.routes.draw do
       get :select_exercise
     end
 
-    resources :workout_sets, only: [:destroy] do
+    resources :workout_sets, only: [:update, :destroy] do
       get :edit_group, on: :collection
       patch :update_group, on: :collection
     end

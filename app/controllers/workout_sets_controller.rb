@@ -9,6 +9,50 @@ class WorkoutSetsController < ApplicationController
     @sets = @workout.workout_sets.where(exercise_id: @exercise.id).order(:created_at)
   end
 
+  def update
+    workout_set = @workout.workout_sets.find(params[:id])
+  
+    result = WorkoutSets::UpdateOneService.call(
+      workout_set: workout_set,
+      params: workout_set_params
+    )
+  
+    respond_to do |format|
+      format.html do
+        if result.success?
+          redirect_to workout_path(@workout), notice: "セットを更新しました"
+        else
+          flash.now[:alert] = result.errors.join(", ")
+          render workout_path(@workout), status: :unprocessable_entity
+        end
+      end
+  
+      format.turbo_stream do
+        if result.success?
+          render turbo_stream: turbo_stream.replace(
+            dom_id(workout_set),
+            partial: "workout_sets/set",
+            locals: { set: workout_set }
+          )
+        else
+          render turbo_stream: turbo_stream.replace(
+            "set_form_errors",
+            partial: "shared/form_errors",
+            locals: { message: result.errors.join(", ") }
+          ), status: :unprocessable_entity
+        end
+      end
+
+      format.json do
+        if result.success?
+          render json: { status: "ok" }, status: :ok
+        else
+          render json: { errors: result.errors }, status: :unprocessable_entity
+        end
+      end
+    end
+  end  
+
   def update_group
     WorkoutSetUpdateService.new(
       workout: @workout,
@@ -86,6 +130,10 @@ class WorkoutSetsController < ApplicationController
   end  
 
   private
+
+  def workout_set_params
+    params.require(:workout_set).permit(:weight, :reps, :memo)
+  end
 
   def set_workout
     @workout = current_user.workouts.find(params[:workout_id])
