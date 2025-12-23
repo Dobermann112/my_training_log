@@ -42,6 +42,14 @@ class WorkoutSetsController < ApplicationController
           ), status: :unprocessable_entity
         end
       end
+
+      format.json do
+        if result.success?
+          render json: { status: "ok" }, status: :ok
+        else
+          render json: { errors: result.errors }, status: :unprocessable_entity
+        end
+      end
     end
   end  
 
