@@ -11,7 +11,10 @@
     <%= hidden_field_tag :exercise_id, @exercise.id %>
 
     <!-- Stimulus セット編集コントローラ -->
-    <div data-controller="sets" data-sets-edit-mode-value="true">
+    <div data-controller="sets workout-set-autosave"
+         data-sets-edit-mode-value="true"
+         data-workout-set-autosave-workout-id-value="<%= @workout.id %>"
+         data-workout-set-autosave-csrf-value="<%= form_authenticity_token %>">
 
       <!-- 既存セット行のコンテナ -->
       <div data-sets-target="list">
@@ -36,14 +39,24 @@
                 <%= number_field_tag "sets[#{set.id}][weight]",
                                      set.weight,
                                      step: 0.5,
-                                     class: "form-control" %>
+                                     class: "form-control",
+                                     data: {
+                                      field: "weight",
+                                      action: "blur->workout-set-autosave#save",
+                                      set_id: set.id
+                                     } %>
               </div>
 
               <div class="flex-fill">
                 <label class="form-label">回数</label>
                 <%= number_field_tag "sets[#{set.id}][reps]",
                                      set.reps,
-                                     class: "form-control" %>
+                                     class: "form-control",
+                                     data: {
+                                      field: "reps",
+                                      action: "blur->workout-set-autosave#save",
+                                      set_id: set.id
+                                     } %>
               </div>
             </div>
 
@@ -52,7 +65,12 @@
               <%= text_area_tag "sets[#{set.id}][memo]",
                                 set.memo,
                                 rows: 1,
-                                class: "form-control" %>
+                                class: "form-control",
+                                data: {
+                                  field: "memo",
+                                  action: "blur->workout-set-autosave#save",
+                                  set_id: set.id
+                                } %>
             </div>
 
           </div>
