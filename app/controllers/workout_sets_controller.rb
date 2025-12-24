@@ -20,20 +20,28 @@ class WorkoutSetsController < ApplicationController
     respond_to do |format|
       format.html do
         if result.success?
-          redirect_to workout_path(@workout), notice: "セットを更新しました"
+          redirect_to workout_path(@workout)
         else
-          flash.now[:alert] = result.errors.join(", ")
-          render workout_path(@workout), status: :unprocessable_entity
+          redirect_to workout_path(@workout), alert: result.errors.join(", ")
         end
       end
   
       format.turbo_stream do
         if result.success?
-          render turbo_stream: turbo_stream.replace(
-            dom_id(workout_set),
-            partial: "workout_sets/set",
-            locals: { set: workout_set }
-          )
+          if result.workout_deleted?
+            render turbo_stream: turbo_stream.action(
+              :redirect,
+              calendars_path
+            )
+          elsif result.workout_set
+            render turbo_stream: turbo_stream.replace(
+              dom_id(workout_set),
+              partial: "workout_sets/set",
+              locals: { set: workout_set }
+            )
+          else
+            render turbo_stream: turbo_stream.remove(dom_id(workout_set))
+          end
         else
           render turbo_stream: turbo_stream.replace(
             "set_form_errors",
@@ -42,10 +50,10 @@ class WorkoutSetsController < ApplicationController
           ), status: :unprocessable_entity
         end
       end
-
+  
       format.json do
         if result.success?
-          render json: { status: "ok" }, status: :ok
+          render json: { status: "ok", workout_deleted: result.workout_deleted? }
         else
           render json: { errors: result.errors }, status: :unprocessable_entity
         end
@@ -137,6 +145,8 @@ class WorkoutSetsController < ApplicationController
 
   def set_workout
     @workout = current_user.workouts.find(params[:workout_id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to calendars_path, alert: "このトレーニングは削除されました"
   end
 
   def set_exercise
