@@ -1,4 +1,6 @@
 class WorkoutSet < ApplicationRecord
+  enum status: { draft: 0, confirmed: 1 }
+
   belongs_to :workout
   belongs_to :exercise
 

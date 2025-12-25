@@ -1,12 +1,33 @@
 class WorkoutSetsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_workout
-  before_action :authorize_user!
+  before_action :set_workout, except: [:create]
+  before_action :authorize_user!, except: [:create]
   before_action :set_exercise, only: [:edit_group, :update_group]
 
   def edit_group
     @exercise = Exercise.find(params[:exercise_id])
     @sets = @workout.workout_sets.where(exercise_id: @exercise.id).order(:created_at)
+  end
+
+  def create
+    result = WorkoutSets::CreateOneService.call(
+      user: current_user,
+      date: params[:date],
+      exercise_id: params[:exercise_id],
+      params: workout_set_params
+    )
+
+    if result.success?
+      render json: {
+        workout_id: result.workout.id,
+        workout_set_id: result.workout_set.id,
+        workout_set_status: result.workout_set.status
+      }, status: :ok
+    else
+      render json: {
+        errors: result.errors
+      }, status: :unprocessable_entity
+    end
   end
 
   def update
