@@ -26,7 +26,12 @@
       </div>
 
       <template data-sets-target="template">
-        <div class="set-input-row mb-3 p-3 rounded" style="background-color: #0f2033; border: 1px solid rgba(255,255,255,0.08);">
+        <div class="set-input-row mb-3 p-3 rounded" style="background-color: #0f2033; border: 1px solid rgba(255,255,255,0.08);"
+             data-controller="workout-set-create"
+             data-workout-set-create-date-value="<%= params[:date] %>"
+             data-workout-set-create-exercise-id-value="<%= @exercise.id %>"
+             data-workout-set-create-csrf-value="<%= form_authenticity_token %>">
+
           <div class="set-number-label mb-2 fw-bold text-light"
               data-sets-target="number">
             セット1
@@ -35,18 +40,31 @@
           <div class="d-flex gap-3">
             <div class="flex-fill">
               <label class="form-label">重量(kg)</label>
-              <input type="number" step="0.5" class="form-control" data-sets-target="weight">
+              <input type="number"
+                     step="0.5"
+                     class="form-control"
+                     data-sets-target="weight"
+                     data-workout-set-create-target="weight"
+                     data-action="blur->workout-set-create#save">
             </div>
 
             <div class="flex-fill">
               <label class="form-label">回数</label>
-              <input type="number" class="form-control" data-sets-target="reps">
+              <input type="number"
+                     class="form-control"
+                     data-sets-target="reps"
+                     data-workout-set-create-target="reps"
+                     data-action="blur->workout-set-create#save">
             </div>
           </div>
 
           <div class="mt-2">
             <label class="form-label">メモ</label>
-            <textarea class="form-control" rows="1" data-sets-target="memo"></textarea>
+            <textarea rows="1"
+                      class="form-control"
+                      data-sets-target="memo"
+                      data-workout-set-create-target="memo"
+                      data-action="blur->workout-set-create#save"></textarea>
           </div>
         </div>
       </template>
