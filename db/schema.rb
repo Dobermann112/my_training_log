@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_14_101039) do
+ActiveRecord::Schema[7.1].define(version: 2025_12_25_084541) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -63,7 +63,9 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_14_101039) do
     t.text "memo"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "status", default: 0, null: false
     t.index ["exercise_id"], name: "index_workout_sets_on_exercise_id"
+    t.index ["status"], name: "index_workout_sets_on_status"
     t.index ["workout_id", "exercise_id", "set_number"], name: "idx_on_workout_id_exercise_id_set_number_db8390fc60", unique: true
     t.index ["workout_id"], name: "index_workout_sets_on_workout_id"
   end
