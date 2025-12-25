@@ -14,22 +14,20 @@ module WorkoutSets
     end
 
     def call
+      return Result.new(false, nil, nil, ["date is missing"]) if @date.blank?
       return Result.new(true, nil, nil, nil) if empty_params?
 
-      workout = nil
-      workout_set = nil
+      workout = @user.workouts.find_or_create_by!(workout_date: @date)
 
-      ActiveRecord::Base.transaction do
-        workout = find_or_create_workout
+      workout_set = workout.workout_sets.create!(
+        exercise_id: @exercise_id,
+        weight: @params[:weight],
+        reps: @params[:reps],
+        memo: @params[:memo],
+        status: :draft
+      )
 
-        workout_set =
-          find_draft_set(workout) ||
-          create_draft_set(workout)
-
-        workout_set.update!(@params)
-
-        Result.new(true, workout, workout_set, nil)
-      end
+      Result.new(true, workout, workout_set, nil)
     rescue ActiveRecord::RecordInvalid => e
       Result.new(false, nil, nil, e.record.errors.full_messages)
     end
@@ -38,21 +36,6 @@ module WorkoutSets
 
     def empty_params?
       @params[:weight].blank? && @params[:reps].blank?
-    end
-
-    def find_or_create_workout
-      @user.workouts.find_or_create_by!(workout_date: @date)
-    end
-
-    def find_draft_set(workout)
-      workout.workout_sets.draft.find_by(exercise_id: @exercise_id)
-    end
-
-    def create_draft_set(workout)
-      workout.workout_sets.create!(
-        exercise_id: @exercise_id,
-        status: :draft
-      )
     end
   end
 end
