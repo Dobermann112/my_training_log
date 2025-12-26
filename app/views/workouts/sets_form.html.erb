@@ -29,11 +29,9 @@
         <div class="set-input-row mb-3 p-3 rounded" style="background-color: #0f2033; border: 1px solid rgba(255,255,255,0.08);"
              data-controller="workout-set-create"
              data-workout-set-create-date-value="<%= params[:date] %>"
-             data-workout-set-create-exercise-id-value="<%= @exercise.id %>"
-             data-workout-set-create-csrf-value="<%= form_authenticity_token %>">
+             data-workout-set-create-exercise-id-value="<%= @exercise.id %>">
 
-          <div class="set-number-label mb-2 fw-bold text-light"
-              data-sets-target="number">
+          <div class="set-number-label mb-2 fw-bold text-light" data-sets-target="number">
             セット1
           </div>
 
@@ -45,7 +43,7 @@
                      class="form-control"
                      data-sets-target="weight"
                      data-workout-set-create-target="weight"
-                     data-action="blur->workout-set-create#save">
+                     data-action="input->workout-set-create#saveDraft">
             </div>
 
             <div class="flex-fill">
@@ -54,7 +52,7 @@
                      class="form-control"
                      data-sets-target="reps"
                      data-workout-set-create-target="reps"
-                     data-action="blur->workout-set-create#save">
+                     data-action="input->workout-set-create#saveDraft">
             </div>
           </div>
 
@@ -64,7 +62,7 @@
                       class="form-control"
                       data-sets-target="memo"
                       data-workout-set-create-target="memo"
-                      data-action="blur->workout-set-create#save"></textarea>
+                      data-action="input->workout-set-create#saveDraft"></textarea>
           </div>
         </div>
       </template>
@@ -75,9 +73,13 @@
         ＋ セットを追加
       </button>
 
-    </div>
+      <button type="button"
+              class="btn btn-primary w-100 mt-3" 
+              data-action="click->sets#commit">
+        保存する
+      </button>
 
-    <%= f.submit "保存する", class: "btn btn-primary w-100 mt-3" %>
+    </div>
 
   <% end %>
 
