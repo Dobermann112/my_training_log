@@ -1,29 +1,39 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static values = {
-    date: String,
-    exerciseId: Number
-  }
-
   static targets = ["weight", "reps", "memo"]
 
   connect() {
     this.restoreDraft()
   }
 
-  // input/blur 両方から呼ぶ。まずは input を主に使う
   saveDraft() {
+    const row = this.element.closest(".set-input-row")
+    if (!row) return
+
+    const uuid = row.dataset.setUuid
+    if (!uuid) return
+
     const payload = {
       weight: this.weightTarget.value,
       reps: this.repsTarget.value,
       memo: this.memoTarget.value
     }
-    localStorage.setItem(this.storageKey(), JSON.stringify(payload))
+
+    localStorage.setItem(
+      this.storageKey(uuid),
+      JSON.stringify(payload)
+    )
   }
 
   restoreDraft() {
-    const raw = localStorage.getItem(this.storageKey())
+    const row = this.element.closest(".set-input-row")
+    if (!row) return
+
+    const uuid = row.dataset.setUuid
+    if (!uuid) return
+
+    const raw = localStorage.getItem(this.storageKey(uuid))
     if (!raw) return
 
     try {
@@ -31,18 +41,16 @@ export default class extends Controller {
       if (data.weight != null) this.weightTarget.value = data.weight
       if (data.reps != null) this.repsTarget.value = data.reps
       if (data.memo != null) this.memoTarget.value = data.memo
-    } catch (_) {
-      // 壊れたデータは消す
-      localStorage.removeItem(this.storageKey())
+    } catch {
+      localStorage.removeItem(this.storageKey(uuid))
     }
   }
 
-  clearDraft() {
-    localStorage.removeItem(this.storageKey())
+  clearDraft(uuid) {
+    localStorage.removeItem(this.storageKey(uuid))
   }
 
-  storageKey() {
-    // まずは「new画面の1行=1draft」前提のキー（後で複数行対応に拡張）
-    return `workout_set_draft:${this.dateValue}:${this.exerciseIdValue}`
+  storageKey(uuid) {
+    return `workout_set_draft:${uuid}`
   }
 }

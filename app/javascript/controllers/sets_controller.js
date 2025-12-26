@@ -22,6 +22,9 @@ export default class extends Controller {
     const fragment = this.templateTarget.content.cloneNode(true)
     const rowEl = fragment.querySelector(".set-input-row")
 
+    const uuid = crypto.randomUUID()
+    rowEl.dataset.setUuid = uuid
+
     // 現在の行数
     const index = this.listTarget.children.length
     rowEl.dataset.index = index
