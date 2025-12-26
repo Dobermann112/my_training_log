@@ -11,10 +11,7 @@
     <%= hidden_field_tag :exercise_id, @exercise.id %>
 
     <!-- Stimulus セット編集コントローラ -->
-    <div data-controller="sets workout-set-autosave"
-         data-sets-edit-mode-value="true"
-         data-workout-set-autosave-workout-id-value="<%= @workout.id %>"
-         data-workout-set-autosave-csrf-value="<%= form_authenticity_token %>">
+    <div data-controller="sets" data-sets-edit-mode-value="true">
 
       <!-- 既存セット行のコンテナ -->
       <div data-sets-target="list">
@@ -22,7 +19,8 @@
         <% @sets.each_with_index do |set, i| %>
           <div class="set-input-row mb-3 p-3 rounded"
               style="background-color: #0f2033; border: 1px solid rgba(255,255,255,0.08);"
-              data-index="<%= i %>">
+              data-set-uuid="<%= set.id %>"
+              data-controller="workout-set-create">
 
             <!-- 番号ラベル（Stimulus が再計算する） -->
             <div class="set-number-label mb-2 fw-bold text-light"
@@ -30,47 +28,32 @@
               セット<%= i + 1 %>
             </div>
 
-            <!-- 既存セットには ID を持たせる -->
-            <%= hidden_field_tag "sets[#{set.id}][id]", set.id %>
-
             <div class="d-flex gap-3">
               <div class="flex-fill">
                 <label class="form-label">重量(kg)</label>
-                <%= number_field_tag "sets[#{set.id}][weight]",
+                <%= number_field_tag "",
                                      set.weight,
                                      step: 0.5,
                                      class: "form-control",
-                                     data: {
-                                      field: "weight",
-                                      action: "blur->workout-set-autosave#save",
-                                      set_id: set.id
-                                     } %>
+                                     data: { workout_set_create_target: "weight", action: "input->workout-set-create#saveDraft" } %>
               </div>
 
               <div class="flex-fill">
                 <label class="form-label">回数</label>
-                <%= number_field_tag "sets[#{set.id}][reps]",
+                <%= number_field_tag "",
                                      set.reps,
                                      class: "form-control",
-                                     data: {
-                                      field: "reps",
-                                      action: "blur->workout-set-autosave#save",
-                                      set_id: set.id
-                                     } %>
+                                     data: { workout_set_create_target: "reps", action: "input->workout-set-create#saveDraft" } %>
               </div>
             </div>
 
             <div class="mt-2">
               <label class="form-label">メモ</label>
-              <%= text_area_tag "sets[#{set.id}][memo]",
+              <%= text_area_tag "",
                                 set.memo,
                                 rows: 1,
                                 class: "form-control",
-                                data: {
-                                  field: "memo",
-                                  action: "blur->workout-set-autosave#save",
-                                  set_id: set.id
-                                } %>
+                                data: { workout_set_create_target: "memo", action: "input->workout-set-create#saveDraft" } %>
             </div>
 
           </div>
@@ -122,10 +105,14 @@
         ＋ セットを追加
       </button>
 
-    </div>
+      <!-- 保存ボタン -->
+      <button type="button"
+              class="btn btn-primary w-100 mt-3"
+              data-action="click->sets#commit">
+        保存する
+      </button>
 
-    <!-- 保存ボタン -->
-    <%= submit_tag "保存する", class: "btn btn-primary w-100 mt-3" %>
+    </div>
 
   <% end %>
 
