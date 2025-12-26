@@ -3,54 +3,46 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static values = {
     date: String,
-    exerciseId: Number,
-    csrf: String
+    exerciseId: Number
   }
 
   static targets = ["weight", "reps", "memo"]
 
-  save(event) {
-    const row = event.target.closest(".set-input-row")
-    if (!row) return
+  connect() {
+    this.restoreDraft()
+  }
 
-    // すでに draft が存在する場合は CREATE しない
-    if (row.dataset.setId) return
+  // input/blur 両方から呼ぶ。まずは input を主に使う
+  saveDraft() {
+    const payload = {
+      weight: this.weightTarget.value,
+      reps: this.repsTarget.value,
+      memo: this.memoTarget.value
+    }
+    localStorage.setItem(this.storageKey(), JSON.stringify(payload))
+  }
 
-    const weight = this.weightTarget.value
-    const reps   = this.repsTarget.value
-    const memo   = this.memoTarget.value
+  restoreDraft() {
+    const raw = localStorage.getItem(this.storageKey())
+    if (!raw) return
 
-    // weight / reps 両方空なら保存しない
-    if (!weight && !reps) return
+    try {
+      const data = JSON.parse(raw)
+      if (data.weight != null) this.weightTarget.value = data.weight
+      if (data.reps != null) this.repsTarget.value = data.reps
+      if (data.memo != null) this.memoTarget.value = data.memo
+    } catch (_) {
+      // 壊れたデータは消す
+      localStorage.removeItem(this.storageKey())
+    }
+  }
 
-    fetch("/workout_sets", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        "X-CSRF-Token": this.csrfValue
-      },
-      body: JSON.stringify({
-        date: this.dateValue,
-        exercise_id: this.exerciseIdValue,
-        workout_set: {
-          weight,
-          reps,
-          memo
-        }
-      })
-    })
-      .then(res => {
-        if (!res.ok) throw new Error("create failed")
-        return res.json()
-      })
-      .then(data => {
-        // draft が確定したことを示す
-        row.dataset.setId = data.workout_set_id
-      })
-      .catch(() => {
-        // この issue では UI 表示まではやらない
-        console.error("workout_set create failed")
-      })
+  clearDraft() {
+    localStorage.removeItem(this.storageKey())
+  }
+
+  storageKey() {
+    // まずは「new画面の1行=1draft」前提のキー（後で複数行対応に拡張）
+    return `workout_set_draft:${this.dateValue}:${this.exerciseIdValue}`
   }
 }
