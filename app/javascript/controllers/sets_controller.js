@@ -6,11 +6,23 @@ export default class extends Controller {
 
   connect() {
     this.activeSetUuids = new Set()
+
+    // 既存行（編集画面）の uuid を登録
+    this.listTarget.querySelectorAll(".set-input-row").forEach((row) => {
+      const uuid = row.dataset.setUuid
+      if (uuid) this.activeSetUuids.add(uuid)
+    })
+
+    // 新規作成画面のみ初期行を作る
     if (!this.editModeValue) {
-      // 編集画面では listTarget に既存行が入っている → initializeRows を走らせない
       if (this.listTarget.children.length === 0) {
         this.initializeRows()
       }
+    }
+
+    const form = this.element.closest("form")
+    if (form) {
+      form.addEventListener("turbo:submit-end", this.handleSubmitEnd)
     }
   }
 
@@ -19,7 +31,6 @@ export default class extends Controller {
   }
 
   add() {
-    // テンプレート複製
     const fragment = this.templateTarget.content.cloneNode(true)
     const rowEl = fragment.querySelector(".set-input-row")
 
@@ -28,54 +39,49 @@ export default class extends Controller {
 
     this.activeSetUuids.add(uuid)
 
-    // 現在の行数
-    const index = this.listTarget.children.length
-    rowEl.dataset.index = index
-
-    // 編集モードかどうか判定
-    const isEditMode = this.isEditMode()
-
-    // =====================
-    // name を付ける
-    // =====================
-    if (isEditMode) {
-      // 編集 → sets[new_x][weight]
-      rowEl.querySelector("[data-sets-target='weight']").name = `sets[new_${index}][weight]`
-      rowEl.querySelector("[data-sets-target='reps']").name   = `sets[new_${index}][reps]`
-      rowEl.querySelector("[data-sets-target='memo']").name   = `sets[new_${index}][memo]`
-    } else {
-      // 新規作成 → workout[sets][x][weight]
-      rowEl.querySelector("[data-sets-target='weight']").name = `workout[sets][${index}][weight]`
-      rowEl.querySelector("[data-sets-target='reps']").name   = `workout[sets][${index}][reps]`
-      rowEl.querySelector("[data-sets-target='memo']").name   = `workout[sets][${index}][memo]`
-    }
-
-    // list 配下に追加
     this.listTarget.appendChild(rowEl)
-
-    // 番号振り直し
     this.updateNumbers()
   }
 
-  // ============================
-  // 編集モードかどうか判定する
-  // ============================
-  isEditMode() {
-    // 既存 hidden_field_tag がある → 編集モード
-    return this.editModeValue
-  }
-
-  // ============================
-  // 行番号（セット1, セット2…）を振り直す
-  // ============================
   updateNumbers() {
     this.listTarget.querySelectorAll(".set-input-row").forEach((row, i) => {
       const numberEl = row.querySelector("[data-sets-target='number']")
-      if (numberEl) {
-        numberEl.textContent = `セット${i + 1}`
-      }
-      row.dataset.index = i
+      if (numberEl) numberEl.textContent = `セット${i + 1}`
     })
+  }
+
+  // ============================
+  // 保存ボタン（CREATE / EDIT 共通）
+  // ============================
+  commit(event) {
+    event.preventDefault()
+
+    const drafts = this.collectDrafts()
+    if (drafts.length === 0) return
+
+    const form = this.element.closest("form")
+    if (!form) return
+
+    // 既存の draft 用 hidden input を削除
+    form.querySelectorAll("[data-draft-input]").forEach(el => el.remove())
+
+    if (this.editModeValue) {
+      // ===== 編集（UPDATE）=====
+      drafts.forEach(draft => {
+        this.appendHidden(form, `sets[${draft.uuid}][weight]`, draft.weight)
+        this.appendHidden(form, `sets[${draft.uuid}][reps]`, draft.reps)
+        this.appendHidden(form, `sets[${draft.uuid}][memo]`, draft.memo)
+      })
+    } else {
+      // ===== 新規作成（CREATE）=====
+      drafts.forEach((draft, index) => {
+        this.appendHidden(form, `workout[sets][${index}][weight]`, draft.weight)
+        this.appendHidden(form, `workout[sets][${index}][reps]`, draft.reps)
+        this.appendHidden(form, `workout[sets][${index}][memo]`, draft.memo)
+      })
+    }
+
+    form.requestSubmit()
   }
 
   appendHidden(form, name, value) {
@@ -85,61 +91,40 @@ export default class extends Controller {
     input.value = value ?? ""
     input.dataset.draftInput = "true"
     form.appendChild(input)
-  }  
-
-  commit() {
-    console.log("commit clicked")
-  
-    const drafts = this.collectDrafts()
-    console.log("drafts to commit:", drafts)
-  
-    if (drafts.length === 0) {
-      console.warn("no valid drafts")
-      return
-    }
-  
-    const form = this.element.closest("form")
-    if (!form) {
-      console.error("form not found")
-      return
-    }
-  
-    // 既存の draft 用 hidden input を削除（再保存対策）
-    form.querySelectorAll("[data-draft-input]").forEach(el => el.remove())
-  
-    drafts.forEach((draft, index) => {
-      this.appendHidden(form, `workout[sets][${index}][weight]`, draft.weight)
-      this.appendHidden(form, `workout[sets][${index}][reps]`, draft.reps)
-      this.appendHidden(form, `workout[sets][${index}][memo]`, draft.memo)
-    })
-  
-    // form を送信（Turbo/Rails の既存フローに乗せる）
-    form.requestSubmit()
-  }  
+  }
 
   collectDrafts() {
     const drafts = []
-  
+
     this.activeSetUuids.forEach((uuid) => {
       const key = `workout_set_draft:${uuid}`
       const raw = localStorage.getItem(key)
       if (!raw) return
-  
+
       try {
         const data = JSON.parse(raw)
         if (this.validDraft(data)) {
           drafts.push({ uuid, ...data })
         }
       } catch {
-        console.warn("invalid draft skipped:", key)
+        // 無視
       }
     })
+
     return drafts
-  }  
+  }
 
   validDraft(data) {
     const hasWeight = data.weight && data.weight !== ""
     const hasReps   = data.reps && data.reps !== ""
     return hasWeight || hasReps
+  }
+
+  handleSubmitEnd = (event) => {
+    if (!event.detail.success) return
+
+    this.activeSetUuids.forEach((uuid) => {
+      localStorage.removeItem(`workout_set_draft:${uuid}`)
+    })
   }
 }

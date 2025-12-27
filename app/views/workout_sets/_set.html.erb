@@ -8,7 +8,13 @@
 
     <div class="d-flex gap-2">
       <%= link_to workout_workout_set_path(workout, set),
-            data: { turbo_method: :delete, turbo_confirm: "このセットを削除しますか？" },
+            data: {
+              turbo_method: :delete,
+              turbo_confirm: "このセットを削除しますか？",
+              set_uuid: set.id,
+              controller: "draft-cleanup",
+              action: "click->draft-cleanup#remove"
+            },
             class: "btn btn-sm btn-outline-danger" do %>
         <i class="bi bi-trash"></i>
       <% end %>

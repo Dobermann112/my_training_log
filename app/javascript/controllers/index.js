@@ -27,3 +27,6 @@ application.register("workout-set-autosave", WorkoutSetAutosaveController)
 
 import WorkoutSetCreateController from "./workout_set_create_controller"
 application.register("workout-set-create", WorkoutSetCreateController)
+
+import DraftCleanupController from "./draft_cleanup_controller"
+application.register("draft-cleanup", DraftCleanupController)
