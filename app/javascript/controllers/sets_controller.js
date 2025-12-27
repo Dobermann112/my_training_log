@@ -19,6 +19,11 @@ export default class extends Controller {
         this.initializeRows()
       }
     }
+
+    const form = this.element.closest("form")
+    if (form) {
+      form.addEventListener("turbo:submit-end", this.handleSubmitEnd)
+    }
   }
 
   initializeRows() {
@@ -113,5 +118,13 @@ export default class extends Controller {
     const hasWeight = data.weight && data.weight !== ""
     const hasReps   = data.reps && data.reps !== ""
     return hasWeight || hasReps
+  }
+
+  handleSubmitEnd = (event) => {
+    if (!event.detail.success) return
+
+    this.activeSetUuids.forEach((uuid) => {
+      localStorage.removeItem(`workout_set_draft:${uuid}`)
+    })
   }
 }
