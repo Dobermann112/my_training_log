@@ -127,4 +127,8 @@ export default class extends Controller {
       localStorage.removeItem(`workout_set_draft:${uuid}`)
     })
   }
+
+  commitOrBack() {
+    console.log("back button clicked")
+  }
 }

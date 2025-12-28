@@ -21,7 +21,14 @@
     <%= hidden_field_tag "exercise_id", @exercise.id %>
 
     <div data-controller="sets">
-      
+
+      <button
+        type="button"
+        class="sets-back-button"
+        data-action="click->sets#commitOrBack">
+        ＜
+      </button>
+
       <div data-sets-target="list">
       </div>
 

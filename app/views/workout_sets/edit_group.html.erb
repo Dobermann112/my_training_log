@@ -13,6 +13,13 @@
     <!-- Stimulus セット編集コントローラ -->
     <div data-controller="sets" data-sets-edit-mode-value="true">
 
+      <button
+        type="button"
+        class="sets-back-button"
+        data-action="click->sets#commitOrBack">
+        ＜
+      </button>
+      
       <!-- 既存セット行のコンテナ -->
       <div data-sets-target="list">
 
