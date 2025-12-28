@@ -20,8 +20,14 @@
     <%= f.hidden_field :workout_date %>
     <%= hidden_field_tag "exercise_id", @exercise.id %>
 
-    <div data-controller="sets">
-      
+    <div data-controller="sets" data-sets-date-value="<%= params[:date] %>">
+
+      <div
+        class="floating-back"
+        data-action="click->sets#commitOrBack">
+        ←
+      </div>
+
       <div data-sets-target="list">
       </div>
 
@@ -68,15 +74,9 @@
       </template>
 
       <button type="button"
-              class="btn btn-secondary w-100 mt-3"
+              class="btn btn-secondary w-100 mt-2"
               data-action="sets#add">
         ＋ セットを追加
-      </button>
-
-      <button type="button"
-              class="btn btn-primary w-100 mt-3" 
-              data-action="click->sets#commit">
-        保存する
       </button>
 
     </div>
