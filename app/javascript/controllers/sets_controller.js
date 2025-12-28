@@ -48,9 +48,7 @@ export default class extends Controller {
   // ============================
   // 保存ボタン（CREATE / EDIT 共通）
   // ============================
-  commit(event) {
-    if(event) event.preventDefault()
-
+  commit() {
     const drafts = this.collectDrafts()
     if (drafts.length === 0) return
 

@@ -22,12 +22,11 @@
 
     <div data-controller="sets" data-sets-date-value="<%= params[:date] %>">
 
-      <button
-        type="button"
-        class="sets-back-button"
+      <div
+        class="floating-back"
         data-action="click->sets#commitOrBack">
-        ＜
-      </button>
+        ←
+      </div>
 
       <div data-sets-target="list">
       </div>
@@ -75,15 +74,9 @@
       </template>
 
       <button type="button"
-              class="btn btn-secondary w-100 mt-3"
+              class="btn btn-secondary w-100 mt-2"
               data-action="sets#add">
         ＋ セットを追加
-      </button>
-
-      <button type="button"
-              class="btn btn-primary w-100 mt-3" 
-              data-action="click->sets#commit">
-        保存する
       </button>
 
     </div>
