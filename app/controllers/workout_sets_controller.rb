@@ -11,13 +11,17 @@ class WorkoutSetsController < ApplicationController
   end
 
   def update_group
-    WorkoutSetUpdateService.new(
+    result = WorkoutSetUpdateService.new(
       workout: @workout,
       exercise: @exercise,
       sets_params: params[:sets]
     ).call
 
-    redirect_to workout_path(@workout)
+    if result.workout_deleted?
+      redirect_to calendars_path
+    else
+      redirect_to workout_path(@workout)
+    end
   rescue WorkoutSetUpdateService::UpdateError => e
     flash.now[:alert] = e.message
     edit_group
@@ -26,9 +30,17 @@ class WorkoutSetsController < ApplicationController
 
   def destroy
     set = @workout.workout_sets.find(params[:id])
-    set.destroy!
 
-    redirect_to workout_path(@workout), notice: "セットを削除しました"
+    result = WorkoutSetDeleteService.call(
+      workout: @workout,
+      set: set
+    )
+
+    if result.workout_deleted?
+      redirect_to calendars_path, notice: "トレーニング記録を削除しました"
+    else
+      redirect_to workout_path(@workout), notice: "セットを削除しました"
+    end
   end
 
   private
