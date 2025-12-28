@@ -14,10 +14,10 @@ class WorkoutSetUpdateService
       @sets_params.each do |key, attrs|
         next if skip?(attrs)
 
-        if new_record_key?(key)
-          create_set(attrs)
-        else
+        if persisted_set?(key)
           update_set(key, attrs)
+        else
+          create_set(attrs)
         end
       end
     end
@@ -27,9 +27,9 @@ class WorkoutSetUpdateService
 
   private
 
-  def new_record_key?(key)
-    key.to_s.start_with?("new_")
-  end
+  def persisted_set?(key)
+    @workout.workout_sets.exists?(id: key)
+  end  
 
   def skip?(attrs)
     return false if destroy_requested?(attrs)
