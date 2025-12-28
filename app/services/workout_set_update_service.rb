@@ -2,6 +2,7 @@
 # 新規セットの追加（new_◯）をまとめて処理するサービス
 class WorkoutSetUpdateService
   class UpdateError < StandardError; end
+  Result = Struct.new(:workout_deleted?)
 
   def initialize(workout:, exercise:, sets_params:)
     @workout = workout
@@ -20,6 +21,7 @@ class WorkoutSetUpdateService
           create_set(attrs)
         end
       end
+      cleanup_workout_if_empty
     end
   rescue StandardError => e
     raise UpdateError, e.message
@@ -58,6 +60,13 @@ class WorkoutSetUpdateService
       )
     end
   end
+
+  def cleanup_workout_if_empty
+    return Result.new(false) if @workout.workout_sets.exists?
+  
+    @workout.destroy!
+    Result.new(true)
+  end  
 
   def destroy_requested?(attrs)
     attrs[:_destroy] == "1"
