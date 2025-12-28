@@ -37,7 +37,7 @@ class WorkoutsController < ApplicationController
 
   def destroy
     @workout.destroy
-    redirect_to calendars_path, notice: "トレーニングセッションを削除しました。"
+    redirect_to calendars_path, notice: "トレーニング記録を削除しました。"
   end
 
   def select_exercise
