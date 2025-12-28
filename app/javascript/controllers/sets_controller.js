@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = ["list", "template", "number", "weight", "reps", "memo"]
-  static values = { editMode: Boolean }
+  static values = { editMode: Boolean, date: String }
 
   connect() {
     this.activeSetUuids = new Set()
@@ -129,6 +129,18 @@ export default class extends Controller {
   }
 
   commitOrBack() {
-    console.log("back button clicked")
+    const drafts = this.collectDrafts()
+
+    if (drafts.length === 0) {
+      if (this.editModeValue) {
+        window.location.href = `/workout/${this.workoutId}`
+      } else {
+        const date = this.dateValue
+        window.location.href = `/workouts/select_exercise?date=${date}`
+      }
+      return
+    }
+
+    console.log("draft exists -> should commit")
   }
 }

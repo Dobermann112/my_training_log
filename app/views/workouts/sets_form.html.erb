@@ -20,7 +20,7 @@
     <%= f.hidden_field :workout_date %>
     <%= hidden_field_tag "exercise_id", @exercise.id %>
 
-    <div data-controller="sets">
+    <div data-controller="sets" data-sets-date-value="<%= params[:date] %>">
 
       <button
         type="button"
