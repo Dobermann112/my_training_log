@@ -11,7 +11,7 @@
     <%= hidden_field_tag :exercise_id, @exercise.id %>
 
     <!-- Stimulus セット編集コントローラ -->
-    <div data-controller="sets" data-sets-edit-mode-value="true">
+    <div data-controller="sets" data-sets-edit-mode-value="true" data-sets-workout-id-value="<%= @workout.id %>">
 
       <button
         type="button"
@@ -27,6 +27,7 @@
           <div class="set-input-row mb-3 p-3 rounded"
               style="background-color: #0f2033; border: 1px solid rgba(255,255,255,0.08);"
               data-set-uuid="<%= set.id %>"
+              data-persisted="true"
               data-controller="workout-set-create">
 
             <!-- 番号ラベル（Stimulus が再計算する） -->

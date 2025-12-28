@@ -32,6 +32,7 @@ class WorkoutSetUpdateService
   end
 
   def skip?(attrs)
+    return false if destroy_requested?(attrs)
     attrs[:weight].blank? && attrs[:reps].blank?
   end
 
@@ -46,10 +47,19 @@ class WorkoutSetUpdateService
 
   def update_set(id, attrs)
     set = @workout.workout_sets.find(id)
-    set.update!(
-      weight: attrs[:weight],
-      reps: attrs[:reps],
-      memo: attrs[:memo]
-    )
+
+    if destroy_requested?(attrs)
+      set.destroy!
+    else
+      set.update!(
+        weight: attrs[:weight],
+        reps: attrs[:reps],
+        memo: attrs[:memo]
+      )
+    end
+  end
+
+  def destroy_requested?(attrs)
+    attrs[:_destroy] == "1"
   end
 end

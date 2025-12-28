@@ -17,6 +17,14 @@ export default class extends Controller {
       memo: this.memoTarget.value
     }
 
+    const hasWeight = payload.weight && payload.weight !== ""
+    const hasReps = payload.reps && payload.reps !== ""
+
+    if (!hasWeight && !hasReps) {
+      localStorage.removeItem(this.storageKey(uuid))
+      return
+    }
+
     localStorage.setItem(this.storageKey(uuid), JSON.stringify(payload))
   }
 
@@ -40,14 +48,14 @@ export default class extends Controller {
       }
     }
 
-    // ② draft が無ければ、現在の表示値（= DB初期値）を seed
-    const payload = {
-      weight: this.weightTarget.value,
-      reps: this.repsTarget.value,
-      memo: this.memoTarget.value
+    if (this.isEdit()) {
+      const payload = {
+        weight: this.weightTarget.value,
+        reps: this.repsTarget.value,
+        memo: this.memoTarget.value
+      }
+      localStorage.setItem(key, JSON.stringify(payload))
     }
-
-    localStorage.setItem(key, JSON.stringify(payload))
   }
 
   uuid() {
@@ -57,5 +65,10 @@ export default class extends Controller {
 
   storageKey(uuid) {
     return `workout_set_draft:${uuid}`
+  }
+
+  isEdit() {
+    const row = this.element.closest(".set-input-row")
+    return !!row?.dataset.persisted
   }
 }
