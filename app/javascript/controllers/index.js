@@ -22,9 +22,6 @@ application.register("hello", HelloController)
 import SetsController from "./sets_controller"
 application.register("sets", SetsController)
 
-import WorkoutSetAutosaveController from "./workout_set_autosave_controller"
-application.register("workout-set-autosave", WorkoutSetAutosaveController)
-
 import WorkoutSetCreateController from "./workout_set_create_controller"
 application.register("workout-set-create", WorkoutSetCreateController)
 

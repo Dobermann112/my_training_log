@@ -45,6 +45,7 @@ export default class extends Controller {
         return
       } catch {
         localStorage.removeItem(key)
+        return
       }
     }
 
@@ -54,7 +55,12 @@ export default class extends Controller {
         reps: this.repsTarget.value,
         memo: this.memoTarget.value
       }
-      localStorage.setItem(key, JSON.stringify(payload))
+
+      const hasWeight = payload.weight && payload.weight !== ""
+      const hasReps = payload.reps && payload.reps !== ""
+      if (hasWeight || hasReps) {
+        localStorage.setItem(key, JSON.stringify(payload))
+      }
     }
   }
 
@@ -69,6 +75,6 @@ export default class extends Controller {
 
   isEdit() {
     const row = this.element.closest(".set-input-row")
-    return !!row?.dataset.persisted
+    return row?.dataset.persisted === "true"
   }
 }

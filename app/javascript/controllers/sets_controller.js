@@ -50,7 +50,7 @@ export default class extends Controller {
   // ============================
   commit() {
     const drafts = this.collectDrafts()
-    if (drafts.length === 0) return
+    if (!this.editModeValue && drafts.length === 0) return
 
     const form = this.element.closest("form")
     if (!form) return
@@ -124,16 +124,6 @@ export default class extends Controller {
 
   commitOrBack() {
     const drafts = this.collectDrafts()
-
-    if (drafts.length === 0) {
-      if (this.editModeValue) {
-        window.location.href = `/workouts/${this.workoutId}`
-      } else {
-        const date = this.dateValue
-        window.location.href = `/workouts/select_exercise?date=${date}`
-      }
-      return
-    }
     this.commit()
   }
 
