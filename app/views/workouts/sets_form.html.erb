@@ -23,34 +23,35 @@
     <div data-controller="sets" data-sets-date-value="<%= params[:date] %>">
 
       <% if @previous_sets.present? %>
-        <div class="previous-sets">
-          <div class="previous-sets__header">
-            前回：<%= @previous_workout.workout_date.strftime("%Y/%m/%d") %>
-            <span
-            class="previous-sets__copy-icon"
-            data-action="click->sets#copyPrevious"
-            data-previous-sets="<%= h(@previous_sets.map { |s|
-              {
-                weight: s.weight,
-                reps: s.reps
-                }
-              }.to_json) %>"
-            >
-            📋
+        <div class="previous-workout-card">
+          <div class="previous-workout-header">
+            <span class="previous-workout-date">
+              前回 <%= @previous_workout.workout_date.strftime("%Y/%m/%d") %>
             </span>
+      
+            <button
+              type="button"
+              class="previous-workout-copy"
+              data-action="click->sets#copyPrevious"
+              data-previous-sets="<%= h(@previous_sets.map { |s|
+                { weight: s.weight, reps: s.reps }
+              }.to_json) %>"
+              aria-label="前回のセットをコピー"
+            >
+              ⧉
+            </button>
           </div>
       
-          <ul class="previous-sets__list">
-            <% @previous_sets.each_with_index do |set, index| %>
-              <li class="previous-sets__item">
-                <%= index + 1 %>
-                <%= set.weight %>kg : <%= set.reps %>reps
-              </li>
+          <div class="previous-workout-sets">
+            <% @previous_sets.each do |set| %>
+              <span class="previous-set-chip">
+                <%= set.weight %>kg × <%= set.reps %>
+              </span>
             <% end %>
-          </ul>
+          </div>
         </div>
       <% end %>
-
+  
       <div class="floating-back" data-action="click->sets#commitOrBack">←</div>
 
       <div data-sets-target="list">

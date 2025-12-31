@@ -478,3 +478,47 @@ main.container {
   transform: scale(0.94);
   background: rgba(16, 34, 54, 0.95);
 }
+
+.previous-workout-card {
+  background: #0f2033;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.previous-workout-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.previous-workout-date {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.previous-workout-copy {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.8);
+  font-size: 1.1rem;
+}
+
+.previous-workout-copy:hover {
+  color: #4da3ff;
+}
+
+.previous-workout-sets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.previous-set-chip {
+  background: rgba(255,255,255,0.08);
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+}
