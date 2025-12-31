@@ -32,8 +32,7 @@
             data-previous-sets="<%= h(@previous_sets.map { |s|
               {
                 weight: s.weight,
-                reps: s.reps,
-                memo: s.memo
+                reps: s.reps
                 }
               }.to_json) %>"
             >
@@ -45,8 +44,7 @@
             <% @previous_sets.each_with_index do |set, index| %>
               <li class="previous-sets__item">
                 <%= index + 1 %>
-                <%= set.weight %>kg :
-                <%= set.reps %>reps
+                <%= set.weight %>kg : <%= set.reps %>reps
               </li>
             <% end %>
           </ul>
