@@ -17,6 +17,8 @@ class WorkoutsController < ApplicationController
 
     @workout = current_user.workouts.new(workout_date: params[:date])
 
+    set_previous_sets
+
     render :sets_form
   end
 
@@ -51,5 +53,23 @@ class WorkoutsController < ApplicationController
 
   def set_workout
     @workout = current_user.workouts.find(params[:id])
+  end
+
+  def set_previous_sets
+    previous_set = WorkoutSet
+      .joins(:workout)
+      .where(exercise_id: @exercise.id)
+      .where(workouts: { user_id: current_user.id })
+      .where.not(workouts: { workout_date: params[:date] })
+      .order("workouts.workout_date DESC, workouts.created_at DESC")
+      .first
+
+    return unless previous_set
+
+    @previous_workout = previous_set.workout
+    @previous_sets = @previous_workout
+      .workout_sets
+      .where(exercise_id: @exercise.id)
+      .order(:created_at)
   end
 end

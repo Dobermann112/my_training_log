@@ -147,4 +147,56 @@ export default class extends Controller {
   
     return deletedIds
   }  
+
+  copyPrevious(event) {
+    const previousSets = JSON.parse(event.currentTarget.dataset.previousSets)
+
+    this.clearDrafts()
+    this.clearRows()
+
+    previousSets.forEach(() => { this.add() })
+
+    const rows = this.element.querySelectorAll(".set-input-row")
+
+    rows.forEach((row, index) => {
+      const data = previousSets[index]
+
+      const weightInput = row.querySelector('input[data-workout-set-create-target="weight"]')
+      const repsInput   = row.querySelector('input[data-workout-set-create-target="reps"]')
+
+      if (weightInput) weightInput.value = data.weight
+      if (repsInput)   repsInput.value   = data.reps
+    })
+
+    requestAnimationFrame(() => {
+      rows.forEach(row => {
+        row.querySelectorAll(
+          'input[data-workout-set-create-target="weight"], ' +
+          'input[data-workout-set-create-target="reps"]'
+        ).forEach(el => {
+          el.dispatchEvent(new Event("input", { bubbles: true }))
+        })
+      })
+
+      console.log("drafts saved after stimulus connect")
+    })
+  }
+
+  clearDrafts() {
+    Object.keys(localStorage)
+      .filter(key => key.startsWith("workout_set_draft:"))
+      .forEach(key => localStorage.removeItem(key))
+  }
+
+  clearRows() {
+    const rows = this.element.querySelectorAll(".set-input-row")
+    console.log("before clear:", rows.length)
+    
+    rows.forEach(row => row.remove())
+
+    console.log(
+      "after clear:",
+      this.element.querySelectorAll(".set-input-row").length
+    )
+  }
 }
