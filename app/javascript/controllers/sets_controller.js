@@ -149,7 +149,17 @@ export default class extends Controller {
   }  
 
   copyPrevious(event) {
-    const sets = JSON.parse(event.currentTarget.dataset.previousSets)
-    console.log("previous sets:", sets)
+    const previousSets = JSON.parse(event.currentTarget.dataset.previousSets)
+
+    this.clearDrafts()
+
+    console.log("drafts cleared")
+    console.log("previous sets:", previousSets)
+  }
+
+  clearDrafts() {
+    Object.keys(localStorage)
+      .filter(key => key.startsWith("workout_set_draft:"))
+      .forEach(key => localStorage.removeItem(key))
   }
 }
