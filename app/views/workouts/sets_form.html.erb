@@ -13,6 +13,25 @@
 
 <div id="set_form_errors"></div>
 
+<% if @previous_sets.present? %>
+  <div class="previous-sets">
+    <div class="previous-sets__header">
+      前回：<%= @previous_workout.workout_date.strftime("%Y/%m/%d") %>
+      <span class="previous-sets__copy-icon">📋</span>
+    </div>
+
+    <ul class="previous-sets__list">
+      <% @previous_sets.each_with_index do |set, index| %>
+        <li class="previous-sets__item">
+          <%= index + 1 %>
+          <%= set.weight %>kg :
+          <%= set.reps %>reps
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
 <div class="exercise-card">
 
   <%= form_with(model: @workout, url: workouts_path) do |f| %>
