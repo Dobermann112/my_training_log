@@ -17,7 +17,18 @@
   <div class="previous-sets">
     <div class="previous-sets__header">
       前回：<%= @previous_workout.workout_date.strftime("%Y/%m/%d") %>
-      <span class="previous-sets__copy-icon">📋</span>
+      <span
+       class="previous-sets__copy-icon"
+       data-previous-sets="<%= h(@previous_sets.map { |s|
+         {
+           weight: s.weight,
+           reps: s.reps,
+           memo: s.memo
+          }
+        }.to_json) %>"
+      >
+       📋
+      </span>
     </div>
 
     <ul class="previous-sets__list">
