@@ -147,4 +147,9 @@ export default class extends Controller {
   
     return deletedIds
   }  
+
+  copyPrevious(event) {
+    const sets = JSON.parse(event.currentTarget.dataset.previousSets)
+    console.log("previous sets:", sets)
+  }
 }
