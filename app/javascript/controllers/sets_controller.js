@@ -124,6 +124,12 @@ export default class extends Controller {
 
   commitOrBack() {
     const drafts = this.collectDrafts()
+
+    if (!this.editModeValue && drafts.length === 0) {
+      window.location.href = `/workouts/select_exercise?date=${this.dateValue}`
+      return
+    }
+    
     this.commit()
   }
 
