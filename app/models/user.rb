@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   has_many :workouts, dependent: :destroy
+  has_many :avatar_part_stats, dependent: :destroy
 
   enum :gender, { unspecified: 0, male: 1, female: 2 }
 
