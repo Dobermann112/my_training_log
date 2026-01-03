@@ -10,9 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_25_084541) do
+ActiveRecord::Schema[7.1].define(version: 2026_01_02_132039) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "avatar_part_stats", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "avatar_part", null: false
+    t.integer "point", default: 0, null: false
+    t.datetime "last_trained_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "avatar_part"], name: "index_avatar_part_stats_on_user_id_and_avatar_part", unique: true
+    t.index ["user_id"], name: "index_avatar_part_stats_on_user_id"
+  end
 
   create_table "body_parts", force: :cascade do |t|
     t.string "name", null: false
@@ -80,6 +91,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_25_084541) do
     t.index ["user_id"], name: "index_workouts_on_user_id"
   end
 
+  add_foreign_key "avatar_part_stats", "users"
   add_foreign_key "exercises", "body_parts"
   add_foreign_key "exercises", "users"
   add_foreign_key "workout_sets", "exercises"
