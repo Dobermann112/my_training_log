@@ -48,6 +48,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     get :sample, to: "samples#index"
+    resource :avatar, only: :show
     resources :events, only: :index
   end
 
