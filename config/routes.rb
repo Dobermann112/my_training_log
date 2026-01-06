@@ -42,6 +42,8 @@ Rails.application.routes.draw do
 
   resources :calendars, only: :index
 
+  resources :profiles, only: :index
+
   namespace :stats do
     get "graphs", to: "graphs#index"
   end
