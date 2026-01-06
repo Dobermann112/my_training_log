@@ -1,4 +1,7 @@
 import type { AvatarScores, AvatarLevel } from "./types";
+import UpperBodyPart from "./parts/UpperBodyPart";
+import CorePart from "./parts/CorePart";
+import LowerBodyPart from "./parts/LowerBodyPart";
 
 type Props = {
   scores: AvatarScores;
@@ -17,9 +20,9 @@ const AvatarView = ({ scores }: Props) => {
 
   return (
     <div>
-      <div>Upper: {upperLevel}</div>
-      <div>Core: {coreLevel}</div>
-      <div>Lower: {lowerLevel}</div>
+      <UpperBodyPart level={upperLevel} />
+      <CorePart level={coreLevel} />
+      <LowerBodyPart level={lowerLevel} />
     </div>
   );
 };
