@@ -1,4 +1,6 @@
 class WorkoutSet < ApplicationRecord
+  after_create :increment_avatar_score
+
   enum status: { draft: 0, confirmed: 1 }
 
   belongs_to :workout
@@ -20,6 +22,10 @@ class WorkoutSet < ApplicationRecord
   scope :between, ->(from, to) { joins(:workout).merge(Workout.between(from, to)) }
 
   private
+
+  def increment_avatar_score
+    Avatar::ScoreIncrementService.new(self).call
+  end
 
   def at_least_one_value_present
     errors.add(:base, "重量、回数、メモのいずれかを入力してください") if weight.blank? && reps.blank? && memo.blank?

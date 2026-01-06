@@ -14,8 +14,6 @@ module Avatar
     end
 
     def call
-      return unless should_increment?
-
       increment_point!
     end
 
@@ -23,13 +21,10 @@ module Avatar
 
     attr_reader :workout_set
 
-    def should_increment?
-      workout_set.created_at == workout_set.updated_at
-    end
-
     def increment_point!
-      avatar_part_stat.increment!(:point, 1)
-      avatar_part_stat.update!(last_trained_at: Time.current)
+      stat = avatar_part_stat
+      stat.increment!(:point, 1)
+      stat.update!(last_trained_at: Time.current)
     end
 
     def avatar_part
