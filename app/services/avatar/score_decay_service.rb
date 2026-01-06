@@ -1,11 +1,14 @@
+# app/services/avatar/score_decay_service.rb
 module Avatar
   class ScoreDecayService
+    DECAY_PER_DAY = 5
+
     def initialize(avatar_part_stat)
       @avatar_part_stat = avatar_part_stat
     end
 
     def call
-      apply_decay!
+      decayed_point
     end
 
     private
@@ -19,18 +22,11 @@ module Avatar
     end
 
     def decay_amount
-      elapsed_days
+      elapsed_days * DECAY_PER_DAY
     end
 
-    def apply_decay!
-      return if decay_amount <= 0
-
-      new_point = [avatar_part_stat.point - decay_amount, 0].max
-
-      avatar_part_stat.update!(
-        point: new_point,
-        last_trained_at: Time.current
-      )
+    def decayed_point
+      [avatar_part_stat.point - decay_amount, 0].max
     end
   end
 end
