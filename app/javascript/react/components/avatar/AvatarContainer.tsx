@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { AvatarScores } from "./types";
+import AvatarView from "./AvatarView";
 
 const AvatarContainer = () => {
   const [scores, setScores] = useState<AvatarScores | null>(null);
@@ -14,7 +15,9 @@ const AvatarContainer = () => {
     fetchAvatar();
   }, []);
 
-  return null;
+  if (!scores) return null;
+
+  return <AvatarView scores={scores} />;
 };
 
 export default AvatarContainer;
