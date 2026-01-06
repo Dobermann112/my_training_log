@@ -1,7 +1,5 @@
 import type { AvatarScores, AvatarLevel } from "./types";
-import UpperBodyPart from "./parts/UpperBodyPart";
-import CorePart from "./parts/CorePart";
-import LowerBodyPart from "./parts/LowerBodyPart";
+import AvatarPart from "./parts/AvatarPart";
 
 type Props = {
   scores: AvatarScores;
@@ -14,15 +12,20 @@ const getAvatarLevel = (point: number): AvatarLevel => {
 };
 
 const AvatarView = ({ scores }: Props) => {
-  const upperLevel = getAvatarLevel(scores.upper_body);
-  const coreLevel = getAvatarLevel(scores.core);
-  const lowerLevel = getAvatarLevel(scores.lower_body);
-
   return (
-    <div>
-      <UpperBodyPart level={upperLevel} />
-      <CorePart level={coreLevel} />
-      <LowerBodyPart level={lowerLevel} />
+    <div className="avatar">
+      <AvatarPart
+        part="upper_body"
+        level={getAvatarLevel(scores.upper_body)}
+      />
+      <AvatarPart
+        part="core"
+        level={getAvatarLevel(scores.core)}
+      />
+      <AvatarPart
+        part="lower_body"
+        level={getAvatarLevel(scores.lower_body)}
+      />
     </div>
   );
 };

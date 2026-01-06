@@ -522,3 +522,17 @@ main.container {
   border-radius: 999px;
   font-size: 0.85rem;
 }
+
+.avatar {
+  position: relative;
+  width: 200px;   /* 仮。後で調整 */
+  height: 200px;  /* 仮。後で調整 */
+}
+
+.avatar img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+}
