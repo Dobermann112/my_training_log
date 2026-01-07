@@ -16,3 +16,9 @@ import { createIcons, icons } from "lucide";
 document.addEventListener("turbo:load", () => {
     createIcons({ icons });
 });
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js");
+  });
+}
