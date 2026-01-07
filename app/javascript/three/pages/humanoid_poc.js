@@ -1,7 +1,9 @@
 import * as THREE from "three"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 
 let renderer = null
+let controls = null
 
 export function initHumanoidPoc() {
   const root = document.getElementById("three-poc-root")
@@ -19,7 +21,7 @@ export function initHumanoidPoc() {
   const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000)
   camera.position.set(0, 1.6, 3)
 
-  // Light（重要）
+  // Light
   const light = new THREE.DirectionalLight(0xffffff, 1)
   light.position.set(1, 2, 3)
   scene.add(light)
@@ -32,14 +34,18 @@ export function initHumanoidPoc() {
   renderer.setSize(width, height)
   root.appendChild(renderer.domElement)
 
-  // GLB Loader
+  // Controls（追加）
+  controls = new OrbitControls(camera, renderer.domElement)
+  controls.target.set(0, 1.4, 0)
+  controls.update()
+
+  // Loader
   const loader = new GLTFLoader()
   loader.load(
     "/models/humanoid.glb",
     (gltf) => {
-      const model = gltf.scene
-      scene.add(model)
-      renderer.render(scene, camera)
+      scene.add(gltf.scene)
+      animate()
     },
     undefined,
     (error) => {
@@ -47,5 +53,11 @@ export function initHumanoidPoc() {
     }
   )
 
-  console.log("[Three.js PoC] humanoid loaded")
+  function animate() {
+    requestAnimationFrame(animate)
+    controls.update()
+    renderer.render(scene, camera)
+  }  
+
+  console.log("[Three.js PoC] orbit controls enabled")
 }
