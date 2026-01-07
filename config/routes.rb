@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'three_poc/humanoid'
   devise_for :users, controllers: {
     omniauth_callbacks: "users/omniauth_callbacks"
   }
@@ -62,6 +63,8 @@ Rails.application.routes.draw do
   end
 
   get "dashboard/stats", to: "dashboard#stats"
+
+  get "three_poc/humanoid", to: "three_poc#humanoid"
 
   get "up" => "rails/health#show", as: :rails_health_check
 end
