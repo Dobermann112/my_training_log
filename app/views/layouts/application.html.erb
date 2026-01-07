@@ -10,7 +10,8 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
+    <link rel="manifest" href="/manifest.json">
+    
     <% if !user_signed_in? && controller_name == "sessions" && action_name == "new" %>
       <meta property="og:title" content="My Training Log | トレーニングを「続けられる」記録アプリ" />
       <meta property="og:description" content="筋トレ・ワークアウトをカレンダー形式で記録。部位別・種目別に振り返りができるトレーニングログアプリ。" />
