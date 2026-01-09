@@ -17,6 +17,12 @@ export function initHumanoidPoc() {
   const scene = new THREE.Scene()
   scene.background = new THREE.Color(0x000000)
 
+  const avatarParts = {
+    upper_body: null,
+    core: null,
+    lower_body: null,
+  }
+
   // Camera
   const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000)
   camera.position.set(0, 1.6, 3)
@@ -41,23 +47,45 @@ export function initHumanoidPoc() {
 
   // Loader
   const loader = new GLTFLoader()
-  loader.load(
-    "/models/humanoid.glb",
-    (gltf) => {
-      scene.add(gltf.scene)
-      animate()
-    },
-    undefined,
-    (error) => {
-      console.error("[Three.js PoC] GLB load error", error)
-    }
-  )
+
+  loadPart("upper_body", "base")
+  loadPart("core", "base")
+  loadPart("lower_body", "base")
+
+  animate()
 
   function animate() {
     requestAnimationFrame(animate)
     controls.update()
     renderer.render(scene, camera)
   }  
+
+  function loadPart(part, level) {
+    const url = `/models/avatar/${part}_${level}.glb`
+  
+    // 既存パーツがあれば削除（差し替え）
+    if (avatarParts[part]) {
+      scene.remove(avatarParts[part])
+      avatarParts[part] = null
+    }
+  
+    loader.load(
+      url,
+      (gltf) => {
+        const obj = gltf.scene
+        scene.add(obj)
+        avatarParts[part] = obj
+        console.log("[Avatar] loaded", part, level)
+      },
+      undefined,
+      (error) => {
+        console.error("[Avatar] load error", part, level, error)
+      }
+    )
+  }  
+
+  setTimeout(() => loadPart("upper_body", "level_3"), 1500)
+  setTimeout(() => loadPart("lower_body", "level_7"), 3000)
 
   console.log("[Three.js PoC] orbit controls enabled")
 }
