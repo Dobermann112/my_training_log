@@ -1,7 +1,7 @@
 import { createRoot } from "react-dom/client";
 import ApiSample from "./components/ApiSample";
 import CalendarPage from "./pages/CalendarPage";
-import AvatarContainer from "./components/avatar/AvatarContainer";
+import AvatarView from "./components/avatar/AvatarView"
 
 document.addEventListener("turbo:load", () => {
   // API Sample root
@@ -22,7 +22,7 @@ document.addEventListener("turbo:load", () => {
   const avatarRoot = document.getElementById("avatar-root");
   if (avatarRoot) {
     import("react-dom/client").then(({ createRoot }) => {
-      createRoot(avatarRoot).render(<AvatarContainer />);
+      createRoot(avatarRoot).render(<AvatarView />);
     });
   }
 });
