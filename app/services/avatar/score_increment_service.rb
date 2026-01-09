@@ -13,6 +13,10 @@ module Avatar
       @workout_set = workout_set
     end
 
+    def level
+      Avatar::LevelThresholds.level_for(avatar_part_stat.point)
+    end      
+
     def call
       increment_point!
     end
