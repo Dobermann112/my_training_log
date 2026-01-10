@@ -1,15 +1,29 @@
 <div class="container my-3">
 
-  <div class="avatar-section">
-    <div class="avatar-background"></div>
-    <div class="avatar-canvas-wrapper">
-      <div id="avatar-root"></div>
-    </div>
-  </div>
+  <!-- アバター全体 -->
+  <div class="avatar-block">
 
-  <div class="avatar-actions text-end mt-2">
-    <%= link_to "プロフィール詳細",
-                profiles_path,
-                class: "btn btn-primary btn-sm" %>
+    <!-- ヘッダー行（タイトル + アクション） -->
+    <div class="avatar-header">
+      <div class="avatar-title">
+        <h5>Training Avatar</h5>
+        <span class="avatar-subtitle">現在のアバターステータス</span>
+      </div>
+
+      <%= link_to profiles_path,
+          class: "avatar-detail-btn",
+          aria: { label: "プロフィール詳細" } do %>
+        <i class="bi bi-gear-fill"></i>
+      <% end %>
+    </div>
+
+    <!-- アバター表示エリア -->
+    <div class="avatar-section">
+      <div class="avatar-background"></div>
+      <div class="avatar-canvas-wrapper">
+        <div id="avatar-root"></div>
+      </div>
+    </div>
+
   </div>
 </div>
