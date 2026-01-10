@@ -16,7 +16,7 @@ const avatarParts = {
 export function initAvatarViewer(levels) {
   const root = document.getElementById("avatar-root")
   if (!root) return
-  if (renderer) return
+  if (renderer && root.querySelector("canvas")) return
 
   root.replaceChildren()
 

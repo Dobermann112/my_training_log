@@ -1,19 +1,15 @@
-<div class="container my-0">
-  <div class="position-relative text-center">
+<div class="container my-3">
 
-    <!-- 右上：プロフィール詳細画面へ -->
-    <div class="position-absolute top-0 end-0">
-      <%= link_to "プロフィール詳細",
-                  profiles_path,
-                  class: "btn btn-outline-secondary btn-sm" %>
+  <div class="avatar-section">
+    <div class="avatar-background"></div>
+    <div class="avatar-canvas-wrapper">
+      <div id="avatar-root"></div>
     </div>
+  </div>
 
-    <!-- アバター表示エリア -->
-    <div class="avatar-section">
-      <div class="avatar-background"></div>
-      <div class="avatar-canvas-wrapper">
-        <div id="avatar-root"></div>
-      </div>
-    </div>
+  <div class="avatar-actions text-end mt-2">
+    <%= link_to "プロフィール詳細",
+                profiles_path,
+                class: "btn btn-primary btn-sm" %>
   </div>
 </div>
