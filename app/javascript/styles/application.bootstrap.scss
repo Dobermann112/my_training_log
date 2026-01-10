@@ -541,7 +541,6 @@ main.container {
   position: relative;
   width: 100%;
   height: 70vh;
-  max-height: 80vh;
   overflow: hidden;
 }
 
@@ -553,13 +552,14 @@ main.container {
 }
 
 .avatar-canvas-wrapper {
-  position: relative;
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  inset: 0;
   z-index: 1;
+  pointer-events: auto;
 }
 
 #avatar-root {
+  position:relative;
   width: 100%;
   height: 100%;
 }

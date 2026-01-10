@@ -18,31 +18,28 @@ export function initAvatarViewer(levels) {
   if (!root) return
   if (renderer) return
 
+  root.replaceChildren()
+
   const width = root.clientWidth
   const height = root.clientHeight
 
-  // Scene
   scene = new THREE.Scene()
-  scene.background = new THREE.Color(0x000000)
 
-  // Camera
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
+  renderer.setSize(width, height)
+  renderer.setClearColor(0x000000, 0) // ★ 透明化
+  root.appendChild(renderer.domElement)
+
   camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000)
-  camera.position.set(0, 1.6, 3)
+  camera.position.set(0, 50, 150)
 
-  // Light
   const light = new THREE.DirectionalLight(0xffffff, 1)
   light.position.set(1, 2, 3)
   scene.add(light)
   scene.add(new THREE.AmbientLight(0xffffff, 0.4))
 
-  // Renderer
-  renderer = new THREE.WebGLRenderer({ antialias: true })
-  renderer.setSize(width, height)
-  root.appendChild(renderer.domElement)
-
-  // Controls
   controls = new OrbitControls(camera, renderer.domElement)
-  controls.target.set(0, 1.4, 0)
+  controls.target.set(0, 50, 0)
   controls.update()
 
   loadPart("upper_body", levels.upper_body)
@@ -62,8 +59,15 @@ function loadPart(part, level) {
   }
 
   loader.load(url, (gltf) => {
-    avatarParts[part] = gltf.scene
-    scene.add(gltf.scene)
+    const obj = gltf.scene
+
+    obj.position.set(0,0,0)
+    obj.scale.set(50,50,50)
+
+    avatarParts[part] = obj
+    scene.add(obj)
+
+    console.log("[Avatar loaded]", part, level, obj)
   })
 }
 
