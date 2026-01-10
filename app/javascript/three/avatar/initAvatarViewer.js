@@ -16,33 +16,48 @@ const avatarParts = {
 export function initAvatarViewer(levels) {
   const root = document.getElementById("avatar-root")
   if (!root) return
-  if (renderer) return
+  if (renderer && root.querySelector("canvas")) return
+
+  root.replaceChildren()
 
   const width = root.clientWidth
   const height = root.clientHeight
 
-  // Scene
   scene = new THREE.Scene()
-  scene.background = new THREE.Color(0x000000)
 
-  // Camera
-  camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000)
-  camera.position.set(0, 1.6, 3)
-
-  // Light
-  const light = new THREE.DirectionalLight(0xffffff, 1)
-  light.position.set(1, 2, 3)
-  scene.add(light)
-  scene.add(new THREE.AmbientLight(0xffffff, 0.4))
-
-  // Renderer
-  renderer = new THREE.WebGLRenderer({ antialias: true })
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
   renderer.setSize(width, height)
+  renderer.setClearColor(0x000000, 0) // ★ 透明化
   root.appendChild(renderer.domElement)
 
-  // Controls
+  camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000)
+  camera.position.set(0, 70, 95)
+
+  const keyLight = new THREE.DirectionalLight(0xffffff, 1.2)
+  keyLight.position.set(50, 100, 100)
+  scene.add(keyLight)
+
+  const fillLight = new THREE.DirectionalLight(0xffffff, 0.4)
+  fillLight.position.set(-50, 50, 100)
+  scene.add(fillLight)
+
+  const rimLight = new THREE.DirectionalLight(0xffffff, 0.6)
+  rimLight.position.set(0, 100, -100)
+  scene.add(rimLight)
+
+  scene.add(new THREE.AmbientLight(0xffffff, 0.2))
+
+
   controls = new OrbitControls(camera, renderer.domElement)
-  controls.target.set(0, 1.4, 0)
+  controls.target.set(0, 40, 0)
+  controls.enableZoom = true
+  controls.minDistance = 85
+  controls.maxDistance = 120
+
+  controls.enablePan = false
+
+  controls.minPolarAngle = Math.PI / 2 - 0.25 // 下から覗けない
+  controls.maxPolarAngle = Math.PI / 2 + 0.25 // 上から覗きすぎない
   controls.update()
 
   loadPart("upper_body", levels.upper_body)
@@ -62,8 +77,15 @@ function loadPart(part, level) {
   }
 
   loader.load(url, (gltf) => {
-    avatarParts[part] = gltf.scene
-    scene.add(gltf.scene)
+    const obj = gltf.scene
+
+    obj.position.set(0,40,0)
+    obj.scale.set(50, 50, 50)
+
+    avatarParts[part] = obj
+    scene.add(obj)
+
+    console.log("[Avatar loaded]", part, level, obj)
   })
 }
 
