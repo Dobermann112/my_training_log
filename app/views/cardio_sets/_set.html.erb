@@ -1,0 +1,28 @@
+<div id="<%= dom_id(set) %>" class="set-row mb-2">
+  <div class="d-flex justify-content-between align-items-center">
+    <div class="d-flex gap-3 align-items-center">
+      <span class="set-number"><%= set.set_number %></span>
+      <span>距離: <%= set.distance %>km</span>
+      <span>時間: <%= set.duration %></span>
+      <span>kcal: <%= set.calories %></span>
+    </div>
+
+    <div class="d-flex gap-2">
+      <%= link_to cardio_workout_cardio_set_path(cardio_workout, set),
+            data: {
+              turbo_method: :delete,
+              turbo_confirm: "このセットを削除しますか？",
+              set_uuid: set.id,
+              controller: "draft-cleanup",
+              action: "click->draft-cleanup#remove"
+            },
+            class: "btn btn-sm btn-outline-danger" do %>
+        <i class="bi bi-trash"></i>
+      <% end %>
+    </div>
+  </div>
+
+  <% if set.memo.present? %>
+    <div class="set-memo ms-4 mt-1"><%= set.memo %></div>
+  <% end %>
+</div>
