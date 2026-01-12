@@ -13,7 +13,7 @@ class WorkoutsController < ApplicationController
     @strength_sets = 
       WorkoutSet
         .joins(:workout)
-        .where(workout: { user_id: current_user.ud, workout_date: @date })
+        .where(workout: { user_id: current_user.id, workout_date: @date })
         .includes(:exercise)
         .order(:exercise_id, :created_at)
         .group_by(&:exercise)

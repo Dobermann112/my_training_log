@@ -2,7 +2,7 @@
 
 <%= form_with model: @cardio_workout, url: cardio_workouts_path do |f| %>
   <%= f.hidden_field :exercise_id, value: @exercise.id %>
-  <%= f.hidden_field :performed_on, value: @cardio_workout.performed_on %>
+  <%= f.hidden_field :performed_on, value: @date %>
 
   <div>
     <label>距離（km）</label>
