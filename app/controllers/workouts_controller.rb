@@ -3,25 +3,15 @@ class WorkoutsController < ApplicationController
   before_action :set_workout, only: [:show, :destroy]
 
   def show
-    @date = 
-      if @workout&.persisted?
-        @workout.workout_date 
-      else
-        params[:date]
-      end
+    @date = @workout.workout_date
+    load_training_sets
+  end
 
-    @strength_sets = 
-      WorkoutSet
-        .joins(:workout)
-        .where(workout: { user_id: current_user.id, workout_date: @date })
-        .includes(:exercise)
-        .order(:exercise_id, :created_at)
-        .group_by(&:exercise)
-
-    @cardio_workouts =
-      CardioWorkout
-        .where(user_id: current_user.id, performed_on: @date)
-        .includes(:exercise, :cardio_sets)
+  def by_date
+    @date = params[:date]
+    @workout = current_user.workouts.find_by(workout_date: @date)
+    load_training_sets
+    render :show
   end
 
   def new
@@ -72,6 +62,21 @@ class WorkoutsController < ApplicationController
   def set_workout
     @workout = current_user.workouts.find_by(id: params[:id])
   end
+
+  def load_training_sets
+    @strength_sets = 
+      WorkoutSet
+      .joins(:workout)
+      .where(workouts: { user_id: current_user.id, workout_date: @date })
+      .includes(:exercise)
+      .order(:exercise_id, :created_at)
+      .group_by(&:exercise)
+
+    @cardio_workouts =
+      CardioWorkout
+        .where(user_id: current_user.id, performed_on: @date)
+        .includes(:exercise, :cardio_sets)
+  end  
 
   def set_previous_sets
     previous_set = WorkoutSet

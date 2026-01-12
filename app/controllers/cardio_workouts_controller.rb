@@ -66,7 +66,7 @@ class CardioWorkoutsController < ApplicationController
       workout_path(workout)
     else
       # show は date 表示が可能なので id はダミーにしない
-      workouts_path(date: date) # もしくは show を date 対応にしているなら適宜
+      by_date_workouts_path(date: date) # もしくは show を date 対応にしているなら適宜
     end
   end
 end

@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   resources :workouts do
     collection do
       get :select_exercise
+      get :by_date
     end
 
     resources :workout_sets, only: [:update, :destroy] do
