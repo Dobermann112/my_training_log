@@ -1,24 +1,63 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
   <h2 class="m-0">
-    <%= @workout.workout_date %> のトレーニング
+    <%= @date %> のトレーニング
   </h2>
 
-  <%= link_to workout_path(@workout),
-        data: { turbo_method: :delete, turbo_confirm: "削除しますか？" },
-        class: "btn btn-sm btn-outline-danger" do %>
+  <% if @workout&.persisted? %>
+    <%= link_to workout_path(@workout),
+          data: { turbo_method: :delete, turbo_confirm: "削除しますか？" },
+          class: "btn btn-sm btn-outline-danger" do %>
       <i class="bi bi-trash"></i>
     <% end %>
+  <% end %>  
 </div>
 
 <hr>
 
 <h3 class="mt-4">セット記録</h3>
 
-<%= link_to "種目を追加", select_exercise_workouts_path(date: @workout.workout_date),
-            class: "btn btn-warning mt-2" %>
+<% if @workout&.persisted? %>
+  <%= link_to "種目を追加", select_exercise_workouts_path(date: @date),
+              class: "btn btn-warning mt-2" %>
+<% end %>
 
 <div id="set_form_errors"></div>
 
 <div id="workout_sets">
-  <%= render "workouts/exercise_sets", exercise_sets: @exercise_sets, workout: @workout %>
+  <% if @strength_sets.present? %>
+    <%= render "workouts/exercise_sets", exercise_sets: @strength_sets, workout: @workout %>
+  <% else %>
+    <p class="text-muted mt-3">筋トレの記録はありません。</p>
+  <% end %>
 </div>
+
+<hr>
+
+<h3 class="mt-4">有酸素</h3>
+
+<% if @cardio_workouts.present? %>
+  <% @cardio_workouts.each do |cw| %>
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title"><%= cw.exercise.name %></h5>
+
+        <% cw.cardio_sets.each_with_index do |set, i| %>
+          <div class="border rounded p-2 mb-2">
+            <strong>セット <%= i + 1 %></strong><br>
+            距離: <%= set.distance %> km /
+            時間: <%= set.duration %> /
+            kcal: <%= set.calories %><br>
+
+            <% if set.memo.present? %>
+              <div class="text-muted mt-1"><%= set.memo %></div>
+            <% end %>
+          </div>
+        <% end %>
+
+        <!-- 編集・削除は Step3 で Ajax 化 -->
+      </div>
+    </div>
+  <% end %>
+<% else %>
+  <p class="text-muted mt-3">有酸素の記録はありません。</p>
+<% end %>

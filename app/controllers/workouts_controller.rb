@@ -3,7 +3,25 @@ class WorkoutsController < ApplicationController
   before_action :set_workout, only: [:show, :destroy]
 
   def show
-    @exercise_sets = @workout.workout_sets.includes(:exercise).order(:exercise_id, :created_at).group_by(&:exercise)
+    @date = 
+      if @workout&.persisted?
+        @workout.workout_date 
+      else
+        params[:date]
+      end
+
+    @strength_sets = 
+      WorkoutSet
+        .joins(:workout)
+        .where(workout: { user_id: current_user.ud, workout_date: @date })
+        .includes(:exercise)
+        .order(:exercise_id, :created_at)
+        .group_by(&:exercise)
+
+    @cardio_workouts =
+      CardioWorkout
+        .where(user_id: current_user.id, performed_on: @date)
+        .includes(:exercise, :cardio_sets)
   end
 
   def new
@@ -52,7 +70,7 @@ class WorkoutsController < ApplicationController
   private
 
   def set_workout
-    @workout = current_user.workouts.find(params[:id])
+    @workout = current_user.workouts.find_by(id: params[:id])
   end
 
   def set_previous_sets

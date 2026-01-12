@@ -12,7 +12,8 @@
       <% exercises.first(2).each do |ex| %>
         <div class="exercise-option py-2"
              data-action="click->exercise-select#select"
-             data-id="<%= ex.id %>">
+             data-id="<%= ex.id %>"
+             data-body-part="<%= body_part.name %>">
           <%= ex.name %>
         </div>
       <% end %>
@@ -25,7 +26,8 @@
           <% remaining.each do |ex| %>
             <div class="exercise-option py-2"
                  data-action="click->exercise-select#select"
-                 data-id="<%= ex.id %>">
+                 data-id="<%= ex.id %>"
+                 data-body-part="<%= body_part.name %>">
               <%= ex.name %>
             </div>
           <% end %>
