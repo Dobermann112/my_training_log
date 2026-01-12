@@ -37,6 +37,8 @@ Rails.application.routes.draw do
 
   resources :workout_sets, only: [:create]
 
+  resources :cardio_workouts, only: [:new, :create]
+
   resources :body_parts, only: [:index] do
     resources :exercises
   end
