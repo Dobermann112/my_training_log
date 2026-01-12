@@ -1,0 +1,20 @@
+<% if cardio_workouts.present? %>
+  <% cardio_workouts.each do |cw| %>
+    <div class="exercise-card mb-4">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h4 class="m-0"><%= cw.exercise.name %>（<%= cw.cardio_sets.size %>セット）</h4>
+
+        <%= link_to edit_group_cardio_workout_cardio_sets_path(cw),
+              class: "btn btn-sm btn-outline-warning" do %>
+          <i class="bi bi-pencil"></i>
+        <% end %>
+      </div>
+
+      <% cw.cardio_sets.order(:set_number).each do |set| %>
+        <%= render "cardio_sets/set", set: set, cardio_workout: cw %>
+      <% end %>
+    </div>
+  <% end %>
+<% else %>
+  <p>まだ有酸素の記録はありません。</p>
+<% end %>
