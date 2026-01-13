@@ -1,0 +1,46 @@
+<div class="exercise-title-card mb-3 p-3 text-center">
+  <h3 class="m-0"><%= @exercise.name %></h3>
+</div>
+
+<div id="set_form_errors"></div>
+
+<div class="exercise-card">
+
+  <%= form_with url: cardio_workouts_path, method: :post do %>
+
+    <%= hidden_field_tag :performed_on, @date %>
+    <%= hidden_field_tag :exercise_id, @exercise.id %>
+
+    <div data-controller="cardio-sets"
+         data-cardio-sets-date-value="<%= @date %>">
+
+      <div class="floating-back"
+           data-action="click->cardio-sets#commitOrBack">←</div>
+
+      <div data-cardio-sets-target="list">
+      </div>
+
+      <template data-cardio-sets-target="template">
+        <div class="set-input-row mb-3 p-3 rounded"
+             data-controller="cardio-set-create">
+
+          <div class="set-number-label mb-2 fw-bold"
+               data-cardio-sets-target="number">
+            セット1
+          </div>
+
+          <%= render "cardio_sets/form_fields", set: nil %>
+        </div>
+      </template>
+
+      <button type="button"
+              class="btn btn-secondary w-100 mt-2"
+              data-action="cardio-sets#add">
+        ＋ セットを追加
+      </button>
+
+    </div>
+
+  <% end %>
+
+</div>

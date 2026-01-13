@@ -1,0 +1,105 @@
+import { Controller } from "@hotwired/stimulus"
+
+export default class extends Controller {
+  static targets = ["list", "template", "number"]
+  static values = { date: String, editMode: Boolean }
+
+  connect() {
+    this.activeSetUuids = new Set()
+
+    this.listTarget.querySelectorAll(".set-input-row").forEach(row => {
+      const uuid = row.dataset.setUuid
+      if (uuid) this.activeSetUuids.add(uuid)
+    })
+
+    if (!this.editModeValue && this.listTarget.children.length === 0) {
+      this.add()
+    }
+  }
+
+  add() {
+    const fragment = this.templateTarget.content.cloneNode(true)
+    const rowEl = fragment.querySelector(".set-input-row")
+
+    const uuid = crypto.randomUUID()
+    rowEl.dataset.setUuid = uuid
+    this.activeSetUuids.add(uuid)
+
+    this.listTarget.appendChild(rowEl)
+    this.updateNumbers()
+  }
+
+  updateNumbers() {
+    this.listTarget.querySelectorAll(".set-input-row").forEach((row, i) => {
+      const el = row.querySelector("[data-cardio-sets-target='number']")
+      if (el) el.textContent = `セット${i + 1}`
+    })
+  }
+
+  commit(event) {
+    const form = this.element.closest("form")
+    if (!form) return
+  
+    // 既存 hidden input を削除
+    form.querySelectorAll("[data-draft-input]").forEach(el => el.remove())
+  
+    const drafts = this.collectDrafts()
+    if (drafts.length === 0) return
+  
+    drafts.forEach(draft => {
+      this.appendHidden(form, `sets[${draft.uuid}][distance]`, draft.distance)
+      this.appendHidden(form, `sets[${draft.uuid}][duration]`, draft.duration)
+      this.appendHidden(form, `sets[${draft.uuid}][calories]`, draft.calories)
+      this.appendHidden(form, `sets[${draft.uuid}][pace]`, draft.pace)
+      this.appendHidden(form, `sets[${draft.uuid}][memo]`, draft.memo)
+    })
+  
+    form.requestSubmit()
+  }
+
+  commitOrBack() {
+    const drafts = this.collectDrafts()
+
+    if (!this.editModeValue && drafts.length === 0) {
+        if (!this.dateValue) return
+        window.location.href = `/workouts/select_exercise?date=${this.dateValue}`
+        return
+    }
+    
+    this.commit()
+  }
+  
+  appendHidden(form, name, value) {
+    const input = document.createElement("input")
+    input.type = "hidden"
+    input.name = name
+    input.value = value ?? ""
+    input.dataset.draftInput = "true"
+    form.appendChild(input)
+  }
+  
+  collectDrafts() {
+    const drafts = []
+  
+    this.listTarget.querySelectorAll(".set-input-row").forEach(row => {
+      const uuid = row.dataset.setUuid
+      if (!uuid) return
+  
+      const raw = localStorage.getItem(`cardio_set_draft:${uuid}`)
+      if (!raw) return
+  
+      try {
+        const data = JSON.parse(raw)
+        if (this.validDraft(data)) {
+          drafts.push({ uuid, ...data })
+        }
+      } catch {}
+    })
+  
+    return drafts
+  }
+  
+  validDraft(data) {
+    return data.distance || data.duration || data.calories || data.pace || data.memo
+  }  
+}

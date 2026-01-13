@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   resources :workouts do
     collection do
       get :select_exercise
+      get :by_date
     end
 
     resources :workout_sets, only: [:update, :destroy] do
@@ -36,6 +37,13 @@ Rails.application.routes.draw do
   end
 
   resources :workout_sets, only: [:create]
+
+  resources :cardio_workouts, only: [:new, :create] do
+    resources :cardio_sets, only: [:update, :destroy] do
+      get :edit_group, on: :collection
+      patch :update_group, on: :collection
+    end
+  end
 
   resources :body_parts, only: [:index] do
     resources :exercises

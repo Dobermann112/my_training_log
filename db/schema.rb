@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_01_02_132039) do
+ActiveRecord::Schema[7.1].define(version: 2026_01_12_093037) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -32,6 +32,29 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_02_132039) do
     t.datetime "updated_at", null: false
     t.index ["display_order"], name: "index_body_parts_on_display_order", unique: true
     t.index ["name"], name: "index_body_parts_on_name", unique: true
+  end
+
+  create_table "cardio_sets", force: :cascade do |t|
+    t.bigint "cardio_workout_id", null: false
+    t.decimal "distance", precision: 6, scale: 2
+    t.integer "duration"
+    t.integer "calories"
+    t.decimal "pace", precision: 5, scale: 2
+    t.text "memo"
+    t.integer "set_number", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cardio_workout_id"], name: "index_cardio_sets_on_cardio_workout_id"
+  end
+
+  create_table "cardio_workouts", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "exercise_id", null: false
+    t.date "performed_on", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["exercise_id"], name: "index_cardio_workouts_on_exercise_id"
+    t.index ["user_id"], name: "index_cardio_workouts_on_user_id"
   end
 
   create_table "exercises", force: :cascade do |t|
@@ -92,6 +115,9 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_02_132039) do
   end
 
   add_foreign_key "avatar_part_stats", "users"
+  add_foreign_key "cardio_sets", "cardio_workouts"
+  add_foreign_key "cardio_workouts", "exercises"
+  add_foreign_key "cardio_workouts", "users"
   add_foreign_key "exercises", "body_parts"
   add_foreign_key "exercises", "users"
   add_foreign_key "workout_sets", "exercises"

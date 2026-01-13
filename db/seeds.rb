@@ -5,7 +5,8 @@ body_parts = [
   { name: '脚', display_order: 3 },
   { name: '肩', display_order: 4 },
   { name: '腕', display_order: 5 },
-  { name: '腹', display_order: 6 }
+  { name: '腹', display_order: 6 },
+  { name: '有酸素', display_order: 7}
 ]
 
 body_parts.each do |bp|
@@ -21,7 +22,8 @@ exercises = {
   '脚' => ['スクワット', 'レッグプレス'],
   '肩' => ['ショルダープレス', 'サイドレイズ'],
   '腕' => ['アームカール', 'トライセプスエクステンション'],
-  '腹' => ['クランチ', 'レッグレイズ']
+  '腹' => ['クランチ', 'レッグレイズ'],
+  '有酸素' => ['ジョギング', 'ウォーキング']
 }
 
 exercises.each do |body_part_name, names|

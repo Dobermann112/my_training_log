@@ -7,11 +7,16 @@ export default class extends Controller {
   select(event) {
     const clicked = event.currentTarget
     const exerciseId = clicked.dataset.id
+    const bodyPart = clicked.dataset.bodyPart
 
     const params = new URLSearchParams(window.location.search)
     const date = params.get("date")
 
-    window.location.href = `/workouts/new?date=${date}&exercise_id=${exerciseId}`
+    if (bodyPart === "有酸素") {
+      window.location.href = `/cardio_workouts/new?date=${date}&exercise_id=${exerciseId}`
+    } else {
+      window.location.href = `/workouts/new?date=${date}&exercise_id=${exerciseId}`
+    }
   }
 
   // もっと見る/閉じる
