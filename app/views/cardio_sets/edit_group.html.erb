@@ -3,7 +3,6 @@
 </div>
 
 <div class="exercise-card">
-
   <%= form_with url: update_group_cardio_workout_cardio_sets_path(@cardio_workout),
                 method: :patch,
                 local: true do %>
@@ -13,19 +12,46 @@
 
       <div data-cardio-sets-target="list">
         <% @sets.each_with_index do |set, i| %>
-          <div class="set-input-row mb-3 p-3 rounded">
-            <strong>セット <%= i + 1 %></strong><br>
-            距離: <%= set.distance %> km /
-            時間: <%= set.duration %> /
-            kcal: <%= set.calories %>
+          <div class="set-input-row mb-3 p-3 rounded"
+               data-set-uuid="<%= set.id %>"
+               data-persisted="true"
+               data-controller="cardio-set-create">
+
+            <div class="fw-bold mb-2"
+                 data-cardio-sets-target="number">
+              セット<%= i + 1 %>
+            </div>
+
+            <%= render "cardio_sets/form_fields", set: set %>
           </div>
         <% end %>
       </div>
 
-      <button type="submit" class="btn btn-primary mt-3 w-100">
-        保存
+      <template data-cardio-sets-target="template">
+        <div class="set-input-row mb-3 p-3 rounded"
+             data-controller="cardio-set-create"
+             data-persisted="false">
+
+          <div class="fw-bold mb-2"
+               data-cardio-sets-target="number">
+            セット
+          </div>
+
+          <%= render "cardio_sets/form_fields", set: nil %>
+        </div>
+      </template>
+
+      <button type="button"
+              class="btn btn-secondary w-100 mt-2"
+              data-action="cardio-sets#add">
+        ＋ セットを追加
       </button>
 
+      <button type="button"
+              class="btn btn-primary w-100 mt-3"
+              data-action="cardio-sets#commit">
+        保存
+      </button>
     </div>
   <% end %>
 </div>

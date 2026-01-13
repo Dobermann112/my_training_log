@@ -41,7 +41,12 @@ class CardioSetUpdateService
       @cardio_workout.cardio_sets.maximum(:set_number).to_i + 1
 
     @cardio_workout.cardio_sets.create!(
-      attrs.merge(set_number: next_number)
+      distance:   attrs[:distance],
+      duration:   attrs[:duration],
+      calories:   attrs[:calories],
+      pace:       attrs[:pace],
+      memo:       attrs[:memo],
+      set_number: next_number
     )
   end
 
@@ -51,7 +56,13 @@ class CardioSetUpdateService
     if destroy?(attrs)
       set.destroy!
     else
-      set.update!(attrs)
+      set.update!(
+        distance: attrs[:distance],
+        duration: attrs[:duration],
+        calories: attrs[:calories],
+        pace:     attrs[:pace],
+        memo:     attrs[:memo]
+      )
     end
   end
 

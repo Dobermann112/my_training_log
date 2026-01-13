@@ -25,5 +25,11 @@ application.register("sets", SetsController)
 import WorkoutSetCreateController from "./workout_set_create_controller"
 application.register("workout-set-create", WorkoutSetCreateController)
 
+import CardioSetsController from "./cardio_sets_controller"
+application.register("cardio-sets", CardioSetsController)
+
+import CardioSetCreateController from "./cardio_set_create_controller"
+application.register("cardio-set-create", CardioSetCreateController)
+
 import DraftCleanupController from "./draft_cleanup_controller"
 application.register("draft-cleanup", DraftCleanupController)
