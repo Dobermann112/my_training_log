@@ -24,19 +24,31 @@ class CardioSetsController < ApplicationController
   end
 
   def destroy
-    set = @cardio_workout.cardio_sets.find(params[:id])
-
-    result = CardioSetDeleteService.call(
+    set  = @cardio_workout.cardio_sets.find(params[:id])
+    date = @cardio_workout.performed_on
+    user = @cardio_workout.user
+  
+    CardioSetDeleteService.call(
       cardio_workout: @cardio_workout,
       set: set
     )
 
-    if result.cardio_workout_deleted?
-      redirect_to calendars_path
+    workout = user.workouts.find_by(workout_date: date)
+  
+    cardio_exists =
+      user.cardio_workouts
+          .where(performed_on: date)
+          .joins(:cardio_sets)
+          .exists?
+  
+    if workout.present?
+      redirect_to workout_path(workout)
+    elsif cardio_exists
+      redirect_to redirect_path_for(date)
     else
-      redirect_to redirect_path_for(@cardio_workout.performed_on)
+      redirect_to calendars_path
     end
-  end
+  end  
 
   private
 
