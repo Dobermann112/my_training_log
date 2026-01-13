@@ -1,33 +1,46 @@
-<h2><%= @exercise.name %>（有酸素）</h2>
+<div class="exercise-title-card mb-3 p-3 text-center">
+  <h3 class="m-0"><%= @exercise.name %></h3>
+</div>
 
-<%= form_with model: @cardio_workout, url: cardio_workouts_path do |f| %>
-  <%= f.hidden_field :exercise_id, value: @exercise.id %>
-  <%= f.hidden_field :performed_on, value: @date %>
+<div id="set_form_errors"></div>
 
-  <div>
-    <label>距離（km）</label>
-    <%= number_field_tag "cardio_set[distance]", nil, step: 0.01 %>
-  </div>
+<div class="exercise-card">
 
-  <div>
-    <label>時間（分）</label>
-    <%= number_field_tag "cardio_set[duration]" %>
-  </div>
+  <%= form_with url: cardio_workouts_path, method: :post do %>
 
-  <div>
-    <label>カロリー</label>
-    <%= number_field_tag "cardio_set[calories]" %>
-  </div>
+    <%= hidden_field_tag :performed_on, @date %>
+    <%= hidden_field_tag :exercise_id, @exercise.id %>
 
-  <div>
-    <label>ペース（km/h）</label>
-    <%= number_field_tag "cardio_set[pace]", nil, step: 0.01 %>
-  </div>
+    <div data-controller="cardio-sets"
+         data-cardio-sets-date-value="<%= @date %>">
 
-  <div>
-    <label>メモ</label>
-    <%= text_area_tag "cardio_set[memo]" %>
-  </div>
+      <div class="floating-back"
+           data-action="click->cardio-sets#commitOrBack">←</div>
 
-  <%= f.submit "記録する" %>
-<% end %>
+      <div data-cardio-sets-target="list">
+      </div>
+
+      <template data-cardio-sets-target="template">
+        <div class="set-input-row mb-3 p-3 rounded"
+             data-controller="cardio-set-create">
+
+          <div class="set-number-label mb-2 fw-bold"
+               data-cardio-sets-target="number">
+            セット1
+          </div>
+
+          <%= render "cardio_sets/form_fields", set: nil %>
+        </div>
+      </template>
+
+      <button type="button"
+              class="btn btn-secondary w-100 mt-2"
+              data-action="cardio-sets#add">
+        ＋ セットを追加
+      </button>
+
+    </div>
+
+  <% end %>
+
+</div>

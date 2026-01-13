@@ -9,45 +9,27 @@ class CardioWorkoutsController < ApplicationController
   end
 
   def create
-    exercise = Exercise.find(cardio_workout_params[:exercise_id])
-    date     = cardio_workout_params[:performed_on]
-
-    ActiveRecord::Base.transaction do
-      cardio_workout =
-        CardioWorkout.find_or_create_by!(
-          user: current_user,
-          exercise: exercise,
-          performed_on: date
-        )
-
-      cardio_workout.cardio_sets.create!(
-        cardio_set_params.merge(set_number: 1)
-      )
-    end
-
-    redirect_to redirect_path_for(date),
+    cardio_workout =
+      CardioWorkoutCreationService.new(
+        user: current_user,
+        exercise_id: params[:exercise_id],
+        date: params[:performed_on],
+        sets_params: params[:sets]
+      ).call
+      
+    redirect_to redirect_path_for(cardio_workout.performed_on),
                 notice: "有酸素トレーニングを記録しました"
-  rescue ActiveRecord::RecordInvalid => e
-    @exercise = exercise
-    @date = date
-    @cardio_workout = CardioWorkout.new(
-      user: current_user,
-      exercise: @exercise,
-      performed_on: @date
-    )
-    @cardio_set = @cardio_workout.cardio_sets.build(set_number: 1)
-
+  rescue CardioWorkoutCreationService::CreationError => e
+    @exercise = Exercise.find(params[:exercise_id])
+    @date     = params[:performed_on]
     flash.now[:alert] = e.message
     render :new, status: :unprocessable_entity
-  end
+  end      
 
   private
 
   def cardio_workout_params
-    params.require(:cardio_workout).permit(
-      :exercise_id,
-      :performed_on
-    )
+    params.permit(:exercise_id, :performed_on)
   end
 
   def cardio_set_params

@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = ["list", "template", "number"]
-  static values = { editMode: Boolean }
+  static values = { date: String, editMode: Boolean }
 
   connect() {
     this.activeSetUuids = new Set()
@@ -55,6 +55,18 @@ export default class extends Controller {
     })
   
     form.requestSubmit()
+  }
+
+  commitOrBack() {
+    const drafts = this.collectDrafts()
+
+    if (!this.editModeValue && drafts.length === 0) {
+        if (!this.dateValue) return
+        window.location.href = `/workouts/select_exercise?date=${this.dateValue}`
+        return
+    }
+    
+    this.commit()
   }
   
   appendHidden(form, name, value) {
