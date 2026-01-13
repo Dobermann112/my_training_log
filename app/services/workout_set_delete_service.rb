@@ -13,12 +13,12 @@ class WorkoutSetDeleteService
     ActiveRecord::Base.transaction do
       set.destroy!
 
-      if @workout.workout_sets.exists?
-        Result.new(false)
-      else
-        @workout.destroy!
-        Result.new(true)
-      end
+      date = @workout.workout_date
+      user = @workout.user
+
+      WorkoutCleanupService.call(user: user, date: date)
+      deleted = !user.workouts.exists?(id: @workout.id)
+      Result.new(deleted)
     end
   end
 end
