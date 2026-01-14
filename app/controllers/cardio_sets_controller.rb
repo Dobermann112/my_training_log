@@ -1,9 +1,12 @@
 class CardioSetsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_cardio_workout
+  before_action :set_exercise, only: [:edit_group, :update_group]
 
   def edit_group
-    @sets = @cardio_workout.cardio_sets.order(:set_number)
+    @sets = @cardio_workout.cardio_sets
+                           .where(exercise_id: @exercise.id)
+                           .order(:set_number)
   end
 
   def update_group
@@ -51,6 +54,10 @@ class CardioSetsController < ApplicationController
   end  
 
   private
+
+  def set_exercise
+    @exercise = Exercise.find(params[:exercise_id])
+  end
 
   def set_cardio_workout
     @cardio_workout = current_user.cardio_workouts.find(params[:cardio_workout_id])

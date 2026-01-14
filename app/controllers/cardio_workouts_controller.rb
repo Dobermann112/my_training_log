@@ -4,18 +4,17 @@ class CardioWorkoutsController < ApplicationController
   def new
     @exercise = Exercise.find(params[:exercise_id])
     @date = params[:date]
-    @cardio_workout = CardioWorkout.new(performed_on: @date, exercise: @exercise)
+    @cardio_workout = CardioWorkout.new(performed_on: @date)
     @cardio_set = @cardio_workout.cardio_sets.build
   end
 
   def create
-    cardio_workout =
-      CardioWorkoutCreationService.new(
-        user: current_user,
-        exercise_id: params[:exercise_id],
-        date: params[:performed_on],
-        sets_params: params[:sets]
-      ).call
+    cardio_workout = CardioWorkoutCreationService.new(
+      user: current_user,
+      exercise_id: params[:exercise_id],
+      date: params[:performed_on],
+      sets_params: params[:sets]
+    ).call
       
     redirect_to redirect_path_for(cardio_workout.performed_on),
                 notice: "有酸素トレーニングを記録しました"

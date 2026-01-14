@@ -72,10 +72,16 @@ class WorkoutsController < ApplicationController
       .order(:exercise_id, :created_at)
       .group_by(&:exercise)
 
-    @cardio_workouts =
-      CardioWorkout
-        .where(user_id: current_user.id, performed_on: @date)
-        .includes(:exercise, :cardio_sets)
+    @cardio_workout =
+      CardioWorkout.find_by(user_id: current_user.id, performed_on: @date)
+      
+    @cardio_sets_by_exercise = 
+      CardioSet
+        .joins(:cardio_workout)
+        .where(cardio_workouts: { user_id: current_user.id, performed_on: @date })
+        .includes(:exercise)
+        .order(:exercise_id, :set_number)
+        .group_by(&:exercise)
   end  
 
   def set_previous_sets

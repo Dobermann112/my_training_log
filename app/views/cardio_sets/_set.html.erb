@@ -8,7 +8,7 @@
     </div>
 
     <div class="d-flex gap-2">
-      <%= link_to cardio_workout_cardio_set_path(cardio_workout, set),
+      <%= link_to cardio_workout_cardio_set_path(set.cardio_workout, set),
             data: {
               turbo_method: :delete,
               turbo_confirm: "このセットを削除しますか？",
