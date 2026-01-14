@@ -10,6 +10,11 @@
     <div data-controller="cardio-sets"
          data-cardio-sets-edit-mode-value="true">
 
+      <div class="floating-back"
+           data-action="click->cardio-sets#commitOrBack">
+           ←
+      </div>
+
       <div data-cardio-sets-target="list">
         <% @sets.each_with_index do |set, i| %>
           <div class="set-input-row mb-3 p-3 rounded"
@@ -46,12 +51,7 @@
               data-action="cardio-sets#add">
         ＋ セットを追加
       </button>
-
-      <button type="button"
-              class="btn btn-primary w-100 mt-3"
-              data-action="cardio-sets#commit">
-        保存
-      </button>
+      
     </div>
   <% end %>
 </div>
