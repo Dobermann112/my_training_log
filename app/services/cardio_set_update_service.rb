@@ -33,7 +33,7 @@ class CardioSetUpdateService
 
   def skip?(attrs)
     return false if destroy?(attrs)
-    attrs[:distance].blank? && attrs[:duration].blank?
+    attrs[:duration].blank?
   end
 
   def create_set(attrs)

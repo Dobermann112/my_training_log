@@ -1,7 +1,7 @@
 class CardioSetsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_cardio_workout
-  before_action :set_exercise, only: [:edit_group, :update_group]
+  before_action :set_exercise, only: [:edit_group]
 
   def edit_group
     @sets = @cardio_workout.cardio_sets
