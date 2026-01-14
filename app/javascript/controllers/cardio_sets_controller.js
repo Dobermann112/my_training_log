@@ -53,6 +53,15 @@ export default class extends Controller {
       this.appendHidden(form, `sets[${draft.uuid}][pace]`, draft.pace)
       this.appendHidden(form, `sets[${draft.uuid}][memo]`, draft.memo)
     })
+
+    const deletedIds = this.collectDeletedSetIds()
+    deletedIds.forEach((id) => {
+      this.appendHidden(form, `sets[${id}][_destroy]`, "1")
+    })
+
+    drafts.forEach(draft => {
+      localStorage.removeItem(`cardio_set_draft:${draft.uuid}`)
+    })
   
     form.requestSubmit()
   }
@@ -61,9 +70,8 @@ export default class extends Controller {
     const drafts = this.collectDrafts()
 
     if (!this.editModeValue && drafts.length === 0) {
-        if (!this.dateValue) return
-        window.location.href = `/workouts/select_exercise?date=${this.dateValue}`
-        return
+      window.location.href = `/workouts/select_exercise?date=${this.dateValue}`
+      return
     }
     
     this.commit()
@@ -98,6 +106,26 @@ export default class extends Controller {
   
     return drafts
   }
+
+  collectDeletedSetIds() {
+    const deletedIds = []
+  
+    this.listTarget.querySelectorAll(".set-input-row").forEach((row) => {
+      const uuid = row.dataset.setUuid
+      const persisted = row.dataset.persisted === "true"
+  
+      if (!persisted) return
+  
+      const key = `cardio_set_draft:${uuid}`
+      const draft = localStorage.getItem(key)
+  
+      if (!draft) {
+        deletedIds.push(uuid)
+      }
+    })
+  
+    return deletedIds
+  }  
   
   validDraft(data) {
     return data.distance || data.duration || data.calories || data.pace || data.memo
