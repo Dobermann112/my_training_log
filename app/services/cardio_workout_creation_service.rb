@@ -1,57 +1,67 @@
+# app/services/cardio_workout_creation_service.rb
 class CardioWorkoutCreationService
   class CreationError < StandardError; end
 
-  def initialize(user:, exercise_id:, date:, sets_params:)
-    @user        = user
-    @exercise    = Exercise.find(exercise_id)
-    @date        = date
+  def initialize(user:, date:, exercise_id:, sets_params:)
+    @user = user
+    @date = date
+    @exercise_id = exercise_id
     @sets_params = sets_params || {}
   end
 
   def call
     valid_rows = extract_valid_rows
-    raise CreationError, "距離・時間・メモのいずれかを入力してください" if valid_rows.empty?
+
+    if valid_rows.empty?
+      raise CreationError, "時間を入力してください"
+    end
 
     ActiveRecord::Base.transaction do
       cardio_workout = find_or_create_cardio_workout
       create_sets!(cardio_workout, valid_rows)
       cardio_workout
     end
-  rescue ActiveRecord::RecordInvalid => e
-    raise CreationError, e.message
+  rescue CreationError
+    raise
+  rescue StandardError => e
+    raise CreationError, "保存に失敗しました: #{e.message}"
   end
 
   private
 
+  # -------------------------
+  # 有効なセット行の抽出
+  # -------------------------
+  # duration が入っていれば有効
   def extract_valid_rows
     @sets_params.values.select do |row|
-      row[:distance].present? ||
-        row[:duration].present? ||
-        row[:calories].present? ||
-        row[:memo].present?
+      row[:duration].present?
     end
   end
 
+  # -------------------------
+  # CardioWorkout 作成
+  # -------------------------
+  # user × date で一意
   def find_or_create_cardio_workout
-    CardioWorkout.find_or_create_by!(
-      user: @user,
-      exercise: @exercise,
+    @user.cardio_workouts.find_or_create_by!(
       performed_on: @date
     )
   end
 
+  # -------------------------
+  # CardioSet 作成
+  # -------------------------
   def create_sets!(cardio_workout, rows)
-    next_number =
-      cardio_workout.cardio_sets.maximum(:set_number).to_i
-
-    rows.each_with_index do |row, i|
+    rows.each.with_index(1) do |row, index|
       cardio_workout.cardio_sets.create!(
-        distance:  row[:distance],
-        duration:  row[:duration],
-        calories:  row[:calories],
-        pace:      row[:pace],
-        memo:      row[:memo],
-        set_number: next_number + i + 1
+        exercise_id: @exercise_id,
+        duration: row[:duration],
+        distance: row[:distance],
+        calories: row[:calories],
+        pace: row[:pace],
+        memo: row[:memo],
+        set_number: index
       )
     end
   end

@@ -37,22 +37,32 @@ export default class extends Controller {
   }
 
   commit(event) {
+    const drafts = this.collectDrafts()
+    if (!this.editModeValue && drafts.length === 0) return
+
     const form = this.element.closest("form")
     if (!form) return
-  
-    // 既存 hidden input を削除
+
+    // 既存の draft 用 hidden input を削除
     form.querySelectorAll("[data-draft-input]").forEach(el => el.remove())
   
-    const drafts = this.collectDrafts()
-    if (drafts.length === 0) return
-  
-    drafts.forEach(draft => {
-      this.appendHidden(form, `sets[${draft.uuid}][distance]`, draft.distance)
-      this.appendHidden(form, `sets[${draft.uuid}][duration]`, draft.duration)
-      this.appendHidden(form, `sets[${draft.uuid}][calories]`, draft.calories)
-      this.appendHidden(form, `sets[${draft.uuid}][pace]`, draft.pace)
-      this.appendHidden(form, `sets[${draft.uuid}][memo]`, draft.memo)
-    })
+    if (this.editModeValue) {
+      drafts.forEach(draft => {
+        this.appendHidden(form, `sets[${draft.uuid}][distance]`, draft.distance)
+        this.appendHidden(form, `sets[${draft.uuid}][duration]`, draft.duration)
+        this.appendHidden(form, `sets[${draft.uuid}][calories]`, draft.calories)
+        this.appendHidden(form, `sets[${draft.uuid}][pace]`, draft.pace)
+        this.appendHidden(form, `sets[${draft.uuid}][memo]`, draft.memo)
+      })
+    } else {
+      drafts.forEach((draft, index) => {
+        this.appendHidden(form, `sets[${index}][distance]`, draft.distance)
+        this.appendHidden(form, `sets[${index}][duration]`, draft.duration)
+        this.appendHidden(form, `sets[${index}][calories]`, draft.calories)
+        this.appendHidden(form, `sets[${index}][pace]`, draft.pace)
+        this.appendHidden(form, `sets[${index}][memo]`, draft.memo)
+      })
+    }
 
     const deletedIds = this.collectDeletedSetIds()
     deletedIds.forEach((id) => {
@@ -128,6 +138,6 @@ export default class extends Controller {
   }  
   
   validDraft(data) {
-    return data.distance || data.duration || data.calories || data.pace || data.memo
+    return data.duration && data.duration !== ""
   }  
 }
