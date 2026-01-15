@@ -1,40 +1,50 @@
-<div class="d-flex gap-2 flex-wrap">
-  <%= number_field_tag "",
-        set&.distance,
-        step: 0.1,
-        placeholder: "距離(km)",
-        class: "form-control",
-        data: { cardio_set_create_target: "distance",
-                action: "input->cardio-set-create#saveDraft" } %>
+<div class="d-flex gap-3">
+  <div class="flex-fill">
+    <label class="form-label">距離(km)</label>
+    <%= number_field_tag "",
+          set&.distance,
+          step: 0.1,
+          class: "form-control",
+          data: { cardio_set_create_target: "distance",
+                  action: "input->cardio-set-create#saveDraft" } %>
+  </div>
 
-  <%= text_field_tag "",
-        set&.duration,
-        placeholder: "時間",
-        class: "form-control",
-        data: { cardio_set_create_target: "duration",
-                action: "input->cardio-set-create#saveDraft" } %>
+  <div class="flex-fill">
+    <label class="form-label">時間(分)</label>
+    <%= text_field_tag "",
+          set&.duration,
+          class: "form-control",
+          data: { cardio_set_create_target: "duration",
+                  action: "input->cardio-set-create#saveDraft" } %>
+  </div>
+</div>
 
-  <%= number_field_tag "",
-        set&.calories,
-        placeholder: "kcal",
-        class: "form-control",
-        data: { cardio_set_create_target: "calories",
-                action: "input->cardio-set-create#saveDraft" } %>
+<div class="d-flex gap-3 mt-2">
+  <div class="flex-fill">
+    <label class="form-label">消費カロリー(kcal)</label>
+    <%= number_field_tag "",
+          set&.calories,
+          class: "form-control",
+          data: { cardio_set_create_target: "calories",
+                  action: "input->cardio-set-create#saveDraft" } %>
+  </div>
 
-  <%= number_field_tag "",
-        set&.pace,
-        step: 0.1,
-        placeholder: "km/h",
-        class: "form-control",
-        data: { cardio_set_create_target: "pace",
-                action: "input->cardio-set-create#saveDraft" } %>
+  <div class="flex-fill">
+    <label class="form-label">ペース(km/h)</label>
+    <%= number_field_tag "",
+          set&.pace,
+          step: 0.1,
+          class: "form-control",
+          data: { cardio_set_create_target: "pace",
+                  action: "input->cardio-set-create#saveDraft" } %>
+  </div>
 </div>
 
 <div class="mt-2">
+  <label class="form-label">メモ</label>
   <%= text_area_tag "",
         set&.memo,
         rows: 1,
-        placeholder: "メモ",
         class: "form-control",
         data: { cardio_set_create_target: "memo",
                 action: "input->cardio-set-create#saveDraft" } %>
