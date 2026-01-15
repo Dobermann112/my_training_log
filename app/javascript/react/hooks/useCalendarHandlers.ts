@@ -7,8 +7,12 @@ import type {
   EventMountArg,
 } from "@fullcalendar/core";
 import type { DateClickArg } from "@fullcalendar/interaction";
+import type { CalendarSummary } from "react/types/calendarSummary";
 
-export function useCalendarHandlers(setLoading: (v: boolean) => void) {
+export function useCalendarHandlers(
+  setLoading: (v: boolean) => void,
+  summaries: Record<string, CalendarSummary>
+) {
 
   const handleEvents = useCallback(async (
     info: EventSourceFuncArg,
@@ -23,30 +27,26 @@ export function useCalendarHandlers(setLoading: (v: boolean) => void) {
     }
   }, [setLoading]);
 
-  const handleDateClick = useCallback(async (info: DateClickArg) => {
-    const date = info.dateStr;
-    const events = await fetchCalendarEvents(date, date);
+  const handleDateClick = useCallback((info: DateClickArg) => {
+    const date = info.dateStr.slice(0, 10);
+    const summary = summaries[date];
 
-    if (events.length > 0) {
-      window.location.href = `/workouts/${events[0].id}`;
+    if (summary?.has_workout && summary.workout_id) {
+      window.location.href = `/workouts/${summary.workout_id}`;
+    } else if (summary?.has_cardio) {
+      window.location.href = `/workouts/by_date?date=${date}`;
     } else {
       window.location.href = `/workouts/select_exercise?date=${date}`;
     }
-  }, []);
+  }, [summaries]);
 
   const handleEventClick = useCallback((info: EventClickArg) => {
     window.location.href = `/workouts/${info.event.id}`;
-  }, []);
-
-  const handleEventDidMount = useCallback((info: EventMountArg) => {
-    const frame = info.el.closest(".fc-daygrid-day-frame") as HTMLElement | null;
-    if (frame) frame.classList.add("fc-has-workout");
   }, []);
 
   return {
     handleEvents,
     handleDateClick,
     handleEventClick,
-    handleEventDidMount,
   };
 }

@@ -23,3 +23,16 @@ export async function fetchCalendarEvents(start: string,end: string): Promise<Ca
     return [];
   }
 }
+
+export async function fetchCalendarSummaries(start: string, end: string) {
+  const res = await fetch(`/api/calendar_summaries?start=${start}&end=${end}`);
+  if (!res.ok) return [];
+
+  const data = await res.json();
+  return data.summaries as {
+    date: string;
+    has_workout: boolean;
+    workout_id: number | null;
+    has_cardio: boolean;
+  }[];
+}
