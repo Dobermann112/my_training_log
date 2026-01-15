@@ -50,6 +50,13 @@ class WorkoutsController < ApplicationController
     redirect_to calendars_path, notice: "トレーニング記録を削除しました。"
   end
 
+  def destroy_by_date
+    Workout.where(user: current_user, workout_date: params[:date]).destroy_all
+    CardioWorkout.where(user: current_user, performed_on: params[:date]).destroy_all
+  
+    redirect_to calendars_path, notice: "トレーニングを削除しました"
+  end  
+
   def select_exercise
     @date = params[:date]
     @body_parts = BodyPart.order(:display_order)
