@@ -22,8 +22,8 @@
 
 </div>
 
-<% if @today_workout.present? %>
-  <%= render "calendars/today_workout", workout: @today_workout %>
+<% if @today_workout.present? || @today_cardio.present? %>
+  <%= render "calendars/today_workout", workout: @today_workout, cardio_workout: @today_cardio %>
 <% end %>
 
 <%= render "shared/help/calendar" %>
