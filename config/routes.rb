@@ -61,6 +61,7 @@ Rails.application.routes.draw do
     get :sample, to: "samples#index"
     resource :avatar, only: :show
     resources :events, only: :index
+    resources :calendar_summaries, only: [:index]
   end
 
   namespace :dashboard do
