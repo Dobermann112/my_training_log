@@ -3,6 +3,9 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { useCalendarHandlers } from "react/hooks/useCalendarHandlers";
 import { overlayStyle } from "./styles/overlayStyle";
+import { useState } from "react";
+import { fetchCalendarSummaries } from "react/services/calendarApi";
+import type { CalendarSummary } from "react/types/calendarSummary";
 
 type CalendarGridProps = {
   loading: boolean;
@@ -18,12 +21,13 @@ export default function CalendarGrid({
   calendarRef,
 }: CalendarGridProps) {
 
+  const [summaries, setSummaries] = useState<Record<string, CalendarSummary>>({});
+
   const {
     handleEvents,
     handleDateClick,
     handleEventClick,
-    handleEventDidMount,
-  } = useCalendarHandlers(setLoading);
+  } = useCalendarHandlers(setLoading, summaries);
 
   return (
     <div style={{ marginTop: "1rem", position: "relative" }}>
@@ -36,8 +40,31 @@ export default function CalendarGrid({
         events={handleEvents}
         dateClick={handleDateClick}
         eventClick={handleEventClick}
-        eventDidMount={handleEventDidMount}
-        datesSet={(info) => setCurrentDate(info.view.currentStart)}
+        datesSet={async (info) => {
+          setCurrentDate(info.view.currentStart);
+          
+          const start = info.startStr;
+          const end   = info.endStr;
+          const data = await fetchCalendarSummaries(start, end);
+          const map: Record<string, CalendarSummary> = {};
+          data.forEach((d) => {
+            map[d.date] = d;
+          });
+        
+          setSummaries(map);
+        }}
+        dayCellClassNames={(arg) => {
+          const d = arg.date;
+          const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+        
+          const summary = summaries[key];
+          if (!summary) return [];
+        
+          return summary.has_workout || summary.has_cardio
+            ? ["fc-has-workout"]
+            : [];
+        }}
+        
       />
       {loading && <div style={overlayStyle}>Loading...</div>}
     </div>

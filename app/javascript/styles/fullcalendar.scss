@@ -87,13 +87,15 @@
   color: white !important;
 }
 
-.fc-daygrid-day-frame.fc-has-workout {
-  background: rgba(58,134,255,0.35);
-  border: 2px solid #3a86ff;
+/* td に付いた状態を起点に frame を装飾する */
+.fc-daygrid-day.fc-has-workout .fc-daygrid-day-frame {
+  background: rgba(58, 134, 255, 0.35) !important;
+  border: 2px solid #3a86ff !important;
 }
 
-.fc-daygrid-day-frame.fc-has-workout .fc-daygrid-day-number {
-  color: white;
+/* 日付文字色 */
+.fc-daygrid-day.fc-has-workout .fc-daygrid-day-number {
+  color: #fff !important;
 }
 
 /* --- イベントバブル（今後丸セルに統合するため縮小 or 非表示推奨） --- */
