@@ -1,22 +1,18 @@
-<% if cardio_sets_by_exercise.present? %>
-  <% cardio_sets_by_exercise.each do |exercise, sets| %>
-    <% cardio_workout = sets.first.cardio_workout %>
+<% cardio_sets_by_exercise.each do |exercise, sets| %>
+  <% cardio_workout = sets.first.cardio_workout %>
 
-    <div class="exercise-card mb-4">
-      <div class="d-flex justify-content-between align-items-center mb-2">
-        <h4 class="m-0"><%= exercise.name %>（<%= sets.size %>セット）</h4>
+  <div class="exercise-card mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <h4 class="m-0"><%= exercise.name %>（<%= sets.size %>セット）</h4>
 
-        <%= link_to edit_group_cardio_workout_cardio_sets_path(@cardio_workout, exercise_id: exercise.id),
-                    class: "btn btn-sm btn-outline-warning" do %>
-          <i class="bi bi-pencil"></i>
-        <% end %>
-      </div>
-
-      <% sets.each do |set| %>
-        <%= render "cardio_sets/set", set: set %>
+      <%= link_to edit_group_cardio_workout_cardio_sets_path(@cardio_workout, exercise_id: exercise.id),
+                  class: "btn btn-sm btn-outline-warning" do %>
+        <i class="bi bi-pencil"></i>
       <% end %>
     </div>
-  <% end %>
-<% else %>
-  <p>まだ有酸素の記録はありません。</p>
+
+    <% sets.each do |set| %>
+      <%= render "cardio_sets/set", set: set %>
+    <% end %>
+  </div>
 <% end %>
