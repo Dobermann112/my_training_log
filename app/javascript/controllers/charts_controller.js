@@ -11,7 +11,9 @@ export default class extends Controller {
     "mode",
     "summarySets",
     "summaryReps",
-    "summaryStreak"
+    "summaryStreak",
+    "summaryLabel1",
+    "summaryLabel2"
   ]
 
   connect() {
@@ -30,6 +32,23 @@ export default class extends Controller {
     this.summaryStreakTarget.textContent = summary.streak_days
   }
 
+  updateCardioSummary(summary) {
+    if (!summary) return
+    this.summarySetsTarget.textContent = `${summary.total_duration} 分`
+    this.summaryRepsTarget.textContent = `${summary.total_distance} km`
+    this.summaryStreakTarget.textContent = summary.streak_days
+  }
+
+  setStrengthSummaryLabels() {
+    this.summaryLabel1Target.textContent = "総セット"
+    this.summaryLabel2Target.textContent = "総レップ"
+  }
+
+  setCardioSummaryLabels() {
+    this.summaryLabel1Target.textContent = "合計時間"
+    this.summaryLabel2Target.textContent = "合計距離"
+  }  
+  
   disconnect() { this._destroyAll() }
 
   changeRange() {
@@ -44,8 +63,10 @@ export default class extends Controller {
       this.currentBodyPart = ""
       this.bodyPartTarget.value = ""
       this.bodyPartTarget.disabled = true
+      this.setCardioSummaryLabels()
     } else {
       this.bodyPartTarget.disabled = false
+      this.setStrengthSummaryLabels()
     }
   
     this.load()
@@ -96,18 +117,18 @@ export default class extends Controller {
         headers: { Accept: "application/json" }
       })
       const data = await res.json()
-  
+
+      console.log("cardio data:", data)
+      console.log("line_duration:", data.line_duration)
+
       // line：時間推移
       this._renderLineCardio(data.line_duration || [])
   
       // bar：種目傾向
       this._renderBarCardio(data.bar_by_exercise || [])
   
-      // pie は使わない（破棄）
-      if (this._charts.pie) {
-        this._charts.pie.destroy()
-        this._charts.pie = null
-      }
+      // pie 
+      this._renderPieCardio(data.bar_by_exercise || [])
   
       this.updateCardioSummary(data.summary)
     } catch (e) {
@@ -296,6 +317,127 @@ export default class extends Controller {
       noData: { text: "データがありません", align: "center" }
     }
     this._mount("bar", this.barTarget, options)
+  }  
+
+  _renderLineCardio(items) {
+    if (this._charts.line) {
+      this._charts.line.destroy()
+      this._charts.line = null
+    }
+
+    const options = {
+      chart: {
+        type: "line",
+        height: 300,
+        toolbar: { show: false },
+        animations: { enabled: false },
+        foreColor: "#e0e1dd"
+      },
+      series: [{
+        name: "有酸素トレーニング時間",
+        data: items.map(d => [d.x, d.y])
+      }],
+      title: {
+        text: "有酸素トレーニング時間の推移",
+        align: "left",
+        style: { color: "#e0e1dd", fontSize: "15px" }
+      },
+      xaxis: {
+        type: "datetime",
+        labels: { style: { colors: "#e0e1dd" } }
+      },
+      yaxis: {
+        title: { text: "時間（分）" },
+        labels: { style: { colors: "#e0e1dd" } }
+      },
+      stroke: {
+        width: 3,
+        curve: "smooth",
+        colors: ["#3a86ff"]
+      },
+      tooltip: {
+        theme: "dark",
+        x: { format: "yyyy/MM/dd" },
+        y: { formatter: val => `${val} 分` }
+      },
+      markers: {
+        size: 4,
+        strokeWidth: 2
+      },
+      noData: { text: "データがありません" }
+    }
+  
+    this._mount("line", this.lineTarget, options)
+  }  
+
+  _renderBarCardio(items) {
+    const options = {
+      chart: {
+        type: "bar",
+        height: 320,
+        toolbar: { show: false },
+        animations: { enabled: false },
+        foreColor: "#e0e1dd"
+      },
+      title: {
+        text: "種目別 有酸素トレーニング時間",
+        align: "left",
+        style: { color: "#e0e1dd", fontSize: "15px" }
+      },
+      series: [{
+        name: "合計時間（分）",
+        data: items.map(i => i.y)
+      }],
+      xaxis: {
+        categories: items.map(i => i.x),
+        labels: { style: { colors: "#e0e1dd" } }
+      },
+      yaxis: {
+        labels: { style: { colors: "#e0e1dd" } }
+      },
+      tooltip: {
+        theme: "dark",
+        y: { formatter: val => `${val} 分` }
+      },
+      noData: { text: "データがありません" }
+    }
+  
+    this._mount("bar", this.barTarget, options)
+  }  
+
+  _renderPieCardio(items) {
+    const normalized = items.map(i => ({ label: i.x, value: i.y }))
+    const sortedItems = [...normalized].sort((a, b) => b.value - a.value)
+  
+    const options = {
+      chart: {
+        type: "donut",
+        height: 320,
+        toolbar: { show: false },
+        animations: { enabled: false },
+        foreColor: "#e0e1dd"
+      },
+      title: {
+        text: "有酸素 種目バランス",
+        align: "left",
+        style: { color: "#e0e1dd", fontSize: "15px" }
+      },
+      labels: sortedItems.map(i => i.label),
+      series: sortedItems.map(i => i.value),
+      legend: {
+        position: "bottom",
+        labels: { colors: "#e0e1dd" }
+      },
+      tooltip: {
+        theme: "dark",
+        y: {
+          formatter: val => `${val} 分`
+        }
+      },
+      noData: { text: "有酸素データがありません", align: "center" }
+    }
+  
+    this._mount("pie", this.pieTarget, options)
   }  
 
   _mount(key, el, options) {

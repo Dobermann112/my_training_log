@@ -7,6 +7,7 @@ module Stats
             .joins(:cardio_sets)
             .group(:performed_on)
             .sum("cardio_sets.duration")
+            .sort_by { |date, _| date }
             .map { |date, total|
               { x: date, y: total }
             }
