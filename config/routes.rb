@@ -56,6 +56,7 @@ Rails.application.routes.draw do
 
   namespace :stats do
     get "graphs", to: "graphs#index"
+    get "cardio_graphs", to: "cardio_graphs#index"
   end
 
   namespace :api do

@@ -3,14 +3,14 @@
   <div class="d-flex justify-content-between gap-2 mb-3 text-center flex-wrap">
     <div class="flex-fill card shadow-sm border-secondary summary-card">
       <div class="card-body py-2">
-        <h6 class="small mb-1">総セット</h6>
+        <h6 class="small mb-1" data-charts-target="summaryLabel1">総セット</h6>
         <h4 class="mb-0 fw-bold" data-charts-target="summarySets">0</h4>
       </div>
     </div>
 
     <div class="flex-fill card shadow-sm border-secondary summary-card">
       <div class="card-body py-2">
-        <h6 class="small mb-1">総レップ</h6>
+        <h6 class="small mb-1" data-charts-target="summaryLabel2">総レップ</h6>
         <h4 class="mb-0 fw-bold" data-charts-target="summaryReps">0</h4>
       </div>
     </div>
@@ -32,6 +32,15 @@
     </div>
 
     <select
+      data-charts-target="mode"
+      data-action="change->charts#changeMode"
+      class="form-select w-auto"
+    >
+      <option value="strength" selected>筋トレ</option>
+      <option value="cardio">有酸素</option>
+    </select>
+
+    <select
       data-charts-target="range"
       data-action="change->charts#changeRange"
       class="form-select w-auto"
@@ -45,9 +54,10 @@
       data-charts-target="bodyPart"
       data-action="change->charts#changeBodyPart"
       class="form-select w-auto"
+      data-charts-strength-only
     >
       <option value="">全身</option>
-      <% BodyPart.all.each do |bp| %>
+      <% BodyPart.where.not(name: "有酸素").each do |bp| %>
         <option value="<%= bp.id %>"><%= bp.name %></option>
       <% end %>
     </select>
