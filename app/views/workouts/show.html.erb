@@ -3,33 +3,25 @@
     <%= @date %> のトレーニング
   </h2>
 
-  <% if @workout&.persisted? %>
-    <%= link_to workout_path(@workout),
-          data: { turbo_method: :delete, turbo_confirm: "削除しますか？" },
-          class: "btn btn-sm btn-outline-danger" do %>
-      <i class="bi bi-trash"></i>
-    <% end %>
-  <% end %>  
+  <%= link_to by_date_workouts_path(date: @date),
+        data: { turbo_method: :delete, turbo_confirm: "この日のトレーニングを削除しますか？" },
+        class: "btn btn-sm btn-outline-danger" do %>
+    <i class="bi bi-trash"></i>
+  <% end %>
 </div>
 
 <hr>
 
 <h3 class="mt-4">セット記録</h3>
 
-<% if @workout&.persisted? %>
-  <%= link_to "種目を追加", select_exercise_workouts_path(date: @date),
-              class: "btn btn-warning mt-2" %>
-<% end %>
+<%= link_to "種目を追加", select_exercise_workouts_path(date: @date),
+            class: "btn btn-warning mt-2 mb-3" %>
 
 <div id="set_form_errors"></div>
 
 <div id="workout_sets">
   <%= render "workouts/exercise_sets", exercise_sets: @strength_sets, workout: @workout %> 
 </div>
-
-<hr>
-
-<h3 class="mt-4">有酸素</h3>
 
 <div id="cardio_sets">
   <%= render "workouts/cardio_sets", cardio_sets_by_exercise: @cardio_sets_by_exercise %>

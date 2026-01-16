@@ -9,6 +9,10 @@ module Dashboard
         .includes(workout_sets: :exercise)
         .find_by(workout_date: @today)
 
+      @today_cardio = current_user.cardio_workouts
+        .includes(cardio_sets: :exercise)
+        .find_by(performed_on: @today)
+
       render "calendars/index"
     end
   end

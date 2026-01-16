@@ -1,23 +1,19 @@
-<% if exercise_sets.present? %>
-  <% exercise_sets.each do |exercise, sets| %>
-    <div class="exercise-card mb-4">
-      <div class="d-flex justify-content-between align-items-center mb-2">
-        <h4 class="m-0"><%= exercise.name %>（<%= sets.size %>セット）</h4>
+<% exercise_sets.each do |exercise, sets| %>
+  <div class="exercise-card mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <h4 class="m-0"><%= exercise.name %>（<%= sets.size %>セット）</h4>
 
-        <%= link_to edit_group_workout_workout_sets_path(
-              workout,
-              exercise_id: exercise.id
-            ),
-            class: "btn btn-sm btn-outline-warning" do %>
-          <i class="bi bi-pencil"></i>
-        <% end %>
+      <%= link_to edit_group_workout_workout_sets_path(
+            workout,
+            exercise_id: exercise.id
+          ),
+          class: "btn btn-sm btn-outline-warning" do %>
+            <i class="bi bi-pencil"></i>
+          <% end %>
       </div>
 
-      <% sets.each_with_index do |set, i| %>
-        <%= render "workout_sets/set", set: set, workout: workout %>
-      <% end %>
-    </div>
-  <% end %>
-<% else %>
-  <p>まだセットが登録されていません。</p>
+    <% sets.each_with_index do |set, i| %>
+      <%= render "workout_sets/set", set: set, workout: workout %>
+    <% end %>
+  </div>
 <% end %>
