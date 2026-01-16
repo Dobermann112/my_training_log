@@ -8,6 +8,7 @@ export default class extends Controller {
     "bar",
     "range",
     "bodyPart",
+    "mode",
     "summarySets",
     "summaryReps",
     "summaryStreak"
@@ -17,6 +18,7 @@ export default class extends Controller {
     this._charts = { line: null, pie: null, bar: null }
     this.currentRange = "month" // ←　月表示がデフォルト
     this.currentBodyPart = "" // ←　全身がデフォルト
+    this.currentMode = "strength"
     this.load()
     window.addEventListener("turbo:before-render", () => this._destroyAll())
   }
@@ -34,6 +36,20 @@ export default class extends Controller {
     this.currentRange = this.rangeTarget.value
     this.load()
   }
+  
+  changeMode() {
+    this.currentMode = this.modeTarget.value
+  
+    if (this.currentMode === "cardio") {
+      this.currentBodyPart = ""
+      this.bodyPartTarget.value = ""
+      this.bodyPartTarget.disabled = true
+    } else {
+      this.bodyPartTarget.disabled = false
+    }
+  
+    this.load()
+  }  
 
   changeBodyPart() {
     this.currentBodyPart = this.bodyPartTarget.value
@@ -41,25 +57,63 @@ export default class extends Controller {
   }
 
   async load() {
+    if (this.currentMode === "cardio") {
+      await this._loadCardio()
+    } else {
+      await this._loadStrength()
+    }
+  }
+  
+  async _loadStrength() {
     const params = new URLSearchParams({
       range: this.currentRange,
       body_part_id: this.currentBodyPart
     })
+  
     try {
       const res = await fetch(`/stats/graphs?${params.toString()}`, {
         headers: { Accept: "application/json" }
       })
       const data = await res.json()
-
+  
       this._renderLine(data.line_daily_volume || [])
       this._renderPie(data.pie_by_body_part || [])
       this._renderBar(data.bar_by_exercise || [])
-
+  
       this.updateSummary(data.summary)
     } catch (e) {
-      console.error("グラフデータの取得に失敗しました:", e)
+      console.error("筋トレグラフ取得失敗:", e)
     }
   }
+
+  async _loadCardio() {
+    const params = new URLSearchParams({
+      range: this.currentRange
+    })
+  
+    try {
+      const res = await fetch(`/stats/cardio_graphs?${params.toString()}`, {
+        headers: { Accept: "application/json" }
+      })
+      const data = await res.json()
+  
+      // line：時間推移
+      this._renderLineCardio(data.line_duration || [])
+  
+      // bar：種目傾向
+      this._renderBarCardio(data.bar_by_exercise || [])
+  
+      // pie は使わない（破棄）
+      if (this._charts.pie) {
+        this._charts.pie.destroy()
+        this._charts.pie = null
+      }
+  
+      this.updateCardioSummary(data.summary)
+    } catch (e) {
+      console.error("有酸素グラフ取得失敗:", e)
+    }
+  }  
 
   _renderLine(seriesData) {
     const isScoreMode = seriesData.length > 0 && seriesData[0].ratio !== undefined

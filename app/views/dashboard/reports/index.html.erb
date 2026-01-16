@@ -32,6 +32,15 @@
     </div>
 
     <select
+      data-charts-target="mode"
+      data-action="change->charts#changeMode"
+      class="form-select w-auto"
+    >
+      <option value="strength" selected>筋トレ</option>
+      <option value="cardio">有酸素</option>
+    </select>
+
+    <select
       data-charts-target="range"
       data-action="change->charts#changeRange"
       class="form-select w-auto"
@@ -45,9 +54,10 @@
       data-charts-target="bodyPart"
       data-action="change->charts#changeBodyPart"
       class="form-select w-auto"
+      data-charts-strength-only
     >
       <option value="">全身</option>
-      <% BodyPart.all.each do |bp| %>
+      <% BodyPart.where.not(name: "有酸素").each do |bp| %>
         <option value="<%= bp.id %>"><%= bp.name %></option>
       <% end %>
     </select>
