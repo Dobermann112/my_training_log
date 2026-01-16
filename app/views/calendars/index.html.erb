@@ -13,6 +13,13 @@
                 class: "btn btn-primary w-100 mb-3" do %>
       今日のトレーニングを記録する
     <% end %>
+
+  <% elsif @today_cardio.present? %>
+    <%= link_to by_date_workouts_path(date: @today),
+                class: "btn btn-primary w-100 mb-3" do %>
+      今日のトレーニングを記録する
+    <% end %>
+
   <% else %>
     <%= link_to select_exercise_workouts_path(date: @today),
                 class: "btn btn-primary w-100 mb-3" do %>
