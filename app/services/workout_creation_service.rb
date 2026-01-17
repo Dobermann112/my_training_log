@@ -4,8 +4,10 @@ class WorkoutCreationService
   def initialize(user:, date:, exercise_id:, sets_params:)
     @user = user
     @date = date
-    @exercise_id = exercise_id
+    @exercise = user.exercises.find(exercise_id)
     @sets_params = sets_params || {}
+  rescue ActiveRecord::RecordNotFound
+    raise CreationError, "不正な種目です"
   end
 
   def call
@@ -47,7 +49,7 @@ class WorkoutCreationService
   def create_sets!(workout, rows)
     rows.each do |row|
       workout.workout_sets.create!(
-        exercise_id: @exercise_id,
+        exercise: @exercise,
         weight: row[:weight],
         reps: row[:reps],
         memo: row[:memo]

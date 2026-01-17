@@ -60,37 +60,12 @@ RSpec.describe Exercise, type: :model do
     let!(:default_ex) { create(:exercise, body_part: body_part, is_default: true, user: nil) }
     let!(:custom_ex)  { create(:exercise, body_part: body_part, user: user, is_default: false) }
 
-    describe ".defaults" do
-      it "デフォルト種目のみ返す" do
-        expect(described_class.defaults).to include(default_ex)
-        expect(described_class.defaults).not_to include(custom_ex)
-      end
-    end
-
-    describe ".custom_of" do
-      it "指定ユーザーの種目のみ返す" do
-        expect(described_class.custom_of(user)).to include(custom_ex)
-        expect(described_class.custom_of(user)).not_to include(default_ex)
-      end
-    end
-
     describe ".for_user" do
-      it "デフォルト種目 + ユーザーのカスタム種目を返す" do
+      it "指定ユーザーの種目のみ返す" do
         result = described_class.for_user(user)
-        expect(result).to include(default_ex, custom_ex)
+        expect(result).to include(custom_ex)
+        expect(result).not_to include(default_ex)
       end
-    end
-  end
-
-  describe "#default_exercise?" do
-    it "デフォルト種目なら true を返す" do
-      exercise = build(:exercise, is_default: true, user_id: nil)
-      expect(exercise.default_exercise?).to be(true)
-    end
-
-    it "ユーザー種目なら false を返す" do
-      exercise = build(:exercise, is_default: false, user_id: user.id)
-      expect(exercise.default_exercise?).to be(false)
     end
   end
 end

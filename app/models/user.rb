@@ -1,15 +1,16 @@
 class User < ApplicationRecord
   has_many :workouts, dependent: :destroy
   has_many :cardio_workouts, dependent: :destroy
-  has_many :avatar_part_stats, dependent: :destroy
+  has_many :exercises, dependent: :destroy
+  has_many :avatar_part_stats, dependent: :destroy  
 
   enum :gender, { unspecified: 0, male: 1, female: 2 }
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }, length: { minimum: 2 }
 
   after_initialize :set_default_gendr, if: :new_record?
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  after_create :setup_exercise_from_templates
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :omniauthable, omniauth_providers: %i[google_oauth2]
@@ -26,5 +27,9 @@ class User < ApplicationRecord
 
   def set_default_gendr
     self.gender ||= :unspecified
+  end
+
+  def setup_exercise_from_templates
+    Exercises::TemplateCopyService.call(self)
   end
 end

@@ -30,12 +30,6 @@
                 turbo_confirm: "「#{exercise.name}」を削除しますか？"
               },
               class: "btn btn-sm btn-danger" %>
-
-        <% elsif exercise.default_exercise? %>
-          <%= link_to "編集",
-              edit_body_part_exercise_path(@body_part, exercise, date: @date),
-              class: "btn btn-sm btn-secondary" %>
-
         <% else %>
           <span class="text-muted">-</span>
         <% end %>
