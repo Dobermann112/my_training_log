@@ -11,11 +11,10 @@ class Exercise < ApplicationRecord
     message: "は同じ部位内ですでに登録されています"
   }
 
-  scope :defaults, -> { where(user_id: nil, is_default: true) }
-  scope :custom_of, ->(user) { where(user_id: user.id) }
-  scope :for_user, ->(user) { defaults.or(custom_of(user)) }
+  scope :templates, -> { where(user_id: nil) }
+  scope :for_user, ->(user) { where(user_id: user.id) }
 
-  def default_exercise?
-    is_default && user_id.nil?
+  def template?
+    user_id.nil?
   end
 end

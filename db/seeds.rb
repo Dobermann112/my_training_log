@@ -1,4 +1,3 @@
-# BodyParts マスタデータ
 body_parts = [
   { name: '胸', display_order: 1 },
   { name: '背中', display_order: 2 },
@@ -15,7 +14,8 @@ body_parts.each do |bp|
     end
 end
 
-# Exercises マスタデータ
+# Exercise templates (DO NOT USE DIRECTLY)
+# These records are copied to user-specific exercises on user creation.
 exercises = {
   '胸' => ['ベンチプレス', 'ダンベルフライ'],
   '背中' => ['デッドリフト', 'ラットプルダウン'],
