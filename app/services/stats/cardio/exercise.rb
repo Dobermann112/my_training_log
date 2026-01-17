@@ -5,11 +5,11 @@ module Stats
         user.cardio_workouts
             .where(performed_on: period)
             .joins(cardio_sets: :exercise)
-            .group("exercises.name")
+            .group("exercise.id", "exercises.name")
             .sum("cardio_sets.duration")
             .sort_by { |_k, v| -v }
             .first(limit)
-            .map { |name, total|
+            .map { |(_id, name), total|
               { x: name, y: total }
             }
       end

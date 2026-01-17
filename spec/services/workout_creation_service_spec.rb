@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe WorkoutCreationService, type: :service do
   let(:user)       { create(:user) }
   let(:body_part)  { create(:body_part) }
-  let(:exercise)   { create(:exercise, body_part: body_part) }
+  let(:exercise)   { create(:exercise, body_part: body_part, user: user) }
   let(:date)       { Date.current }
 
   describe "#call" do

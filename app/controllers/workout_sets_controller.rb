@@ -52,7 +52,7 @@ class WorkoutSetsController < ApplicationController
   end
 
   def set_exercise
-    @exercise = Exercise.find(params[:exercise_id])
+    @exercise = current_user.exercises.find(params[:exercise_id])
   end
 
   def authorize_user!

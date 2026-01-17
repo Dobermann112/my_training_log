@@ -56,7 +56,7 @@ class CardioSetsController < ApplicationController
   private
 
   def set_exercise
-    @exercise = Exercise.find(params[:exercise_id])
+    @exercise = current_user.exercises.find(params[:exercise_id])
   end
 
   def set_cardio_workout

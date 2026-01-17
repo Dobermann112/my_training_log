@@ -23,7 +23,7 @@ RSpec.describe "Workouts", type: :request do
   describe "GET /new" do
     context "when params are valid" do
       it "renders sets_form template" do
-        exercise = create(:exercise)
+        exercise = create(:exercise, user: user)
         get new_workout_path(exercise_id: exercise.id, date: Date.current)
         expect(response).to have_http_status(:success)
       end

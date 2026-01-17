@@ -15,7 +15,7 @@ class WorkoutsController < ApplicationController
   end
 
   def new
-    @exercise = Exercise.find_by(id: params[:exercise_id])
+    @exercise = current_user.exercises.find_by(id: params[:exercise_id])
 
     unless @exercise
       redirect_to select_exercise_workouts_path(date: params[:date]),
@@ -41,7 +41,7 @@ class WorkoutsController < ApplicationController
     redirect_to workout_path(workout)
   rescue WorkoutCreationService::CreationError => e
     flash.now[:alert] = e.message
-    @exercise = Exercise.find(params[:exercise_id])
+    @exercise = current_user.exercises.find(params[:exercise_id])
     render :sets_form, status: :unprocessable_entity
   end
 
@@ -60,7 +60,7 @@ class WorkoutsController < ApplicationController
   def select_exercise
     @date = params[:date]
     @body_parts = BodyPart.order(:display_order)
-    exercises = Exercise.includes(:body_part)
+    exercises = Exercise.for_user(current_user).includes(:body_part)
     @exercises_by_part = exercises.group_by(&:body_part)
   end
 

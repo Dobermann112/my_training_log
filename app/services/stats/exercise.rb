@@ -34,7 +34,7 @@ module Stats
     # 対象種目名を取得
     def fetch_names(maxes, sets, reps)
       ids = maxes.keys | sets.keys | reps.keys
-      ::Exercise.where(id: ids).pluck(:id, :name).to_h
+      @user.exercises.where(id: ids).pluck(:id, :name).to_h
     end
 
     # 集計結果を配列に整形

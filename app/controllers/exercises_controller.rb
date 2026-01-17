@@ -1,7 +1,6 @@
 class ExercisesController < ApplicationController
   before_action :set_body_part
   before_action :set_exercise, only: [:edit, :update, :destroy]
-  before_action :authorize_exercise!, only: [:edit, :update, :destroy]
 
   def index
     @date = params[:date]
@@ -19,9 +18,7 @@ class ExercisesController < ApplicationController
 
   def create
     @exercise = @body_part.exercises.build(exercise_params)
-    # current_user がいればカスタム種目扱いに
-    @exercise.user = current_user if user_signed_in?
-    @exercise.is_default = false if @exercise.user.present?
+    @exercise.user = current_user 
 
     params[:date]
 
@@ -55,10 +52,6 @@ class ExercisesController < ApplicationController
 
   def set_exercise
     @exercise = Exercise.for_user(current_user).where(body_part: @body_part).find(params[:id])
-  end
-
-  def authorize_exercise!
-    redirect_to body_part_exercise_path(@body_part, date: params[:date]), alert: "権限がありません。" unless @exercise.user.nil? || @exercise.user == current_user
   end
 
   def exercise_params

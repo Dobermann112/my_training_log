@@ -1,7 +1,8 @@
 class User < ApplicationRecord
   has_many :workouts, dependent: :destroy
   has_many :cardio_workouts, dependent: :destroy
-  has_many :avatar_part_stats, dependent: :destroy
+  has_many :exercises, dependent: :destroy
+  has_many :avatar_part_stats, dependent: :destroy  
 
   enum :gender, { unspecified: 0, male: 1, female: 2 }
 
@@ -29,6 +30,6 @@ class User < ApplicationRecord
   end
 
   def setup_exercise_from_templates
-    Exercise::TemplateCopyService.call(self)
+    Exercises::TemplateCopyService.call(self)
   end
 end
