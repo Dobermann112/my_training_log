@@ -8,8 +8,8 @@ class User < ApplicationRecord
   validates :name, presence: true, uniqueness: { case_sensitive: false }, length: { minimum: 2 }
 
   after_initialize :set_default_gendr, if: :new_record?
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  after_create :setup_exercise_from_templates
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :omniauthable, omniauth_providers: %i[google_oauth2]
@@ -26,5 +26,9 @@ class User < ApplicationRecord
 
   def set_default_gendr
     self.gender ||= :unspecified
+  end
+
+  def setup_exercise_from_templates
+    Exercise::TemplateCopyService.call(self)
   end
 end
