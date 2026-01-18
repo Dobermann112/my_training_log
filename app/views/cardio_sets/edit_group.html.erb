@@ -5,7 +5,8 @@
 <div class="exercise-card">
   <%= form_with url: update_group_cardio_workout_cardio_sets_path(@cardio_workout),
                 method: :patch,
-                local: true do %>
+                local: true,
+                html: { novalidate: true } do %>
 
     <div data-controller="cardio-sets"
          data-cardio-sets-edit-mode-value="true">

@@ -1,10 +1,10 @@
 <div class="d-flex gap-3">
   <div class="flex-fill">
     <label class="form-label">距離(km)</label>
-    <%= number_field_tag "",
+    <%= text_field_tag "",
           set&.distance,
-          step: 0.1,
           class: "form-control",
+          inputmode: "decimal",
           data: { cardio_set_create_target: "distance",
                   action: "input->cardio-set-create#saveDraft" } %>
   </div>
@@ -14,6 +14,7 @@
     <%= text_field_tag "",
           set&.duration,
           class: "form-control",
+          inputmode: "decimal",
           data: { cardio_set_create_target: "duration",
                   action: "input->cardio-set-create#saveDraft" } %>
   </div>
@@ -22,19 +23,20 @@
 <div class="d-flex gap-3 mt-2">
   <div class="flex-fill">
     <label class="form-label">消費カロリー(kcal)</label>
-    <%= number_field_tag "",
+    <%= text_field_tag "",
           set&.calories,
           class: "form-control",
+          inputmode: "decimal",
           data: { cardio_set_create_target: "calories",
                   action: "input->cardio-set-create#saveDraft" } %>
   </div>
 
   <div class="flex-fill">
     <label class="form-label">ペース(km/h)</label>
-    <%= number_field_tag "",
+    <%= text_field_tag "",
           set&.pace,
-          step: 0.1,
           class: "form-control",
+          inputmode: "decimal",
           data: { cardio_set_create_target: "pace",
                   action: "input->cardio-set-create#saveDraft" } %>
   </div>

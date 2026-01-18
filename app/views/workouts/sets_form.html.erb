@@ -15,7 +15,7 @@
 
 <div class="exercise-card">
 
-  <%= form_with(model: @workout, url: workouts_path) do |f| %>
+  <%= form_with model: @workout, url: workouts_path, html: { novalidate: true } do |f| %>
 
     <%= f.hidden_field :workout_date %>
     <%= hidden_field_tag "exercise_id", @exercise.id %>
@@ -70,8 +70,9 @@
           <div class="d-flex gap-3">
             <div class="flex-fill">
               <label class="form-label">重量(kg)</label>
-              <input type="number"
-                     step="0.5"
+              <input type="text"
+                     inputmode="decimal"
+                     step="any"
                      class="form-control"
                      data-sets-target="weight"
                      data-workout-set-create-target="weight"
@@ -80,7 +81,8 @@
 
             <div class="flex-fill">
               <label class="form-label">回数</label>
-              <input type="number"
+              <input type="text"
+                     inputmode="numeric"
                      class="form-control"
                      data-sets-target="reps"
                      data-workout-set-create-target="reps"
