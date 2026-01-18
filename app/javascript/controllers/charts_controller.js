@@ -406,8 +406,8 @@ export default class extends Controller {
   }  
 
   _renderPieCardio(items) {
-    const normalized = items.map(i => ({ label: i.x, value: i.y }))
-    const sortedItems = [...normalized].sort((a, b) => b.value - a.value)
+    const normalized = items.map(i => ({ label: i.x, value: Number(i.y) }))
+    const sortedItems = normalized.filter(i => !Number.isNaN(i.value)).sort((a, b) => b.value - a.value)
   
     const options = {
       chart: {
