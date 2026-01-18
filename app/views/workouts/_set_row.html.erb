@@ -5,16 +5,18 @@
   <div class="d-flex gap-2">
     <div class="flex-fill">
       <label class="form-label">重量 (kg)</label>
-      <input type="number"
+      <input type="text"
              name="workout_sets[<%= index %>][weight]"
-             class="form-control" />
+             class="form-control"
+             inputmode="decimal" />
     </div>
 
     <div class="flex-fill">
       <label class="form-label">回数</label>
-      <input type="number"
+      <input type="text"
              name="workout_sets[<%= index %>][reps]"
-             class="form-control" />
+             class="form-control"
+             inputmode="numeric" />
     </div>
   </div>
 

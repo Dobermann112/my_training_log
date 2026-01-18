@@ -6,7 +6,8 @@
 
   <%= form_with url: update_group_workout_workout_sets_path(@workout),
                 method: :patch,
-                local: true do %>
+                local: true,
+                html: { novalidate: true } do %>
 
     <%= hidden_field_tag :exercise_id, @exercise.id %>
 
@@ -38,18 +39,20 @@
             <div class="d-flex gap-3">
               <div class="flex-fill">
                 <label class="form-label">重量(kg)</label>
-                <%= number_field_tag "",
+                <%= text_field_tag "",
                                      set.weight,
-                                     step: 0.5,
                                      class: "form-control",
+                                     inputmode: "decimal",
+                                     step: "any",
                                      data: { workout_set_create_target: "weight", action: "input->workout-set-create#saveDraft" } %>
               </div>
 
               <div class="flex-fill">
                 <label class="form-label">回数</label>
-                <%= number_field_tag "",
+                <%= text_field_tag "",
                                      set.reps,
                                      class: "form-control",
+                                     inputmode: "numeric",
                                      data: { workout_set_create_target: "reps", action: "input->workout-set-create#saveDraft" } %>
               </div>
             </div>
@@ -83,8 +86,9 @@
           <div class="d-flex gap-3">
             <div class="flex-fill">
               <label class="form-label">重量(kg)</label>
-              <input type="number"
-                     step="0.5"
+              <input type="text"
+                     inputmode="decimal"
+                     step="any"
                      class="form-control"
                      data-workout-set-create-target="weight"
                      data-action="input->workout-set-create#saveDraft">
@@ -92,7 +96,8 @@
 
             <div class="flex-fill">
               <label class="form-label">回数</label>
-              <input type="number"
+              <input type="text"
+                     inputmode="numeric"
                      class="form-control"
                      data-workout-set-create-target="reps"
                      data-action="input->workout-set-create#saveDraft">
