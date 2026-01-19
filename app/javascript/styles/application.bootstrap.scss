@@ -12,10 +12,22 @@ $flash-error-text: #9b2226;
 $flash-notice-bg: #e0e1dd;
 $flash-notice-text: #000;
 
+:root {
+  --footer-nav-height: 80px;
+}
+
 // ===== Base Layout =====
 body {
   background-color: $primary-bg;
   color: $text-light;
+}
+
+@media (max-width: 767.98px) {
+  body {
+    padding-bottom: calc(
+      var(--footer-nav-height) + env(safe-area-inset-bottom)
+    );
+  }
 }
 
 .flash-message {
@@ -143,7 +155,7 @@ body {
 
 /* ===== footer_nav（モバイル固定ナビ） ===== */
 .footer-nav {
-  height: 68px;
+  height: var(--footer-nav-height);
   padding-bottom: env(safe-area-inset-bottom);
   background: rgba(0,0,0,0.75);
   backdrop-filter: blur(8px);
@@ -153,7 +165,7 @@ body {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: .25rem;
-    padding: .45rem .75rem;
+    padding: .6rem .75rem;
   }
 
   a {
@@ -163,9 +175,9 @@ body {
     flex-direction: column;
     align-items: center;
     gap: .15rem;
-    padding: .45rem .2rem;
+    padding: .6rem .25rem;
     border-radius: .75rem;
-    font-size: .65rem; // 文字小さめ
+    font-size: .7rem; // 文字小さめ
   }
 
   a[aria-current="page"],
@@ -175,7 +187,7 @@ body {
   }
 
   i[data-lucide] {
-    width: 26px;   // アイコンやや大きめ
+    width: 28px;   // アイコンやや大きめ
     height: 26px;
     stroke-width: 2.2;
   }
@@ -333,13 +345,21 @@ body {
 }
 
 @media (max-width: 767.98px) {
-  main.container.py-4 {
-    padding-bottom: calc(88px + env(safe-area-inset-bottom)) !important;
+  main.container {
+    padding-bottom: 0;
   }
 }
 
-main.container {
-  min-height: calc(100vh - 140px);
+@media (min-width: 768px) {
+  main.container {
+    min-height: calc(100vh - 140px);
+  }
+}
+
+@media (max-width: 767.98px) {
+  main.container {
+    min-height: auto;
+  }
 }
 
 /* === 種目名のカード === */
