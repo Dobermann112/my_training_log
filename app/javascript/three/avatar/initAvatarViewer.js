@@ -84,8 +84,6 @@ function loadPart(part, level) {
 
     avatarParts[part] = obj
     scene.add(obj)
-
-    console.log("[Avatar loaded]", part, level, obj)
   })
 }
 
