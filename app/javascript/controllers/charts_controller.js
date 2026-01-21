@@ -118,9 +118,6 @@ export default class extends Controller {
       })
       const data = await res.json()
 
-      console.log("cardio data:", data)
-      console.log("line_duration:", data.line_duration)
-
       // line：時間推移
       this._renderLineCardio(data.line_duration || [])
   
