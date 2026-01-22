@@ -21,7 +21,7 @@ MVP リリースでは価値検証を行い、
 ---
 
 ## 🗺 画面遷移図
-👉 [Figma はこちら](https://www.figma.com/design/1jBN6jRxSqQ7g7bjCPOtSU/%E7%84%A1%E9%A1%8C?node-id=0-1&t=2PZo23eOmrfIb3ox-1)
+👉 [Figma はこちら](docs/screen_flow.svg)
 
 ---
 
@@ -166,6 +166,8 @@ MVP リリースでは価値検証を行い、
 ---
 
 ## 🛠 技術構成
+
+👉 [技術構成図はこちら](docs/architecture_diagram.svg)
 
 ### 🔙 バックエンド
 - Ruby on Rails 7.1
