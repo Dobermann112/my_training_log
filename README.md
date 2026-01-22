@@ -21,12 +21,12 @@ MVP リリースでは価値検証を行い、
 ---
 
 ## 🗺 画面遷移図
-👉 [Figma はこちら](https://www.figma.com/design/1jBN6jRxSqQ7g7bjCPOtSU/%E7%84%A1%E9%A1%8C?node-id=0-1&t=mBggKAmyQhu7UCZB-1)
+👉 [Figma はこちら](https://www.figma.com/design/1jBN6jRxSqQ7g7bjCPOtSU/%E7%84%A1%E9%A1%8C?node-id=0-1&t=2PZo23eOmrfIb3ox-1)
 
 ---
 
 ## 🧱 ER図
-👉 [ER図はこちら](https://drive.google.com/file/d/1ZHafTCcjD7SEN_n-EKfH2mL63iYaXdyf/view?usp=sharing)
+👉 [ER図はこちら](docs/er_diagram.svg)
 
 ---
 
