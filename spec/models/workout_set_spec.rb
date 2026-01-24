@@ -6,6 +6,11 @@ RSpec.describe WorkoutSet, type: :model do
   let(:body_part) { create(:body_part) }
   let(:exercise)  { create(:exercise, body_part: body_part) }
 
+  before do
+    allow_any_instance_of(Avatar::ScoreIncrementService)
+      .to receive(:call)
+  end  
+
   describe "アソシエーションチェック" do
     it { is_expected.to belong_to(:workout) }
     it { is_expected.to belong_to(:exercise) }

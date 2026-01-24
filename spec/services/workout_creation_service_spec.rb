@@ -6,6 +6,11 @@ RSpec.describe WorkoutCreationService, type: :service do
   let(:exercise)   { create(:exercise, body_part: body_part, user: user) }
   let(:date)       { Date.current }
 
+  before do
+    allow_any_instance_of(Avatar::ScoreIncrementService)
+      .to receive(:call)
+  end  
+
   describe "#call" do
     context "when 正常なパラメータの場合" do
       let(:valid_sets_params) do
