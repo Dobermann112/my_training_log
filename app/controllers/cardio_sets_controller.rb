@@ -30,20 +30,20 @@ class CardioSetsController < ApplicationController
     set  = @cardio_workout.cardio_sets.find(params[:id])
     date = @cardio_workout.performed_on
     user = @cardio_workout.user
-  
+
     CardioSetDeleteService.call(
       cardio_workout: @cardio_workout,
       set: set
     )
 
     workout = user.workouts.find_by(workout_date: date)
-  
+
     cardio_exists =
       user.cardio_workouts
           .where(performed_on: date)
           .joins(:cardio_sets)
           .exists?
-  
+
     if workout.present?
       redirect_to workout_path(workout)
     elsif cardio_exists
@@ -51,7 +51,7 @@ class CardioSetsController < ApplicationController
     else
       redirect_to calendars_path
     end
-  end  
+  end
 
   private
 

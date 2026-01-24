@@ -2,7 +2,7 @@ class User < ApplicationRecord
   has_many :workouts, dependent: :destroy
   has_many :cardio_workouts, dependent: :destroy
   has_many :exercises, dependent: :destroy
-  has_many :avatar_part_stats, dependent: :destroy  
+  has_many :avatar_part_stats, dependent: :destroy
 
   enum :gender, { unspecified: 0, male: 1, female: 2 }
 
@@ -22,7 +22,7 @@ class User < ApplicationRecord
       user.password = Devise.friendly_token[0, 20]
     end
   end
-  
+
   private
 
   def set_default_gendr

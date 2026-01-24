@@ -8,8 +8,7 @@ module Avatar
 
     def self.level_for(point)
       LEVELS
-        .select { |l| point >= l[:min_point] }
-        .last[:level]
+        .reverse.find { |l| point >= l[:min_point] }[:level]
     end
   end
 end

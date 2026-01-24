@@ -9,9 +9,9 @@ module Stats
             .sum("cardio_sets.duration")
             .sort_by { |_k, v| -v }
             .first(limit)
-            .map { |(_id, name), total|
+            .map do |(_id, name), total|
               { x: name, y: total }
-            }
+            end
       end
     end
   end

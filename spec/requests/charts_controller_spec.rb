@@ -3,7 +3,11 @@ require 'rails_helper'
 RSpec.describe "ChartsController", type: :request do
   let(:user) { create(:user) }
 
-  before { sign_in user }
+  before do
+    sign_in user
+    allow_any_instance_of(Avatar::ScoreIncrementService)
+      .to receive(:call)
+  end
 
   describe "グラフ画面が表示される" do
     context "when Workoutデータがある場合" do

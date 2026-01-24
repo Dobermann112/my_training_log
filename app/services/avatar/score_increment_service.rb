@@ -15,7 +15,7 @@ module Avatar
 
     def level
       Avatar::LevelThresholds.level_for(avatar_part_stat.point)
-    end      
+    end
 
     def call
       increment_point!
@@ -27,8 +27,10 @@ module Avatar
 
     def increment_point!
       stat = avatar_part_stat
-      stat.increment!(:point, 1)
-      stat.update!(last_trained_at: Time.current)
+      stat.update!(
+        point: stat.point + 1,
+        last_trained_at: Time.current
+      )
     end
 
     def avatar_part

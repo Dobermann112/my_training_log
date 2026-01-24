@@ -1,7 +1,7 @@
 class AvatarPartStat < ApplicationRecord
   belongs_to :user
 
-  enum avatar_part: {
+  enum :avatar_part, {
     upper_body: 0,
     lower_body: 1,
     core: 2

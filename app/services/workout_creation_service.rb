@@ -13,9 +13,7 @@ class WorkoutCreationService
   def call
     valid_rows = extract_valid_rows
 
-    if valid_rows.empty?
-      raise CreationError, "重量・回数・メモのいずれかを入力してください"
-    end
+    raise CreationError, "重量・回数・メモのいずれかを入力してください" if valid_rows.empty?
 
     ActiveRecord::Base.transaction do
       workout = create_workout

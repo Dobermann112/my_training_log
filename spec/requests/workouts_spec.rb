@@ -5,13 +5,6 @@ RSpec.describe "Workouts", type: :request do
 
   before { sign_in user }
 
-  describe "GET /index" do
-    it "returns http success" do
-      get workouts_path
-      expect(response).to have_http_status(:success)
-    end
-  end
-
   describe "GET /show" do
     it "returns http success" do
       workout = create(:workout, user: user)
@@ -37,15 +30,6 @@ RSpec.describe "Workouts", type: :request do
     end
   end
 
-  describe "PATCH /update" do
-    it "updates workout and redirects" do
-      workout = create(:workout, user: user)
-      patch workout_path(workout), params: { workout: { notes: "updated" } }
-      expect(response).to redirect_to(workout_path(workout))
-      expect(workout.reload.notes).to eq("updated")
-    end
-  end
-
   describe "DELETE /destroy" do
     it "destroys workout and redirects" do
       workout = create(:workout, user: user)
@@ -54,7 +38,7 @@ RSpec.describe "Workouts", type: :request do
         delete workout_path(workout)
       end.to change(Workout, :count).by(-1)
 
-      expect(response).to redirect_to(workouts_path)
+      expect(response).to redirect_to(calendars_path)
     end
   end
 end

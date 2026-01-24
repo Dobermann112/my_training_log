@@ -16,7 +16,7 @@ module Api
       AvatarPartStat.avatar_parts.keys.each_with_object({}) do |part, result|
         stat = avatar_stats[part]
 
-        point = 
+        point =
           if stat
             Avatar::ScoreDecayService.new(stat).call
           else

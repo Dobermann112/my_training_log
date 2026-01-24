@@ -3,7 +3,6 @@ class CardioSet < ApplicationRecord
   belongs_to :exercise
 
   validates :set_number, presence: true
-  validates :exercise, presence: true
 
   validates :distance, numericality: { greater_than: 0 }, allow_nil: true
   validates :duration, numericality: { greater_than: 0 }, allow_nil: true

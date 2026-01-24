@@ -7,9 +7,9 @@ module Stats
             .joins(:cardio_sets)
             .group(:performed_on)
             .sum("cardio_sets.distance")
-            .map { |date, total|
+            .map do |date, total|
               { x: date, y: total.to_f }
-            }
+            end
       end
     end
   end

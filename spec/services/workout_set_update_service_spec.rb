@@ -6,6 +6,11 @@ RSpec.describe WorkoutSetUpdateService, type: :service do
   let(:body_part) { create(:body_part) }
   let(:exercise)  { create(:exercise, body_part: body_part) }
 
+  before do
+    allow_any_instance_of(Avatar::ScoreIncrementService)
+      .to receive(:call)
+  end
+
   describe "#call" do
     context "when 既存セットを更新する場合" do
       let!(:set1) do
