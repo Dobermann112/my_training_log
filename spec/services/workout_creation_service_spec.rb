@@ -9,7 +9,7 @@ RSpec.describe WorkoutCreationService, type: :service do
   before do
     allow_any_instance_of(Avatar::ScoreIncrementService)
       .to receive(:call)
-  end  
+  end
 
   describe "#call" do
     context "when 正常なパラメータの場合" do

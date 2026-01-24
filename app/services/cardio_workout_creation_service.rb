@@ -12,9 +12,7 @@ class CardioWorkoutCreationService
   def call
     valid_rows = extract_valid_rows
 
-    if valid_rows.empty?
-      raise CreationError, "時間を入力してください"
-    end
+    raise CreationError, "時間を入力してください" if valid_rows.empty?
 
     ActiveRecord::Base.transaction do
       cardio_workout = find_or_create_cardio_workout

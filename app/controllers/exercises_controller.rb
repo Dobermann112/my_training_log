@@ -18,7 +18,7 @@ class ExercisesController < ApplicationController
 
   def create
     @exercise = @body_part.exercises.build(exercise_params)
-    @exercise.user = current_user 
+    @exercise.user = current_user
 
     params[:date]
 

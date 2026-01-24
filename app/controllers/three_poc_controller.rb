@@ -1,4 +1,3 @@
 class ThreePocController < ApplicationController
-  def humanoid
-  end
+  def humanoid; end
 end

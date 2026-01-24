@@ -8,7 +8,7 @@ RSpec.describe "ChartsController", type: :request do
     allow_any_instance_of(Avatar::ScoreIncrementService)
       .to receive(:call)
   end
-  
+
   describe "グラフ画面が表示される" do
     context "when Workoutデータがある場合" do
       before do

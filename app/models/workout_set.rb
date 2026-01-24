@@ -1,7 +1,8 @@
 class WorkoutSet < ApplicationRecord
+  before_validation :set_sequential_number, on: :create
   after_create :increment_avatar_score
 
-  enum status: { draft: 0, confirmed: 1 }
+  enum :status, { draft: 0, confirmed: 1 }
 
   belongs_to :workout
   belongs_to :exercise
@@ -12,8 +13,6 @@ class WorkoutSet < ApplicationRecord
   validates :memo, length: { maximum: 100 }
 
   validate :at_least_one_value_present
-
-  before_validation :set_sequential_number, on: :create
 
   delegate :user_id, :workout_date, to: :workout
 

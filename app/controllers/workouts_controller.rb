@@ -53,9 +53,9 @@ class WorkoutsController < ApplicationController
   def destroy_by_date
     Workout.where(user: current_user, workout_date: params[:date]).destroy_all
     CardioWorkout.where(user: current_user, performed_on: params[:date]).destroy_all
-  
+
     redirect_to calendars_path, notice: "トレーニングを削除しました"
-  end  
+  end
 
   def select_exercise
     @date = params[:date]
@@ -71,7 +71,7 @@ class WorkoutsController < ApplicationController
   end
 
   def load_training_sets
-    @strength_sets = 
+    @strength_sets =
       WorkoutSet
       .joins(:workout)
       .where(workouts: { user_id: current_user.id, workout_date: @date })
@@ -81,15 +81,15 @@ class WorkoutsController < ApplicationController
 
     @cardio_workout =
       CardioWorkout.find_by(user_id: current_user.id, performed_on: @date)
-      
-    @cardio_sets_by_exercise = 
+
+    @cardio_sets_by_exercise =
       CardioSet
         .joins(:cardio_workout)
         .where(cardio_workouts: { user_id: current_user.id, performed_on: @date })
         .includes(:exercise)
         .order(:exercise_id, :set_number)
         .group_by(&:exercise)
-  end  
+  end
 
   def set_previous_sets
     previous_set = WorkoutSet

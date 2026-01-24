@@ -33,6 +33,7 @@ class CardioSetUpdateService
 
   def skip?(attrs)
     return false if destroy?(attrs)
+
     attrs[:duration].blank?
   end
 
@@ -41,11 +42,11 @@ class CardioSetUpdateService
       @cardio_workout.cardio_sets.maximum(:set_number).to_i + 1
 
     @cardio_workout.cardio_sets.create!(
-      distance:   attrs[:distance],
-      duration:   attrs[:duration],
-      calories:   attrs[:calories],
-      pace:       attrs[:pace],
-      memo:       attrs[:memo],
+      distance: attrs[:distance],
+      duration: attrs[:duration],
+      calories: attrs[:calories],
+      pace: attrs[:pace],
+      memo: attrs[:memo],
       set_number: next_number
     )
   end
@@ -60,8 +61,8 @@ class CardioSetUpdateService
         distance: attrs[:distance],
         duration: attrs[:duration],
         calories: attrs[:calories],
-        pace:     attrs[:pace],
-        memo:     attrs[:memo]
+        pace: attrs[:pace],
+        memo: attrs[:memo]
       )
     end
   end

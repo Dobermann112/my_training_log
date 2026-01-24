@@ -9,6 +9,6 @@ RSpec.describe CardioSetDeleteService do
 
     result = described_class.call(cardio_workout: cardio_workout, set: set)
 
-    expect(result.cardio_workout_deleted?).to eq(true)
+    expect(result.cardio_workout_deleted?).to be(true)
   end
 end

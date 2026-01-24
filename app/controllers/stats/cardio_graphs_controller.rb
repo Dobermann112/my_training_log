@@ -31,20 +31,20 @@ class Stats::CardioGraphsController < ApplicationController
 
   def summary_data(period)
     Stats::Cardio::Summary.call(user: current_user, period: period)
-  end  
+  end
 
   def duration_chart(period)
     Stats::Cardio::DailyDuration.call(user: current_user, period: period)
   end
-  
+
   def distance_chart(period)
     Stats::Cardio::DailyDistance.call(user: current_user, period: period)
   end
-  
+
   def exercise_chart(period, limit)
     Stats::Cardio::Exercise.call(user: current_user, period: period, limit: limit)
   end
-  
+
   def period_info(period, range)
     { from: period.first, to: period.last, range: range }
   end

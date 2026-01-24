@@ -15,7 +15,7 @@ module Avatar
 
     def level
       Avatar::LevelThresholds.level_for(avatar_part_stat.point)
-    end      
+    end
 
     def call
       increment_point!

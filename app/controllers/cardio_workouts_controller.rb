@@ -15,7 +15,7 @@ class CardioWorkoutsController < ApplicationController
       date: params[:performed_on],
       sets_params: params[:sets]
     ).call
-      
+
     redirect_to redirect_path_for(cardio_workout.performed_on),
                 notice: "有酸素トレーニングを記録しました"
   rescue CardioWorkoutCreationService::CreationError => e
@@ -23,7 +23,7 @@ class CardioWorkoutsController < ApplicationController
     @date     = params[:performed_on]
     flash.now[:alert] = e.message
     render :new, status: :unprocessable_entity
-  end      
+  end
 
   private
 

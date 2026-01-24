@@ -31,10 +31,11 @@ class WorkoutSetUpdateService
 
   def persisted_set?(key)
     @workout.workout_sets.exists?(id: key)
-  end  
+  end
 
   def skip?(attrs)
     return false if destroy_requested?(attrs)
+
     attrs[:weight].blank? && attrs[:reps].blank?
   end
 
@@ -63,10 +64,10 @@ class WorkoutSetUpdateService
 
   def cleanup_workout_if_empty
     return Result.new(false) if @workout.workout_sets.exists?
-  
+
     @workout.destroy!
     Result.new(true)
-  end  
+  end
 
   def destroy_requested?(attrs)
     attrs[:_destroy] == "1"

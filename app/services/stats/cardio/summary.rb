@@ -16,8 +16,6 @@ module Stats
         }
       end
 
-      private
-
       def self.total_duration(user, period)
         user.cardio_workouts
             .where(performed_on: period)

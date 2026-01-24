@@ -21,8 +21,7 @@ class Api::CalendarSummariesController < ApplicationController
     cardio_dates = current_user.cardio_workouts
       .where(performed_on: start_date..end_date)
       .pluck(:performed_on)
-      .map(&:to_s)
-      .to_set
+      .to_set(&:to_s)
 
     # 期間内の日付を全部埋めて返す（FullCalendarで扱いやすい）
     summaries = []
@@ -48,6 +47,7 @@ class Api::CalendarSummariesController < ApplicationController
 
   def parse_date(value)
     return nil if value.blank?
+
     Date.parse(value)
   rescue ArgumentError
     nil

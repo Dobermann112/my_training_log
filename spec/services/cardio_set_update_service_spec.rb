@@ -5,7 +5,7 @@ RSpec.describe CardioSetUpdateService do
   let(:cardio_workout) { create(:cardio_workout, user: user) }
 
   describe '#call' do
-    context '全セット削除された場合' do
+    context 'when 全セット削除された場合' do
       let!(:set) do
         create(:cardio_set, cardio_workout: cardio_workout)
       end
@@ -23,8 +23,8 @@ RSpec.describe CardioSetUpdateService do
             sets_params: params
           ).call
 
-        expect(result.cardio_workout_deleted?).to eq(true)
-        expect(CardioWorkout.exists?(cardio_workout.id)).to eq(false)
+        expect(result.cardio_workout_deleted?).to be(true)
+        expect(CardioWorkout.exists?(cardio_workout.id)).to be(false)
       end
     end
   end

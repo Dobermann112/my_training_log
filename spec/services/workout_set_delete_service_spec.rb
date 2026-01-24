@@ -13,7 +13,7 @@ RSpec.describe WorkoutSetDeleteService do
 
     result = described_class.call(workout: workout, set: set)
 
-    expect(result.workout_deleted?).to eq(true)
-    expect(Workout.exists?(workout.id)).to eq(false)
+    expect(result.workout_deleted?).to be(true)
+    expect(Workout.exists?(workout.id)).to be(false)
   end
 end

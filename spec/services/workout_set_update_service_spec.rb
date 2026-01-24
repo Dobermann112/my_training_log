@@ -9,7 +9,7 @@ RSpec.describe WorkoutSetUpdateService, type: :service do
   before do
     allow_any_instance_of(Avatar::ScoreIncrementService)
       .to receive(:call)
-  end  
+  end
 
   describe "#call" do
     context "when 既存セットを更新する場合" do

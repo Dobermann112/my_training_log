@@ -8,9 +8,9 @@ module Stats
             .group(:performed_on)
             .sum("cardio_sets.duration")
             .sort_by { |date, _| date }
-            .map { |date, total|
+            .map do |date, total|
               { x: date, y: total }
-            }
+            end
       end
     end
   end

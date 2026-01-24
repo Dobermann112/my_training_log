@@ -9,7 +9,7 @@ RSpec.describe WorkoutSet, type: :model do
   before do
     allow_any_instance_of(Avatar::ScoreIncrementService)
       .to receive(:call)
-  end  
+  end
 
   describe "アソシエーションチェック" do
     it { is_expected.to belong_to(:workout) }

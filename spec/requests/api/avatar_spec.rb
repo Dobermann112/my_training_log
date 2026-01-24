@@ -11,7 +11,7 @@ RSpec.describe 'Api::Avatars', type: :request do
 
       expect(response).to have_http_status(:ok)
 
-      json = JSON.parse(response.body)
+      json = response.parsed_body
 
       expect(json.keys).to contain_exactly(
         'upper_body',
@@ -23,7 +23,7 @@ RSpec.describe 'Api::Avatars', type: :request do
     it 'stat が存在しない部位は base を返す' do
       get '/api/avatar'
 
-      json = JSON.parse(response.body)
+      json = response.parsed_body
       expect(json['upper_body']).to eq('base')
       expect(json['core']).to eq('base')
       expect(json['lower_body']).to eq('base')
@@ -37,7 +37,7 @@ RSpec.describe 'Api::Avatars', type: :request do
       )
 
       get '/api/avatar'
-      json = JSON.parse(response.body)
+      json = response.parsed_body
 
       expect(json['upper_body']).to eq('level_3')
     end
