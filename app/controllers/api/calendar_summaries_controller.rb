@@ -5,27 +5,24 @@ class Api::CalendarSummariesController < ApplicationController
     start_date = parse_date(params[:start])
     end_date   = parse_date(params[:end])
 
-    return head :bad_request if start_date.nil? || end_date.nil?
-    return head :bad_request if start_date > end_date
+    return head :bad_request if invalid_range?(start_date, end_date)
 
-    # workout_date -> workout_id のMapを作る（1日1 workout前提でないなら last を優先などにする）
-    workouts = current_user.workouts
-      .where(workout_date: start_date..end_date)
-      .select(:id, :workout_date)
+    render json: { summaries: build_summaries(start_date, end_date) }
+  end
 
-    workout_map = workouts.each_with_object({}) do |w, h|
-      h[w.workout_date.to_s] = w.id
-    end
+  private
 
-    # performed_on -> true のSetを作る（1日1 cardioWorkout 前提）
-    cardio_dates = current_user.cardio_workouts
-      .where(performed_on: start_date..end_date)
-      .pluck(:performed_on)
-      .to_set(&:to_s)
+  def invalid_range?(start_date, end_date)
+    start_date.nil? || end_date.nil? || start_date > end_date
+  end
 
-    # 期間内の日付を全部埋めて返す（FullCalendarで扱いやすい）
+  def build_summaries(start_date, end_date)
+    workout_map  = workout_map_for(start_date, end_date)
+    cardio_dates = cardio_dates_for(start_date, end_date)
+
     summaries = []
     d = start_date
+
     while d <= end_date
       key = d.to_s
       workout_id = workout_map[key]
@@ -40,10 +37,24 @@ class Api::CalendarSummariesController < ApplicationController
       d += 1.day
     end
 
-    render json: { summaries: summaries }
+    summaries
   end
 
-  private
+  def workout_map_for(start_date, end_date)
+    current_user.workouts
+      .where(workout_date: start_date..end_date)
+      .select(:id, :workout_date)
+      .each_with_object({}) do |w, h|
+        h[w.workout_date.to_s] = w.id
+      end
+  end
+
+  def cardio_dates_for(start_date, end_date)
+    current_user.cardio_workouts
+      .where(performed_on: start_date..end_date)
+      .pluck(:performed_on)
+      .to_set(&:to_s)
+  end
 
   def parse_date(value)
     return nil if value.blank?
