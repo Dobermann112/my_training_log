@@ -12,7 +12,7 @@ class UsersController < ApplicationController
   def update
     @user = current_user
     if @user.update(user_params)
-      redirect_to dashboard_profile_path, notice: "プロフィールを更新しました"
+      redirect_to dashboard_setting_path, notice: "プロフィールを更新しました"
     else
       flash.now[:alert] = "入力内容に誤りがあります"
       render "users/edit", status: :unprocessable_entity
@@ -21,7 +21,7 @@ class UsersController < ApplicationController
 
   def update_email
     if current_user.update_with_password(email_params)
-      redirect_to dashboard_profile_path, notice: "メールアドレスを変更しました。"
+      redirect_to dashboard_setting_path, notice: "メールアドレスを変更しました。"
     else
       flash.now[:alert] = "入力内容に誤りがあります"
       render "users/account_edit", status: :unprocessable_entity
@@ -31,7 +31,7 @@ class UsersController < ApplicationController
   def update_password
     if current_user.update_with_password(password_params)
       sign_in(current_user, bypass: true)
-      redirect_to dashboard_profile_path, notice: "パスワードを変更しました。"
+      redirect_to dashboard_setting_path, notice: "パスワードを変更しました。"
     else
       flash.now[:alert] = "入力内容に誤りがあります"
       render "users/account_edit", status: :unprocessable_entity
