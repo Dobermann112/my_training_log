@@ -69,8 +69,12 @@ Rails.application.routes.draw do
   namespace :dashboard do
     get "calendar", to: "calendars#index"
     get "report",   to: "reports#index"
-    get "profile",  to: "profiles#index"
-    get "setting",  to: "settings#index"
+    get "avatar",  to: "profiles#index"
+    get "setting", to: "settings#index"
+    
+    namespace :settings do
+      resource :profile, only: [:show, :edit, :update]
+    end
   end
 
   get "dashboard/stats", to: "dashboard#stats"
