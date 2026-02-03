@@ -74,6 +74,9 @@ Rails.application.routes.draw do
     
     namespace :settings do
       resource :profile, only: [:show, :edit, :update]
+      resource :account, only: [:show]
+      patch "account/email", to: "accounts#update_email", as: :account_update_email
+      patch "account/password", to: "accounts#update_password", as: :account_update_password
     end
   end
 
