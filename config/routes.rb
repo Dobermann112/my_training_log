@@ -18,12 +18,6 @@ Rails.application.routes.draw do
   get "/privacy", to: "static_pages#privacy"
   get "/help",    to: "static_pages#help"
 
-  resource :user, only: [:show, :edit, :update]
-
-  get "account_edit", to: "users#account_edit", as: :account_edit_user
-  patch "users/update_email", to: "users#update_email", as: :users_update_email
-  patch "users/update_password", to: "users#update_password", as: :users_update_password
-
   resources :workouts do
     collection do
       get :select_exercise
@@ -51,8 +45,6 @@ Rails.application.routes.draw do
   end
 
   resources :calendars, only: :index
-
-  resources :profiles, only: :index
 
   namespace :stats do
     get "graphs", to: "graphs#index"
