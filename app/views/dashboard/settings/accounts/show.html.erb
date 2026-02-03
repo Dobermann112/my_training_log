@@ -23,7 +23,7 @@
             <h4 class="mb-3 pb-2 border-bottom">メールアドレスの変更</h4>
 
             <%= form_with model: current_user,
-                          url: users_update_email_path,
+                          url: dashboard_settings_account_update_email_path,
                           method: :patch,
                           local: true do |f| %>
 
@@ -51,7 +51,7 @@
             <h4 class="mb-3 pb-2 border-bottom">パスワードの変更</h4>
 
             <%= form_with model: current_user,
-                          url: users_update_password_path,
+                          url: dashboard_settings_account_update_password_path,
                           method: :patch,
                           local: true do |f| %>
 
