@@ -20,7 +20,7 @@
         <% if user_signed_in? %>
           <li class="nav-item"><%= link_to "カレンダー", dashboard_calendar_path, class: "nav-link text-light" %></li>
           <li class="nav-item"><%= link_to "レポート",   dashboard_report_path,   class: "nav-link text-light" %></li>
-          <li class="nav-item"><%= link_to "マイページ", dashboard_profile_path,   class: "nav-link text-light" %></li>
+          <li class="nav-item"><%= link_to "マイページ", dashboard_avatar_path,   class: "nav-link text-light" %></li>
           <li class="nav-item"><%= link_to "設定",       dashboard_setting_path,  class: "nav-link text-light" %></li>
         <% else %>
           <li class="nav-item"><%= link_to "ログイン",     new_user_session_path,        class: "nav-link text-light" %></li>

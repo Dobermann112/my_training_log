@@ -644,27 +644,3 @@ body {
 .avatar-detail-btn:active {
   transform: translateY(-50%) scale(0.96);
 }
-
-.avatar-info-btn {
-  width: 44px;
-  height: 44px;
-  border-radius: 100%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(6px);
-}
-
-.avatar-info-btn i {
-  font-size: 26px;
-}
-
-.avatar-info-btn:hover {
-  color: #fff;
-}
