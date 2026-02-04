@@ -23,6 +23,10 @@ class User < ApplicationRecord
     end
   end
 
+  def gender_i18n
+    I18n.t("activerecord.attributes.user.genders.#{gender}", default: "未設定")
+  end
+
   private
 
   def set_default_gendr
