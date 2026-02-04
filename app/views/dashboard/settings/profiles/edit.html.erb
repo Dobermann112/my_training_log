@@ -21,7 +21,7 @@
             <div class="mb-3">
               <%= f.label :gender, "性別", class: "form-label" %>
               <%= f.select :gender,
-                           User.genders.keys.map { |k| [k, k] },
+                           User.genders.keys.map { |k| [I18n.t("activerecord.attributes.user.genders.#{k}", default: "未設定"), k] },
                            {},
                            class: "form-select bg-transparent text-light border-secondary" %>
             </div>
