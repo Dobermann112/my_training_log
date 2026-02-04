@@ -10,6 +10,10 @@ ja:
         password_confirmation: パスワード（確認用）
         gender: 性別
         goal: 目標
+        genders:
+          unspecified: 未設定
+          male: 男性
+          female: 女性
   devise:
     registrations:
       destroyed: アカウントを削除しました。ご利用ありがとうございました。

@@ -21,7 +21,7 @@
             <div class="mb-3">
               <%= f.label :gender, "性別", class: "form-label" %>
               <%= f.select :gender,
-                           User.genders.keys.map { |k| [k, k] },
+                           User.gender_options,
                            {},
                            class: "form-select bg-transparent text-light border-secondary" %>
             </div>
