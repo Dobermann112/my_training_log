@@ -27,6 +27,15 @@ class User < ApplicationRecord
     I18n.t("activerecord.attributes.user.genders.#{gender}", default: "未設定")
   end
 
+  def self.gender_options
+    genders.keys.map do |k|
+      [
+        I18n.t("activerecord.attributes.user.genders.#{k}", default: "未設定"),
+        k
+      ]
+    end
+  end  
+
   private
 
   def set_default_gendr
