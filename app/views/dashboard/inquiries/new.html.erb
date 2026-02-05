@@ -1,0 +1,63 @@
+<div class="container my-4">
+  <div class="card shadow-sm border-secondary">
+    <div class="card-body">
+
+      <h4 class="mb-3 pb-2 border-bottom">お問い合わせ</h4>
+
+      <% if @inquiry_form.errors.any? %>
+        <div class="alert alert-danger">
+          <ul class="mb-0">
+            <% @inquiry_form.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <%= form_with model: @inquiry_form,
+                    url: dashboard_inquiry_path,
+                    method: :post,
+                    local: true do |f| %>
+
+        <div class="mb-3">
+          <%= f.label :name, "お名前", class: "form-label" %>
+          <%= f.text_field :name,
+                           class: "form-control bg-transparent text-light border-secondary",
+                           readonly: true %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :email, "メールアドレス", class: "form-label" %>
+          <%= f.email_field :email,
+                            class: "form-control bg-transparent text-light border-secondary" %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :category, "お問い合わせ種別", class: "form-label" %>
+          <%= f.select :category,
+                       [["不具合", "bug"], ["要望", "request"], ["その他", "other"]],
+                       { include_blank: "選択してください" },
+                       class: "form-select bg-transparent text-light border-secondary" %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :message, "お問い合わせ内容", class: "form-label" %>
+          <%= f.text_area :message,
+                          rows: 6,
+                          class: "form-control bg-transparent text-light border-secondary" %>
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <%= link_to "戻る",
+                      dashboard_setting_path,
+                      class: "btn btn-outline-secondary" %>
+
+          <%= f.submit "送信する",
+                       class: "btn btn-primary" %>
+        </div>
+
+      <% end %>
+
+    </div>
+  </div>
+</div>
