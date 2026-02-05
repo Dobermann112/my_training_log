@@ -1,0 +1,15 @@
+My Training Log にお問い合わせが届きました。
+
+■ ユーザー情報
+ユーザーID: <%= @inquiry[:user_id] %>
+お名前: <%= @inquiry[:name] %>
+メールアドレス: <%= @inquiry[:email] %>
+
+■ お問い合わせ種別
+<%= @inquiry[:category] %>
+
+■ 内容
+<%= @inquiry[:message] %>
+
+■ 送信日時
+<%= @inquiry[:submitted_at] %>
