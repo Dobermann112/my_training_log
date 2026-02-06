@@ -13,12 +13,16 @@ class Dashboard::InquiriesController < ApplicationController
     @inquiry_form.name ||= current_user.name
 
     if @inquiry_form.valid?
-      InquirySubmissionService.call(
+      success = InquirySubmissionService.call(
         inquiry_form: @inquiry_form,
         user: current_user
       )
-      
-      redirect_to dashboard_setting_path, notice: "フォームを送信しました"
+
+      if success
+        redirect_to dashboard_setting_path, notice: "フォームを送信しました"
+      else
+        redirect_to dashboard_setting_path, alert: "現在お問い合わせを送信できません。時間をおいて再度お試しください。"
+      end
     else
       render :new, status: :unprocessable_entity
     end
