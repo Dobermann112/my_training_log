@@ -13,7 +13,11 @@ class Dashboard::InquiriesController < ApplicationController
     @inquiry_form.name ||= current_user.name
 
     if @inquiry_form.valid?
-      # TODO: Step6で Service -> Mailer に差し替える
+      InquirySubmissionService.call(
+        inquiry_form: @inquiry_form,
+        user: current_user
+      )
+      
       redirect_to dashboard_setting_path, notice: "フォームを送信しました"
     else
       render :new, status: :unprocessable_entity

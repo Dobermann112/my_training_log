@@ -1,23 +1,22 @@
 class InquiryMailer < ApplicationMailer
   def notify
     @inquiry = params[:inquiry]
+    @category_label = category_label(@inquiry[:category])
 
     mail(
-      to: ENV["MAILER_SENDER"],
-      subject: "[My Training Log] お問い合わせ（#{category_label}）"
+      to: ENV.fetch("INQUIRY_RECEIVER"),
+      reply_to: @inquiry[:email],
+      subject: "[My Training Log] お問い合わせ（#{@category_label}）"
     )
   end
 
   private
 
-  def category_label
-    case @inquiry[:category]
-    when "bug"
-      "不具合"
-    when "request"
-      "要望"
-    else
-      "その他"
+  def category_label(value)
+    case value
+    when "bug"     then "不具合"
+    when "request" then "要望"
+    else                "その他"
     end
   end
 end
