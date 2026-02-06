@@ -70,6 +70,8 @@ Rails.application.routes.draw do
       patch "account/email", to: "accounts#update_email", as: :account_update_email
       patch "account/password", to: "accounts#update_password", as: :account_update_password
     end
+
+    resource :inquiry, only: [:new, :create]
   end
 
   get "dashboard/stats", to: "dashboard#stats"

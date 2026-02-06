@@ -30,6 +30,8 @@ services:
       SMTP_PASSWORD: qwrwqummhmipftxw
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      MAILER_SENDER: ${MAILER_SENDER}
+      INQUIRY_RECEIVER: ${INQUIRY_RECEIVER}
     tty: true
 
 volumes:
