@@ -1,4 +1,13 @@
 class InquirySubmissionService
+  MAIL_DELIVERY_ERRORS = [
+    Net::SMTPAuthenticationError,
+    Net::SMTPFatalError,
+    Net::SMTPServerBusy,
+    Net::SMTPSyntaxError,
+    SocketError,
+    Timeout::Error
+  ].freeze
+
   def self.call(inquiry_form:, user:)
     new(inquiry_form, user).call
   end
@@ -9,9 +18,11 @@ class InquirySubmissionService
   end
 
   def call
-    InquiryMailer.with(
-      inquiry: inquiry_payload
-    ).notify.deliver_now
+    InquiryMailer.with(inquiry: inquiry_payload).notify.deliver_now
+    true
+  rescue *MAIL_DELIVERY_ERRORS => e
+    Rails.logger.error("[InquirySubmissionService] mail delivery failed: #{e.class} #{e.message}")
+    false
   end
 
   private
