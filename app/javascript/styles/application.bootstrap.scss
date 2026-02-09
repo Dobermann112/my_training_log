@@ -647,7 +647,7 @@ body {
 
 .auth-page {
   min-height: 100vh;
-  background-image: url("/assets/auth_bg_pc.jpg");
+  background-image: url("/auth/auth_bg_pc.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -655,6 +655,6 @@ body {
 
 @media (max-width: 768px) {
   .auth-page {
-    background-image: url("/assets/auth_bg_mobile.jpg");
+    background-image: url("/auth/auth_bg_mobile.jpg");
   }
 }
