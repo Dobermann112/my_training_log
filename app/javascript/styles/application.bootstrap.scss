@@ -644,3 +644,17 @@ body {
 .avatar-detail-btn:active {
   transform: translateY(-50%) scale(0.96);
 }
+
+.auth-page {
+  min-height: 100vh;
+  background-image: url("/assets/auth_bg_pc.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+@media (max-width: 768px) {
+  .auth-page {
+    background-image: url("/assets/auth_bg_mobile.jpg");
+  }
+}

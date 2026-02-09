@@ -21,7 +21,7 @@
     <% end %>
   </head>
 
-  <body class="app-body">
+  <body class="app-body <%= yield :body_class %>">
     <header>
       <%= render "shared/navbar_mobile" %>
       <%= render "shared/navbar" %>

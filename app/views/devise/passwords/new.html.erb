@@ -1,35 +1,36 @@
-<div class="container my-4">
-  <div class="row justify-content-center">
-    <div class="col-md-6 col-lg-5">
+<% content_for :body_class, "auth-page" %>
+  <div class="container my-4">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-5">
 
-      <div class="card shadow-sm border-secondary">
-        <div class="card-body">
+        <div class="card shadow-sm border-secondary">
+          <div class="card-body">
 
-          <h4 class="mb-3 pb-2 border-bottom">パスワード再設定</h4>
-          <p class="text-light mb-4">
-            登録済みのメールアドレスを入力してください。<br>
-            パスワード再設定リンクをメールでお送りします。
-          </p>
+            <h4 class="mb-3 pb-2 border-bottom">パスワード再設定</h4>
+            <p class="text-light mb-4">
+              登録済みのメールアドレスを入力してください。<br>
+              パスワード再設定リンクをメールでお送りします。
+            </p>
 
-          <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { data: { turbo: false } }) do |f| %>
-            <div class="mb-3">
-              <%= f.label :email, "メールアドレス", class: "form-label" %>
-              <%= f.email_field :email, autofocus: true, autocomplete: "email",
-                    class: "form-control bg-transparent text-light border-secondary" %>
+            <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { data: { turbo: false } }) do |f| %>
+              <div class="mb-3">
+                <%= f.label :email, "メールアドレス", class: "form-label" %>
+                <%= f.email_field :email, autofocus: true, autocomplete: "email",
+                      class: "form-control bg-transparent text-light border-secondary" %>
+              </div>
+
+              <div class="d-grid mt-4">
+                <%= f.submit "再設定メールを送信", class: "btn btn-primary" %>
+              </div>
+            <% end %>
+
+            <div class="text-center mt-4">
+              <%= render "devise/shared/links" %>
             </div>
 
-            <div class="d-grid mt-4">
-              <%= f.submit "再設定メールを送信", class: "btn btn-primary" %>
-            </div>
-          <% end %>
-
-          <div class="text-center mt-4">
-            <%= render "devise/shared/links" %>
           </div>
-
         </div>
-      </div>
 
+      </div>
     </div>
   </div>
-</div>
