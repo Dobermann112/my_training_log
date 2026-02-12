@@ -51,7 +51,7 @@ export default class extends Controller {
         this.appendHidden(form, `sets[${draft.uuid}][distance]`, draft.distance)
         this.appendHidden(form, `sets[${draft.uuid}][duration]`, draft.duration)
         this.appendHidden(form, `sets[${draft.uuid}][calories]`, draft.calories)
-        this.appendHidden(form, `sets[${draft.uuid}][pace]`, draft.pace)
+        this.appendHidden(form, `sets[${draft.uuid}][pace]`, this.toPaceDecimal(draft))
         this.appendHidden(form, `sets[${draft.uuid}][memo]`, draft.memo)
       })
     } else {
@@ -59,7 +59,7 @@ export default class extends Controller {
         this.appendHidden(form, `sets[${index}][distance]`, draft.distance)
         this.appendHidden(form, `sets[${index}][duration]`, draft.duration)
         this.appendHidden(form, `sets[${index}][calories]`, draft.calories)
-        this.appendHidden(form, `sets[${index}][pace]`, draft.pace)
+        this.appendHidden(form, `sets[${index}][pace]`, this.toPaceDecimal(draft))
         this.appendHidden(form, `sets[${index}][memo]`, draft.memo)
       })
     }
@@ -139,5 +139,25 @@ export default class extends Controller {
   
   validDraft(data) {
     return data.duration && data.duration !== ""
+  }  
+
+  toPaceDecimal(draft) {
+    const min = draft.paceMin
+    const sec = draft.paceSec
+  
+    if (!min && !sec) return ""
+  
+    // 入力が中途半端なら空扱い（保存しない）
+    if (!/^\d{1,2}$/.test(min ?? "")) return ""
+    if (!/^\d{1,2}$/.test(sec ?? "")) return ""
+  
+    const minN = Number(min)
+    const secN = Number(sec)
+  
+    if (Number.isNaN(minN) || minN < 0 || minN > 99) return ""
+    if (Number.isNaN(secN) || secN < 0 || secN > 59) return ""
+  
+    const val = minN + secN / 60.0
+    return val.toFixed(2)
   }  
 }
