@@ -29,6 +29,9 @@
           <div class="distance"><%= set.distance.present? ? "#{set.distance}km" : "-" %></div>
           <div class="duration"><%= set.duration.present? ? "#{set.duration}min" : "-" %></div>
           <div class="calories"><%= set.calories.present? ? "#{set.calories}kcal" : "" %></div>
+          <div class="pace">
+            <%= set.pace.present? ? "#{format_pace_min_per_km(set.pace)} /km" : "-" %>
+          </div>
         </div>
       <% end %>
 

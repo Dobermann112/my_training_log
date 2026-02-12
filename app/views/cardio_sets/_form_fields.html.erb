@@ -32,21 +32,7 @@
   </div>
 
   <div class="flex-fill">
-    <% pace_min = nil %>
-    <% pace_sec = nil %>
-
-    <% if set&.pace.present? %>
-      <% m = set.pace.floor %>
-      <% s = ((set.pace - m) * 60).round %>
-
-      <% if s == 60 %>
-        <% m += 1 %>
-        <% s = 0 %>
-      <% end %>
-
-      <% pace_min = m.to_s %>
-      <% pace_sec = format("%02d", s) %>
-    <% end %>
+    <% pace_min, pace_sec = pace_parts(set&.pace) %>
     <label class="form-label">ペース(/km)</label>
 
     <div class="form-control w-100 d-flex align-items-center justify-content-center gap-2 pace-box"

@@ -5,7 +5,10 @@
       <span><%= set.distance %> km</span>
       <span><%= set.duration %> min</span>
       <span><%= set.calories %> kcal</span>
-      <span><%= set.pace %> km/h</span>
+      <span>
+        <%= set.pace.present? ? "#{format_pace_min_per_km(set.pace)} /km" : "-" %>
+      </span>
+
     </div>
 
     <div class="d-flex gap-2">
