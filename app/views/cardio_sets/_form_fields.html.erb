@@ -32,13 +32,37 @@
   </div>
 
   <div class="flex-fill">
-    <label class="form-label">ペース(km/h)</label>
-    <%= text_field_tag "",
-          set&.pace,
-          class: "form-control",
-          inputmode: "decimal",
-          data: { cardio_set_create_target: "pace",
-                  action: "input->cardio-set-create#saveDraft" } %>
+    <% pace_min, pace_sec = pace_parts(set&.pace) %>
+    <label class="form-label">ペース(/km)</label>
+
+    <div class="form-control w-100 d-flex align-items-center justify-content-center gap-2 pace-box"
+        data-cardio-set-create-target="paceWrapper">
+      <%= text_field_tag "",
+            pace_min,
+            class: "border-0 bg-transparent p-0 m-0 text-light text-end pace-min-input",
+            inputmode: "numeric",
+            placeholder: "0",
+            data: {
+              cardio_set_create_target: "paceMin",
+              action: "input->cardio-set-create#onPaceInput blur->cardio-set-create#onPaceBlur"
+            } %>
+
+      <span class="text-secondary">:</span>
+
+      <%= text_field_tag "",
+            pace_sec,
+            class: "border-0 bg-transparent p-0 m-0 text-light text-end pace-sec-input",
+            inputmode: "numeric",
+            placeholder: "00",
+            data: {
+              cardio_set_create_target: "paceSec",
+              action: "input->cardio-set-create#onPaceInput blur->cardio-set-create#onPaceBlur"
+            } %>
+    </div>
+
+    <div class="invalid-feedback d-block mt-1"
+        data-cardio-set-create-target="paceError"
+        style="display:none;"></div>
   </div>
 </div>
 

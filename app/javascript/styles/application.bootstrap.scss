@@ -658,3 +658,34 @@ body {
     background-image: url("/auth/auth_bg_mobile.jpg");
   }
 }
+
+.pace-min-input {
+  width: 3.5ch;      // 0〜99 + 少し余白
+  min-width: 3.5ch;
+}
+
+.pace-sec-input {
+  width: 2.5ch;      // 00〜59
+  min-width: 2.5ch;
+}
+
+.pace-min-input:focus,
+.pace-sec-input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.pace-min-input::placeholder,
+.pace-sec-input::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* pace欄は常に右側にアイコン分の余白を確保して、表示位置がブレないようにする */
+.pace-box {
+  padding-right: 3rem;
+}
+
+/* is-invalid が付いても余白量が変わらないように固定 */
+.pace-box.is-invalid {
+  padding-right: 3rem;
+}
