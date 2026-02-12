@@ -13,7 +13,7 @@ export default class extends Controller {
   // -----------------------
   onPaceInput() {
     // 入力中は即時バリデーションだけ行い、draft保存は最後にまとめて
-    this.validatePace()
+    this.validatePaceSoft()
     this.saveDraft()
   }
 
@@ -36,22 +36,55 @@ export default class extends Controller {
       }
     }
 
-    this.validatePace()
+    this.validatePaceStrict()
     this.saveDraft()
   }
 
-  validatePace() {
+  // 入力中用：片方だけならエラーにしない
+  validatePaceSoft() {
     const min = this.paceMinTarget.value
     const sec = this.paceSecTarget.value
 
-    // どっちも空ならOK（ペース任意）
+    // 両方空：OK
     if (min === "" && sec === "") {
       this.clearPaceError()
       return true
     }
 
+    // 片方だけ：入力途中なので黙る（エラー出さない）
+    if (min === "" || sec === "") {
+      this.clearPaceError()
+      return true
+    }
+
+    // 両方ある場合のみ、範囲チェック
+    return this.validatePaceStrictCore(min, sec)
+  }
+
+  // blur/commit用：片方だけはエラー
+  validatePaceStrict() {
+    const min = this.paceMinTarget.value
+    const sec = this.paceSecTarget.value
+
+    // 両方空：ペースは任意ならOK（必須にしたいならここをfalseに）
+    if (min === "" && sec === "") {
+      this.clearPaceError()
+      return true
+    }
+
+    // 片方だけ：未完成としてエラー
+    if (min === "" || sec === "") {
+      this.showPaceError("ペースは分・秒どちらも入力してください")
+      return false
+    }
+
+    return this.validatePaceStrictCore(min, sec)
+  }
+
+  // 共通の厳格チェック（両方ある前提）
+  validatePaceStrictCore(min, sec) {
     // 分：0-99
-    if (min === "" || !/^\d{1,2}$/.test(min)) {
+    if (!/^\d{1,2}$/.test(min)) {
       this.showPaceError("分は0〜99で入力してください")
       return false
     }
@@ -61,8 +94,8 @@ export default class extends Controller {
       return false
     }
 
-    // 秒：00-59（1桁も許容、blurでpad）
-    if (sec === "" || !/^\d{1,2}$/.test(sec)) {
+    // 秒：00-59
+    if (!/^\d{1,2}$/.test(sec)) {
       this.showPaceError("秒は00〜59で入力してください")
       return false
     }
