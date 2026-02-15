@@ -1,9 +1,9 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm d-none d-md-flex">
   <div class="container">
     <% if user_signed_in? %>
-      <%= link_to "My Training Log", authenticated_root_path, class: "navbar-brand fw-bold text-warning" %>
+      <%= link_to "トレログ", authenticated_root_path, class: "navbar-brand fw-bold text-warning" %>
     <% else %>
-      <%= link_to "My Training Log", unauthenticated_root_path, class: "navbar-brand fw-bold text-warning" %>
+      <%= link_to "トレログ", unauthenticated_root_path, class: "navbar-brand fw-bold text-warning" %>
     <% end %>
 
     <button class="navbar-toggler d-lg-none" type="button"

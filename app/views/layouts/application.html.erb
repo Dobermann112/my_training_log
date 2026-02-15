@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>My Training Log</title>
+    <title>トレログ</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -13,7 +13,7 @@
     <link rel="manifest" href="/manifest.json">
     
     <% if !user_signed_in? && controller_name == "sessions" && action_name == "new" %>
-      <meta property="og:title" content="My Training Log | トレーニングを「続けられる」記録アプリ" />
+      <meta property="og:title" content="トレログ | トレーニングを「続けられる」記録アプリ" />
       <meta property="og:description" content="筋トレ・ワークアウトをカレンダー形式で記録。部位別・種目別に振り返りができるトレーニングログアプリ。" />
       <meta property="og:type" content="website" />
       <meta property="og:url" content="<%= unauthenticated_root_url %>" />

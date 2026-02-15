@@ -6,7 +6,7 @@ class InquiryMailer < ApplicationMailer
     mail(
       to: ENV.fetch("INQUIRY_RECEIVER"),
       reply_to: @inquiry[:email],
-      subject: "[My Training Log] お問い合わせ（#{@category_label}）"
+      subject: "[トレログ] お問い合わせ（#{@category_label}）"
     )
   end
 
