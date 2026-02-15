@@ -1,9 +1,9 @@
 <nav class="navbar navbar-dark bg-dark shadow-sm d-md-none position-relative">
   <div class="container">
     <% if user_signed_in? %>
-      <%= link_to "My Training Log", dashboard_calendar_path, class: "navbar-brand fw-bold text-warning mx-auto" %>
+      <%= link_to "トレログ", dashboard_calendar_path, class: "navbar-brand fw-bold text-warning mx-auto" %>
     <% else %>
-      <%= link_to "My Training Log", unauthenticated_root_path, class: "navbar-brand fw-bold text-warning mx-auto" %>
+      <%= link_to "トレログ", unauthenticated_root_path, class: "navbar-brand fw-bold text-warning mx-auto" %>
     <% end %>
   </div>
 </nav>
