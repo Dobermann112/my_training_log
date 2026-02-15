@@ -1,6 +1,6 @@
 {
-  "name": "My Training Log",
-  "short_name": "MyTrainingLog",
+  "name": "トレログ",
+  "short_name": "トレログ",
   "start_url": "/dashboard/calendar",
   "display": "standalone",
   "theme_color": "#0d1b2a",
