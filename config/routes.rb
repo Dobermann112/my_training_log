@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  constraints host: "my-training-log.com" do
+    match "*path", to: redirect { |params, request|
+      "https://torelog.app#{request.fullpath}"
+    }, via: :all, status: 301
+  end
+
   get 'three_poc/humanoid'
   devise_for :users, controllers: {
     omniauth_callbacks: "users/omniauth_callbacks"
