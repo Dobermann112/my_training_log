@@ -20,7 +20,7 @@ class WorkoutSetsController < ApplicationController
     if result.workout_deleted?
       redirect_to calendars_path
     else
-      redirect_to workout_path(@workout)
+      redirect_to workout_path(@workout), notice: "トレーニング記録を更新しました。"
     end
   rescue WorkoutSetUpdateService::UpdateError => e
     flash.now[:alert] = e.message

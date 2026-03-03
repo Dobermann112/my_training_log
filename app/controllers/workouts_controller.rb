@@ -38,7 +38,8 @@ class WorkoutsController < ApplicationController
       sets_params: params[:workout][:sets]
     ).call
 
-    redirect_to workout_path(workout)
+    redirect_to workout_path(workout),
+                notice: "トレーニングを記録しました。"
   rescue WorkoutCreationService::CreationError => e
     flash.now[:alert] = e.message
     @exercise = current_user.exercises.find(params[:exercise_id])
