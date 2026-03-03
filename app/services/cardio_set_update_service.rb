@@ -2,8 +2,9 @@ class CardioSetUpdateService
   class UpdateError < StandardError; end
   Result = Struct.new(:cardio_workout_deleted?)
 
-  def initialize(cardio_workout:, sets_params:)
+  def initialize(cardio_workout:, exercise:, sets_params:)
     @cardio_workout = cardio_workout
+    @exercise = exercise
     @sets_params = sets_params || {}
   end
 
@@ -42,6 +43,7 @@ class CardioSetUpdateService
       @cardio_workout.cardio_sets.maximum(:set_number).to_i + 1
 
     @cardio_workout.cardio_sets.create!(
+      exercise_id: @exercise.id,
       distance: attrs[:distance],
       duration: attrs[:duration],
       calories: attrs[:calories],

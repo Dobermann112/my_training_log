@@ -8,6 +8,8 @@
                 local: true,
                 html: { novalidate: true } do %>
 
+    <%= hidden_field_tag :exercise_id, @exercise.id %>
+
     <div data-controller="cardio-sets"
          data-cardio-sets-edit-mode-value="true">
 

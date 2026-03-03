@@ -1,7 +1,7 @@
 class CardioSetsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_cardio_workout
-  before_action :set_exercise, only: [:edit_group]
+  before_action :set_exercise, only: [:edit_group, :update_group]
 
   def edit_group
     @sets = @cardio_workout.cardio_sets
@@ -12,13 +12,15 @@ class CardioSetsController < ApplicationController
   def update_group
     result = CardioSetUpdateService.new(
       cardio_workout: @cardio_workout,
+      exercise: @exercise,
       sets_params: params[:sets]
     ).call
 
     if result.cardio_workout_deleted?
       redirect_to calendars_path
     else
-      redirect_to redirect_path_for(@cardio_workout.performed_on)
+      redirect_to redirect_path_for(@cardio_workout.performed_on),
+                  notice: "有酸素トレーニングを更新しました。"
     end
   rescue CardioSetUpdateService::UpdateError => e
     flash.now[:alert] = e.message
@@ -45,11 +47,11 @@ class CardioSetsController < ApplicationController
           .exists?
 
     if workout.present?
-      redirect_to workout_path(workout)
+      redirect_to workout_path(workout), notice: "有酸素トレーニングセットを削除しました。"
     elsif cardio_exists
-      redirect_to redirect_path_for(date)
+      redirect_to redirect_path_for(date), notice: "有酸素トレーニングセットを削除しました。"
     else
-      redirect_to calendars_path
+      redirect_to calendars_path, notice: "トレーニングを削除しました。"
     end
   end
 
