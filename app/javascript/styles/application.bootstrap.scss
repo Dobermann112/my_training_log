@@ -689,3 +689,17 @@ body {
 .pace-box.is-invalid {
   padding-right: 3rem;
 }
+
+.auth-service-description {
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  h5 {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  p {
+    line-height: 1.6;
+  }
+}
