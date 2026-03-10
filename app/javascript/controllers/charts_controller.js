@@ -21,8 +21,14 @@ export default class extends Controller {
     this.currentRange = "month" // ←　月表示がデフォルト
     this.currentBodyPart = "" // ←　全身がデフォルト
     this.currentMode = "strength"
+    this.beforeRenderHandler = this._destroyAll.bind(this)
+    window.addEventListener("turbo:before-render", this.beforeRenderHandler)
     this.load()
-    window.addEventListener("turbo:before-render", () => this._destroyAll())
+  }
+
+  disconnect() {
+    window.removeEventListener("turbo:before-render", this.beforeRenderHandler) 
+    this._destroyAll()
   }
 
   updateSummary(summary) {
@@ -48,8 +54,6 @@ export default class extends Controller {
     this.summaryLabel1Target.textContent = "合計時間"
     this.summaryLabel2Target.textContent = "合計距離"
   }  
-  
-  disconnect() { this._destroyAll() }
 
   changeRange() {
     this.currentRange = this.rangeTarget.value
@@ -149,9 +153,7 @@ export default class extends Controller {
         data: seriesData.map(d => [d.x, d.y])
       }],
       title: {
-        text: isScoreMode
-          ? "トレーニング量スコアの推移"
-          : "トレーニング量の推移",
+        text: isScoreMode ? "トレーニング量スコアの推移" : "トレーニング量の推移",
         align: "left",
         style: { color: "#e0e1dd", fontSize: "15px" }
       },
@@ -438,13 +440,22 @@ export default class extends Controller {
   }  
 
   _mount(key, el, options) {
-    if (this._charts[key]) this._charts[key].destroy()
+    if (!el || !el.isConnected) return
+
+    if (this._charts[key]) {
+    this._charts[key].destroy()
+    this._charts[key] = null
+    }
+
     this._charts[key] = new ApexCharts(el, options)
     this._charts[key].render()
   }
 
   _destroyAll() {
-    Object.values(this._charts).forEach(c => c && c.destroy())
+    Object.values(this._charts).forEach(chart => {
+      if (!chart) return
+      chart.destroy()
+    })
     this._charts = { line: null, pie: null, bar: null }
   }
 }
