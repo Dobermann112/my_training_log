@@ -11,6 +11,10 @@ let loader = null
 let rafId = null
 let isRendering = false
 
+let raycaster = null
+let pointer = null
+let avatarLevels = {}
+
 const avatarParts = {
   upper_body: null,
   core: null,
@@ -28,6 +32,9 @@ export async function initAvatarViewer() {
   const height = root.clientHeight
 
   scene = new THREE.Scene()
+
+  raycaster = new THREE.Raycaster()
+  pointer = new THREE.Vector2()
 
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
   renderer.setSize(width, height)
@@ -71,15 +78,15 @@ export async function initAvatarViewer() {
     levels = {}
   }
 
-  levels = {
+  avatarLevels = {
     upper_body: levels.upper_body ?? "base",
     core:       levels.core       ?? "base",
     lower_body: levels.lower_body ?? "base",
   }
 
-  loadPart("upper_body", levels.upper_body)
-  loadPart("core", levels.core)
-  loadPart("lower_body", levels.lower_body)
+  loadPart("upper_body", avatarLevels.upper_body)
+  loadPart("core", avatarLevels.core)
+  loadPart("lower_body", avatarLevels.lower_body)
 
   // 初回は1回だけ描画（静止画）
   renderOnce()
@@ -87,6 +94,11 @@ export async function initAvatarViewer() {
   // 操作中のみ描画
   controls.addEventListener("start", startRender)
   controls.addEventListener("end", stopRender)
+
+  renderer.domElement.addEventListener("pointermove", (event) => {
+    const part = getPointerPart(event)
+    console.log(part)
+  })
 }
 
 async function fetchAvatarLevels() {
@@ -113,6 +125,8 @@ function loadPart(part, level) {
     const obj = gltf.scene
     obj.position.set(0, 40, 0)
     obj.scale.set(50, 50, 50)
+    obj.userData.part = part
+    obj.userData.level = level
 
     avatarParts[part] = obj
     scene.add(obj)
@@ -158,6 +172,35 @@ function disposeObject(obj) {
       mat?.dispose?.()
     }
   })
+}
+
+function findPartFromObject(object) {
+  let current = object
+
+  while (current) {
+    if (current.userData?.part) return current.userData.part
+    current = current.parent
+  }
+
+  return null
+}
+
+function getPointerPart(event) {
+  if (!renderer || !camera || !raycaster || !pointer) return null
+
+  const rect = renderer.domElement.getBoundingClientRect()
+
+  pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1
+  pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1
+
+  raycaster.setFromCamera(pointer, camera)
+
+  const targets = Object.values(avatarParts).filter(Boolean)
+  const intersects = raycaster.intersectObjects(targets, true)
+
+  if (intersects.length === 0) return null
+
+  return findPartFromObject(intersects[0].object)
 }
 
 export function destroyAvatarViewer() {
