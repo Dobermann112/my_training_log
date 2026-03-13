@@ -15,6 +15,12 @@ let raycaster = null
 let pointer = null
 let avatarLevels = {}
 
+let tooltipEl = null
+let currentHoveredPart = null
+
+let handlePointerMove = null
+let handlePointerLeave = null
+
 const avatarParts = {
   upper_body: null,
   core: null,
@@ -40,6 +46,8 @@ export async function initAvatarViewer() {
   renderer.setSize(width, height)
   renderer.setClearColor(0x000000, 0)
   root.appendChild(renderer.domElement)
+
+  tooltipEl = createTooltip(root)
 
   camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000)
   camera.position.set(0, 70, 95)
@@ -95,10 +103,29 @@ export async function initAvatarViewer() {
   controls.addEventListener("start", startRender)
   controls.addEventListener("end", stopRender)
 
-  renderer.domElement.addEventListener("pointermove", (event) => {
+  handlePointerMove = (event) => {
     const part = getPointerPart(event)
-    console.log(part)
-  })
+
+    if (!part) {
+      hideTooltip()
+      return
+    }
+
+    if (currentHoveredPart !== part) {
+      currentHoveredPart = part
+      showTooltip(part, event)
+      return
+    }
+
+    updateTooltipPosition(event)
+  }
+
+  handlePointerLeave = () => {
+    hideTooltip()
+  }
+
+  renderer.domElement.addEventListener("pointermove", handlePointerMove)
+  renderer.domElement.addEventListener("pointerleave", handlePointerLeave)
 }
 
 async function fetchAvatarLevels() {
@@ -203,6 +230,85 @@ function getPointerPart(event) {
   return findPartFromObject(intersects[0].object)
 }
 
+function formatPartLabel(part) {
+  switch (part) {
+    case "upper_body": return "上半身"
+    case "core": return "体幹"
+    case "lower_body": return "下半身"
+    default: return ""
+  }
+}
+
+function formatLevelLabel(level) {
+  if (!level) return ""
+
+  if (level === "base") return "Lv.0"
+
+  const matched = String(level).match(/\d+/)
+  if (matched) return `Lv.${matched[0]}`
+
+  return String(level)
+}
+
+function createTooltip(root) {
+  if (!root) return null
+
+  root.style.position = "relative"
+
+  const el = document.createElement("div")
+  el.className = "avatar-part-tooltip"
+  el.style.position = "absolute"
+  el.style.display = "none"
+  el.style.pointerEvents = "none"
+  el.style.padding = "8px 12px"
+  el.style.borderRadius = "12px"
+  el.style.background = "rgba(20, 20, 24, 0.92)"
+  el.style.color = "#fff"
+  el.style.fontSize = "12px"
+  el.style.fontWeight = "600"
+  el.style.lineHeight = "1.4"
+  el.style.boxShadow = "0 8px 24px rgba(0, 0, 0, 0.28)"
+  el.style.backdropFilter = "blur(8px)"
+  el.style.webkitBackdropFilter = "blur(8px)"
+  el.style.zIndex = "10"
+  el.style.whiteSpace = "nowrap"
+  el.style.transform = "translate(12px, 12px)"
+
+  root.appendChild(el)
+  return el
+}
+
+function showTooltip(part, event) {
+  if (!tooltipEl) return
+
+  const level = avatarLevels[part]
+  const partLabel = formatPartLabel(part)
+  const levelLabel = formatLevelLabel(level)
+
+  tooltipEl.textContent = `${partLabel} ${levelLabel}`
+  tooltipEl.style.display = "block"
+
+  updateTooltipPosition(event)
+}
+
+function updateTooltipPosition(event) {
+  if (!tooltipEl || !renderer) return
+
+  const rect = renderer.domElement.getBoundingClientRect()
+  const x = event.clientX - rect.left
+  const y = event.clientY - rect.top
+
+  tooltipEl.style.left = `${x}px`
+  tooltipEl.style.top = `${y}px`
+}
+
+function hideTooltip() {
+  if (!tooltipEl) return
+
+  tooltipEl.style.display = "none"
+  currentHoveredPart = null
+}
+
 export function destroyAvatarViewer() {
   stopRender()
 
@@ -215,10 +321,30 @@ export function destroyAvatarViewer() {
   controls?.dispose()
   controls = null
 
+  if (renderer?.domElement) {
+    if (handlePointerMove) {
+      renderer.domElement.removeEventListener("pointermove", handlePointerMove)
+    }
+
+    if (handlePointerLeave) {
+      renderer.domElement.removeEventListener("pointerleave", handlePointerLeave)
+    }
+  }
+
   renderer?.dispose()
   if (renderer?.domElement?.parentNode) {
     renderer.domElement.parentNode.removeChild(renderer.domElement)
   }
+
+  tooltipEl?.remove()
+  tooltipEl = null
+  currentHoveredPart = null
+
+  handlePointerMove = null
+  handlePointerLeave = null
+  avatarLevels = {}
+  raycaster = null
+  pointer = null
 
   renderer = null
   scene = null
