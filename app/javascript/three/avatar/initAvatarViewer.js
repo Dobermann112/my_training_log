@@ -20,6 +20,7 @@ let currentHoveredPart = null
 
 let handlePointerMove = null
 let handlePointerLeave = null
+let handleClick = null
 
 const avatarParts = {
   upper_body: null,
@@ -104,6 +105,8 @@ export async function initAvatarViewer() {
   controls.addEventListener("end", stopRender)
 
   handlePointerMove = (event) => {
+    if (isTouchDevice()) return
+
     const part = getPointerPart(event)
 
     if (!part) {
@@ -121,11 +124,27 @@ export async function initAvatarViewer() {
   }
 
   handlePointerLeave = () => {
+    if (isTouchDevice()) return
     hideTooltip()
+  }
+
+  handleClick = (event) => {
+    if (!isTouchDevice()) return
+
+    const part = getPointerPart(event)
+
+    if (!part) {
+      hideTooltip()
+      return
+    }
+
+    currentHoveredPart = part
+    showTooltip(part, event)
   }
 
   renderer.domElement.addEventListener("pointermove", handlePointerMove)
   renderer.domElement.addEventListener("pointerleave", handlePointerLeave)
+  renderer.domElement.addEventListener("click", handleClick)
 }
 
 async function fetchAvatarLevels() {
@@ -309,6 +328,10 @@ function hideTooltip() {
   currentHoveredPart = null
 }
 
+function isTouchDevice() {
+  return window.matchMedia("(hover: none) and (pointer: coarse)").matches
+}
+
 export function destroyAvatarViewer() {
   stopRender()
 
@@ -329,6 +352,10 @@ export function destroyAvatarViewer() {
     if (handlePointerLeave) {
       renderer.domElement.removeEventListener("pointerleave", handlePointerLeave)
     }
+
+    if (handleClick) {
+      renderer.domElement.removeEventListener("click", handleClick)
+    }
   }
 
   renderer?.dispose()
@@ -342,6 +369,7 @@ export function destroyAvatarViewer() {
 
   handlePointerMove = null
   handlePointerLeave = null
+  handleClick = null
   avatarLevels = {}
   raycaster = null
   pointer = null
