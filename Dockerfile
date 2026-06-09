@@ -19,7 +19,8 @@ FROM base as build
 
 # Install packages needed to build gems
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential default-libmysqlclient-dev git libvips pkg-config
+    apt-get install --no-install-recommends -y build-essential default-libmysqlclient-dev git libvips nodejs npm pkg-config && \
+    npm install --global yarn@1.22.22
 
 # Install application gems
 COPY Gemfile Gemfile.lock ./
