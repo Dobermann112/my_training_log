@@ -1,4 +1,5 @@
 class ExercisesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_body_part
   before_action :set_exercise, only: [:edit, :update, :destroy]
 
