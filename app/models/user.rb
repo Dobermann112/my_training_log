@@ -34,7 +34,7 @@ class User < ApplicationRecord
         k
       ]
     end
-  end  
+  end
 
   private
 

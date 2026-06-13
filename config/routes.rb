@@ -63,7 +63,7 @@ Rails.application.routes.draw do
     get "report",   to: "reports#index"
     get "avatar",  to: "profiles#index"
     get "setting", to: "settings#index"
-    
+
     namespace :settings do
       resource :profile, only: [:show, :edit, :update]
       resource :account, only: [:show]

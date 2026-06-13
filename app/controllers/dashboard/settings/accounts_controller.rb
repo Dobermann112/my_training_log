@@ -3,8 +3,7 @@ module Dashboard
     class AccountsController < ApplicationController
       before_action :authenticate_user!
 
-      def show
-      end
+      def show; end
 
       def update_email
         if current_user.update_with_password(email_params)
