@@ -2,12 +2,13 @@ require 'rails_helper'
 
 RSpec.describe CardioSetUpdateService do
   let(:user) { create(:user) }
+  let(:exercise) { create(:exercise, user: user) }
   let(:cardio_workout) { create(:cardio_workout, user: user) }
 
   describe '#call' do
     context 'when 全セット削除された場合' do
       let!(:set) do
-        create(:cardio_set, cardio_workout: cardio_workout)
+        create(:cardio_set, cardio_workout: cardio_workout, exercise: exercise)
       end
 
       let(:params) do
@@ -20,6 +21,7 @@ RSpec.describe CardioSetUpdateService do
         result =
           described_class.new(
             cardio_workout: cardio_workout,
+            exercise: exercise,
             sets_params: params
           ).call
 

@@ -15,6 +15,7 @@ module CardioSetsHelper
   def format_pace_min_per_km(pace)
     min, sec = pace_parts(pace)
     return nil if min.nil? || sec.nil?
+
     "#{min}:#{sec}"
   end
 end

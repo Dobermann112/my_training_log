@@ -15,12 +15,13 @@ class WorkoutSetUpdateService
       @sets_params.each do |key, attrs|
         next if skip?(attrs)
 
-        if persisted_set?(key)
+        if persisted_set_key?(key)
           update_set(key, attrs)
         else
           create_set(attrs)
         end
       end
+
       cleanup_workout_if_empty
     end
   rescue StandardError => e
@@ -29,14 +30,18 @@ class WorkoutSetUpdateService
 
   private
 
-  def persisted_set?(key)
-    @workout.workout_sets.exists?(id: key)
+  def persisted_set_key?(key)
+    key.to_s.match?(/\A\d+\z/)
+  end
+
+  def target_sets
+    @workout.workout_sets.where(exercise: @exercise)
   end
 
   def skip?(attrs)
     return false if destroy_requested?(attrs)
 
-    attrs[:weight].blank? && attrs[:reps].blank?
+    attrs[:weight].blank? && attrs[:reps].blank? && attrs[:memo].blank?
   end
 
   def create_set(attrs)
@@ -49,7 +54,7 @@ class WorkoutSetUpdateService
   end
 
   def update_set(id, attrs)
-    set = @workout.workout_sets.find(id)
+    set = target_sets.find(id)
 
     if destroy_requested?(attrs)
       set.destroy!

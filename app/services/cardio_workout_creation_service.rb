@@ -1,4 +1,3 @@
-# app/services/cardio_workout_creation_service.rb
 class CardioWorkoutCreationService
   class CreationError < StandardError; end
 
@@ -10,13 +9,14 @@ class CardioWorkoutCreationService
   end
 
   def call
+    exercise = find_exercise
     valid_rows = extract_valid_rows
 
     raise CreationError, "時間を入力してください" if valid_rows.empty?
 
     ActiveRecord::Base.transaction do
       cardio_workout = find_or_create_cardio_workout
-      create_sets!(cardio_workout, valid_rows)
+      create_sets!(cardio_workout, exercise, valid_rows)
       cardio_workout
     end
   rescue CreationError
@@ -27,33 +27,26 @@ class CardioWorkoutCreationService
 
   private
 
-  # -------------------------
-  # 有効なセット行の抽出
-  # -------------------------
-  # duration が入っていれば有効
+  def find_exercise
+    Exercise.where(user_id: [nil, @user.id]).find(@exercise_id)
+  end
+
   def extract_valid_rows
     @sets_params.values.select do |row|
       row[:duration].present?
     end
   end
 
-  # -------------------------
-  # CardioWorkout 作成
-  # -------------------------
-  # user × date で一意
   def find_or_create_cardio_workout
     @user.cardio_workouts.find_or_create_by!(
       performed_on: @date
     )
   end
 
-  # -------------------------
-  # CardioSet 作成
-  # -------------------------
-  def create_sets!(cardio_workout, rows)
+  def create_sets!(cardio_workout, exercise, rows)
     rows.each.with_index(1) do |row, index|
       cardio_workout.cardio_sets.create!(
-        exercise_id: @exercise_id,
+        exercise: exercise,
         duration: row[:duration],
         distance: row[:distance],
         calories: row[:calories],
