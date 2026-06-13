@@ -68,7 +68,7 @@ class WorkoutsController < ApplicationController
   private
 
   def set_workout
-    @workout = current_user.workouts.find_by(id: params[:id])
+    @workout = current_user.workouts.find(params[:id])
   end
 
   def load_training_sets
