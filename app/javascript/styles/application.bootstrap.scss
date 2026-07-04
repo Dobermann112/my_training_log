@@ -520,14 +520,9 @@ body {
 }
 
 .previous-workout-copy {
-  background: none;
-  border: none;
-  color: rgba(255,255,255,0.8);
-  font-size: 1.1rem;
-}
-
-.previous-workout-copy:hover {
-  color: #4da3ff;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .previous-workout-sets {
