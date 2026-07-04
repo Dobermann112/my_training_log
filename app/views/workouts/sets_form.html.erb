@@ -31,14 +31,14 @@
       
             <button
               type="button"
-              class="previous-workout-copy"
+              class="btn btn-outline-light btn-sm previous-workout-copy"
               data-action="click->sets#copyPrevious"
               data-previous-sets="<%= h(@previous_sets.map { |s|
                 { weight: s.weight, reps: s.reps }
               }.to_json) %>"
               aria-label="前回のセットをコピー"
             >
-              ⧉
+              <i class="bi bi-arrow-repeat"></i> 前回値をコピー
             </button>
           </div>
       
