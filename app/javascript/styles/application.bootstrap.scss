@@ -247,6 +247,13 @@ strong {
   }
 }
 
+// PC幅では読み物としての余白を保つため、Bootstrap既定より狭い上限幅に揃える
+@media (min-width: 1200px) {
+  main.container {
+    max-width: 960px;
+  }
+}
+
 /* === 種目名のカード === */
 .exercise-title-card {
   background-color: var(--color-surface);
