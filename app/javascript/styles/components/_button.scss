@@ -2,6 +2,19 @@
 // 主要アクション=Primary(アクセント色)、控えめな操作=Outline、削除系=Dangerという
 // 役割をトークンベースで統一する。既存のBootstrapクラス名はそのまま使う。
 
+.btn {
+  transition: transform var(--transition-base), box-shadow var(--transition-base),
+    background-color var(--transition-base), border-color var(--transition-base);
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
 .btn-primary {
   background-color: var(--color-primary);
   border-color: var(--color-primary);

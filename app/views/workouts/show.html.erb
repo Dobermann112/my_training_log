@@ -6,7 +6,7 @@
   <%= link_to by_date_workouts_path(date: @date),
         data: { turbo_method: :delete, turbo_confirm: "この日のトレーニングを削除しますか？" },
         class: "btn btn-sm btn-outline-danger" do %>
-    <i class="bi bi-trash"></i>
+    <i data-lucide="trash-2"></i>
   <% end %>
 </div>
 
