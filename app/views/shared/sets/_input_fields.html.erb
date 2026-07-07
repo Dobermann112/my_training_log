@@ -1,0 +1,42 @@
+<%# locals: (weight_value: nil, reps_value: nil, memo_value: nil) %>
+<div class="d-flex gap-3">
+  <div class="flex-fill">
+    <label class="form-label">重量(kg)</label>
+    <%= text_field_tag "",
+                        weight_value,
+                        class: "form-control",
+                        inputmode: "decimal",
+                        step: "any",
+                        data: {
+                          sets_target: "weight",
+                          workout_set_create_target: "weight",
+                          action: "input->workout-set-create#saveDraft"
+                        } %>
+  </div>
+
+  <div class="flex-fill">
+    <label class="form-label">回数</label>
+    <%= text_field_tag "",
+                        reps_value,
+                        class: "form-control",
+                        inputmode: "numeric",
+                        data: {
+                          sets_target: "reps",
+                          workout_set_create_target: "reps",
+                          action: "input->workout-set-create#saveDraft"
+                        } %>
+  </div>
+</div>
+
+<div class="mt-2">
+  <label class="form-label">メモ</label>
+  <%= text_area_tag "",
+                     memo_value,
+                     rows: 1,
+                     class: "form-control",
+                     data: {
+                       sets_target: "memo",
+                       workout_set_create_target: "memo",
+                       action: "input->workout-set-create#saveDraft"
+                     } %>
+</div>
