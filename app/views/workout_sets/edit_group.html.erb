@@ -25,13 +25,12 @@
 
         <% @sets.each_with_index do |set, i| %>
           <div class="set-input-row mb-3 p-3 rounded"
-              style="background-color: #0f2033; border: 1px solid rgba(255,255,255,0.08);"
               data-set-uuid="<%= set.id %>"
               data-persisted="true"
               data-controller="workout-set-create">
 
             <!-- 番号ラベル（Stimulus が再計算する） -->
-            <div class="set-number-label mb-2 fw-bold text-light"
+            <div class="set-number-label mb-2 fw-bold"
                 data-sets-target="number">
               セット<%= i + 1 %>
             </div>
@@ -74,11 +73,10 @@
       <!-- 新規追加用テンプレート -->
       <template data-sets-target="template">
         <div class="set-input-row mb-3 p-3 rounded"
-            style="background-color: #0f2033; border: 1px solid rgba(255,255,255,0.08);"
             data-controller="workout-set-create"
             data-persisted="false">
 
-          <div class="set-number-label mb-2 fw-bold text-light"
+          <div class="set-number-label mb-2 fw-bold"
               data-sets-target="number">
             セット
           </div>

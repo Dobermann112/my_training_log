@@ -28,6 +28,25 @@
   }
 }
 
+// セット/カーディオの入力行(sets_controller.js等がクラス名でquerySelectorするため
+// クラス名自体は変更せず、ここで背景色のみトークン化する)
+.set-input-row {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+// ===== Modal =====
+.modal-content {
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+}
+
+// Bootstrapの.btn-close-whiteは常に白アイコンになるため、
+// ライトテーマでは反転を解除しデフォルト(濃色)のアイコンに戻す
+[data-theme="light"] .btn-close-white {
+  filter: none;
+}
+
 // ===== Empty State =====
 .empty-state {
   padding: var(--space-8) var(--space-4);
