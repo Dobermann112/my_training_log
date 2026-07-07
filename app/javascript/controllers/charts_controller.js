@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 import ApexCharts from "apexcharts"
+import { showToast } from "../utils/toast"
 
 export default class extends Controller {
   static targets = [
@@ -22,13 +23,37 @@ export default class extends Controller {
     this.currentBodyPart = "" // ←　全身がデフォルト
     this.currentMode = "strength"
     this.beforeRenderHandler = this._destroyAll.bind(this)
+    this.themeChangeHandler = this.load.bind(this)
     window.addEventListener("turbo:before-render", this.beforeRenderHandler)
+    window.addEventListener("theme:change", this.themeChangeHandler)
     this.load()
   }
 
   disconnect() {
-    window.removeEventListener("turbo:before-render", this.beforeRenderHandler) 
+    window.removeEventListener("turbo:before-render", this.beforeRenderHandler)
+    window.removeEventListener("theme:change", this.themeChangeHandler)
     this._destroyAll()
+  }
+
+  _cssVar(name, fallback) {
+    const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim()
+    return value || fallback
+  }
+
+  get isDarkTheme() {
+    return (document.documentElement.getAttribute("data-theme") || "dark") !== "light"
+  }
+
+  get chartTextColor() {
+    return this._cssVar("--color-text-primary", "#e0e1dd")
+  }
+
+  get chartSurfaceColor() {
+    return this._cssVar("--color-surface", "#12233a")
+  }
+
+  get tooltipTheme() {
+    return this.isDarkTheme ? "dark" : "light"
   }
 
   updateSummary(summary) {
@@ -108,6 +133,7 @@ export default class extends Controller {
       this.updateSummary(data.summary)
     } catch (e) {
       console.error("筋トレグラフ取得失敗:", e)
+      showToast("グラフの取得に失敗しました。時間をおいて再度お試しください。", "error")
     }
   }
 
@@ -134,8 +160,9 @@ export default class extends Controller {
       this.updateCardioSummary(data.summary)
     } catch (e) {
       console.error("有酸素グラフ取得失敗:", e)
+      showToast("グラフの取得に失敗しました。時間をおいて再度お試しください。", "error")
     }
-  }  
+  }
 
   _renderLine(seriesData) {
     const isScoreMode = seriesData.length > 0 && seriesData[0].ratio !== undefined
@@ -146,7 +173,7 @@ export default class extends Controller {
         height: 300,
         toolbar: { show: false },
         animations: { enabled: false },
-        foreColor: "#e0e1dd"
+        foreColor: this.chartTextColor
       },
       series: [{
         name: isScoreMode ? "スコア" : "総ボリューム",
@@ -155,16 +182,16 @@ export default class extends Controller {
       title: {
         text: isScoreMode ? "トレーニング量スコアの推移" : "トレーニング量の推移",
         align: "left",
-        style: { color: "#e0e1dd", fontSize: "15px" }
+        style: { color: this.chartTextColor, fontSize: "15px" }
       },
       xaxis: {
         type: "datetime",
-        labels: { style: { colors: "#e0e1dd" } }
+        labels: { style: { colors: this.chartTextColor } }
       },
       yaxis: {
         title: { text: isScoreMode ? "スコア (pt)" : "重量 (kg)" },
         min: isScoreMode ? 0 : undefined,
-        labels: { style: { colors: "#e0e1dd" } }
+        labels: { style: { colors: this.chartTextColor } }
       },
       // ✅ スコアモード時のみ100pt基準線を追加
       annotations: {
@@ -187,7 +214,7 @@ export default class extends Controller {
       },
       tooltip: {
         enabled: true,
-        theme: "dark",
+        theme: this.tooltipTheme,
         x: { show: true, format: "yyyy/MM/dd" },
         y: {
           title: {
@@ -208,7 +235,7 @@ export default class extends Controller {
       },
       markers: {
         size: 4,
-        colors: ["#fff"],
+        colors: [this.chartSurfaceColor],
         strokeColors: isScoreMode ? "#3a86ff" : "#06d6a0",
         strokeWidth: 2
       },
@@ -227,25 +254,25 @@ export default class extends Controller {
         height: 320,
         toolbar: { show: false },
         animations: { enabled: false },
-        foreColor: "#e0e1dd"
+        foreColor: this.chartTextColor
       },
       title: {
         text: "部位バランス",
         align: "left",
-        style: { color: "#e0e1dd", fontSize: "15px" }
+        style: { color: this.chartTextColor, fontSize: "15px" }
       },
       labels: sortedItems.map(i => i.label),
       series: sortedItems.map(i => i.value),
       legend: {
         position: "bottom",
-        labels: { colors: "#e0e1dd" },
+        labels: { colors: this.chartTextColor },
         fontSize: "13px"
       },
       dataLabels: {
         enabled: true,
         style: {
           fontSize: "11px",
-          colors: ["#e0e1dd"]
+          colors: [this.chartTextColor]
         },
         formatter: function (val, opts) {
           if (!opts?.globals?.seriesTotals) return ''
@@ -259,7 +286,7 @@ export default class extends Controller {
       },
       tooltip: {
         enabled: window.innerWidth >= 768, // ← PC時のみホバー有効
-        theme: "dark",
+        theme: this.tooltipTheme,
         y: {
           formatter: (val, opts) => {
             if (!opts?.globals?.seriesTotals) return ''
@@ -294,23 +321,23 @@ export default class extends Controller {
         height: 320,
         toolbar: { show: false },
         animations: { enabled: false },
-        foreColor: "#e0e1dd"
+        foreColor: this.chartTextColor
       },
       title: {
         text: "種目傾向",
         align: "left",
-        style: { color: "#e0e1dd", fontSize: "15px" }
+        style: { color: this.chartTextColor, fontSize: "15px" }
       },
       series: [{ name: "セット数", data: items.map(i => i.y) }],
       xaxis: {
         categories: items.map(i => i.x),
-        labels: { style: { colors: "#e0e1dd" } }
+        labels: { style: { colors: this.chartTextColor } }
       },
-      yaxis: { labels: { style: { colors: "#e0e1dd" } } },
+      yaxis: { labels: { style: { colors: this.chartTextColor } } },
       dataLabels: { enabled: false },
       tooltip: {
         enabled: true,
-        theme: "dark",
+        theme: this.tooltipTheme,
         y: { formatter: val => `${val} 回` }
       },
       noData: { text: "データがありません", align: "center" }
@@ -330,7 +357,7 @@ export default class extends Controller {
         height: 300,
         toolbar: { show: false },
         animations: { enabled: false },
-        foreColor: "#e0e1dd"
+        foreColor: this.chartTextColor
       },
       series: [{
         name: "有酸素トレーニング時間",
@@ -339,15 +366,15 @@ export default class extends Controller {
       title: {
         text: "有酸素トレーニング時間の推移",
         align: "left",
-        style: { color: "#e0e1dd", fontSize: "15px" }
+        style: { color: this.chartTextColor, fontSize: "15px" }
       },
       xaxis: {
         type: "datetime",
-        labels: { style: { colors: "#e0e1dd" } }
+        labels: { style: { colors: this.chartTextColor } }
       },
       yaxis: {
         title: { text: "時間（分）" },
-        labels: { style: { colors: "#e0e1dd" } }
+        labels: { style: { colors: this.chartTextColor } }
       },
       stroke: {
         width: 3,
@@ -355,7 +382,7 @@ export default class extends Controller {
         colors: ["#3a86ff"]
       },
       tooltip: {
-        theme: "dark",
+        theme: this.tooltipTheme,
         x: { format: "yyyy/MM/dd" },
         y: { formatter: val => `${val} 分` }
       },
@@ -376,12 +403,12 @@ export default class extends Controller {
         height: 320,
         toolbar: { show: false },
         animations: { enabled: false },
-        foreColor: "#e0e1dd"
+        foreColor: this.chartTextColor
       },
       title: {
         text: "種目別 有酸素トレーニング時間",
         align: "left",
-        style: { color: "#e0e1dd", fontSize: "15px" }
+        style: { color: this.chartTextColor, fontSize: "15px" }
       },
       series: [{
         name: "合計時間（分）",
@@ -389,13 +416,13 @@ export default class extends Controller {
       }],
       xaxis: {
         categories: items.map(i => i.x),
-        labels: { style: { colors: "#e0e1dd" } }
+        labels: { style: { colors: this.chartTextColor } }
       },
       yaxis: {
-        labels: { style: { colors: "#e0e1dd" } }
+        labels: { style: { colors: this.chartTextColor } }
       },
       tooltip: {
-        theme: "dark",
+        theme: this.tooltipTheme,
         y: { formatter: val => `${val} 分` }
       },
       noData: { text: "データがありません" }
@@ -414,21 +441,21 @@ export default class extends Controller {
         height: 320,
         toolbar: { show: false },
         animations: { enabled: false },
-        foreColor: "#e0e1dd"
+        foreColor: this.chartTextColor
       },
       title: {
         text: "有酸素 種目バランス",
         align: "left",
-        style: { color: "#e0e1dd", fontSize: "15px" }
+        style: { color: this.chartTextColor, fontSize: "15px" }
       },
       labels: sortedItems.map(i => i.label),
       series: sortedItems.map(i => i.value),
       legend: {
         position: "bottom",
-        labels: { colors: "#e0e1dd" }
+        labels: { colors: this.chartTextColor }
       },
       tooltip: {
-        theme: "dark",
+        theme: this.tooltipTheme,
         y: {
           formatter: val => `${val} 分`
         }

@@ -1,16 +1,20 @@
 <div class="container mt-5">
-  <h2 class="mb-4 text-center text-light">Body Parts</h2>
+  <h2 class="mb-4 text-center">Body Parts</h2>
 
-  <div class="row">
-    <% @body_parts.each do |body_part| %>
-      <div class="col-md-4 mb-4">
-        <div class="card bg-dark text-light shadow-sm border-warning h-100">
-          <div class="card-body text-center">
-            <h5 class="card-title fw-bold"><%= body_part.name %></h5>
-            <%= link_to "種目を選択", body_part_exercises_path(body_part), class: "btn btn-warning w-100 mt-3" %>
+  <% if @body_parts.empty? %>
+    <%= render "shared/ui/empty_state", icon: "dumbbell", message: "部位が登録されていません。" %>
+  <% else %>
+    <div class="row">
+      <% @body_parts.each do |body_part| %>
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body text-center">
+              <h5 class="card-title fw-bold"><%= body_part.name %></h5>
+              <%= link_to "種目を選択", body_part_exercises_path(body_part), class: "btn btn-warning w-100 mt-3" %>
+            </div>
           </div>
         </div>
-      </div>
-    <% end %>
-  </div>
+      <% end %>
+    </div>
+  <% end %>
 </div>

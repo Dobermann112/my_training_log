@@ -20,9 +20,8 @@ document.addEventListener("turbo:load", () => {
   }
 
   const avatarRoot = document.getElementById("avatar-root");
-  if (avatarRoot) {
-    import("react-dom/client").then(({ createRoot }) => {
-      createRoot(avatarRoot).render(<AvatarView />);
-    });
+  if (avatarRoot && !avatarRoot.hasChildNodes()) {
+    const root = createRoot(avatarRoot);
+    root.render(<AvatarView />);
   }
 });

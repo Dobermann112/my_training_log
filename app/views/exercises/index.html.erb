@@ -38,8 +38,10 @@
   <% end %>
 
   <% if @exercises.empty? %>
-    <div class="exercise-title-card p-4 text-center text-muted">
-      まだ登録されている種目はありません。
-    </div>
+    <%= render "shared/ui/empty_state",
+                icon: "list-plus",
+                message: "まだ登録されている種目はありません。",
+                action_text: "新規登録",
+                action_path: new_body_part_exercise_path(@body_part, date: @date) %>
   <% end %>
 </div>

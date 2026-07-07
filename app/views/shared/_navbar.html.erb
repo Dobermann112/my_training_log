@@ -1,12 +1,12 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm d-none d-md-flex">
+<nav class="navbar navbar-expand-md app-navbar shadow-sm d-none d-md-flex">
   <div class="container">
     <% if user_signed_in? %>
-      <%= link_to "トレログ", authenticated_root_path, class: "navbar-brand fw-bold text-warning" %>
+      <%= link_to "トレログ", authenticated_root_path, class: "navbar-brand fw-bold app-navbar-brand" %>
     <% else %>
-      <%= link_to "トレログ", unauthenticated_root_path, class: "navbar-brand fw-bold text-warning" %>
+      <%= link_to "トレログ", unauthenticated_root_path, class: "navbar-brand fw-bold app-navbar-brand" %>
     <% end %>
 
-    <button class="navbar-toggler d-lg-none" type="button"
+    <button class="navbar-toggler d-md-none" type="button"
             data-bs-toggle="collapse"
             data-bs-target="#navbarNav"
             aria-controls="navbarNav"
@@ -16,16 +16,19 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
+      <ul class="navbar-nav ms-auto align-items-md-center">
         <% if user_signed_in? %>
-          <li class="nav-item"><%= link_to "カレンダー", dashboard_calendar_path, class: "nav-link text-light" %></li>
-          <li class="nav-item"><%= link_to "レポート",   dashboard_report_path,   class: "nav-link text-light" %></li>
-          <li class="nav-item"><%= link_to "アバター", dashboard_avatar_path,   class: "nav-link text-light" %></li>
-          <li class="nav-item"><%= link_to "設定",       dashboard_setting_path,  class: "nav-link text-light" %></li>
+          <li class="nav-item"><%= link_to "カレンダー", dashboard_calendar_path, class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "レポート",   dashboard_report_path,   class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "アバター", dashboard_avatar_path,   class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "設定",       dashboard_setting_path,  class: "nav-link" %></li>
         <% else %>
-          <li class="nav-item"><%= link_to "ログイン",     new_user_session_path,        class: "nav-link text-light" %></li>
-          <li class="nav-item"><%= link_to "新規登録",     new_user_registration_path,   class: "nav-link text-warning fw-semibold" %></li>
+          <li class="nav-item"><%= link_to "ログイン",     new_user_session_path,        class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "新規登録",     new_user_registration_path,   class: "nav-link app-navbar-brand fw-semibold" %></li>
         <% end %>
+        <li class="nav-item ms-md-2">
+          <%= render "shared/theme_toggle" %>
+        </li>
       </ul>
     </div>
   </div>

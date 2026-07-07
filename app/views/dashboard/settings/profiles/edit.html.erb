@@ -15,7 +15,7 @@
 
             <div class="mb-3">
               <%= f.label :name, "名前", class: "form-label" %>
-              <%= f.text_field :name, class: "form-control bg-transparent text-light border-secondary" %>
+              <%= f.text_field :name, class: "form-control bg-transparent border-secondary" %>
             </div>
 
             <div class="mb-3">
@@ -23,12 +23,12 @@
               <%= f.select :gender,
                            User.gender_options,
                            {},
-                           class: "form-select bg-transparent text-light border-secondary" %>
+                           class: "form-select bg-transparent border-secondary" %>
             </div>
 
             <div class="mb-3">
               <%= f.label :goal, "目標", class: "form-label" %>
-              <%= f.text_area :goal, rows: 3, class: "form-control bg-transparent text-light border-secondary" %>
+              <%= f.text_area :goal, rows: 3, class: "form-control bg-transparent border-secondary" %>
             </div>
 
             <div class="d-flex justify-content-between mt-4">

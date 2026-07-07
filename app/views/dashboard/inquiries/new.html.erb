@@ -22,14 +22,14 @@
         <div class="mb-3">
           <%= f.label :name, "お名前", class: "form-label" %>
           <%= f.text_field :name,
-                           class: "form-control bg-transparent text-light border-secondary",
+                           class: "form-control bg-transparent border-secondary",
                            readonly: true %>
         </div>
 
         <div class="mb-3">
           <%= f.label :email, "メールアドレス", class: "form-label" %>
           <%= f.email_field :email,
-                            class: "form-control bg-transparent text-light border-secondary" %>
+                            class: "form-control bg-transparent border-secondary" %>
         </div>
 
         <div class="mb-3">
@@ -37,14 +37,14 @@
           <%= f.select :category,
                        [["不具合", "bug"], ["要望", "request"], ["その他", "other"]],
                        { include_blank: "選択してください" },
-                       class: "form-select bg-transparent text-light border-secondary" %>
+                       class: "form-select bg-transparent border-secondary" %>
         </div>
 
         <div class="mb-3">
           <%= f.label :message, "お問い合わせ内容", class: "form-label" %>
           <%= f.text_area :message,
                           rows: 6,
-                          class: "form-control bg-transparent text-light border-secondary" %>
+                          class: "form-control bg-transparent border-secondary" %>
         </div>
 
         <div class="d-flex justify-content-between">

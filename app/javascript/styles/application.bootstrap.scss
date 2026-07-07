@@ -1,4 +1,6 @@
 // ===== Theme Variables =====
+// $text-light 等はダークテーマ固定の値のため、テーマに追従させたい箇所は
+// 極力 var(--color-*) トークン(tokens.scss)を参照する。
 $primary-bg: #0d1b2a;
 $secondary-bg: #1b263b;
 $accent-color: #3a86ff;
@@ -18,8 +20,9 @@ $flash-notice-text: #000;
 
 // ===== Base Layout =====
 body {
-  background-color: $primary-bg;
-  color: $text-light;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-base);
 }
 
 @media (max-width: 767.98px) {
@@ -28,6 +31,18 @@ body {
       var(--footer-nav-height) + env(safe-area-inset-bottom)
     );
   }
+}
+
+// ===== Focus Ring =====
+// キーボード操作時のフォーカスリングをアクセントカラーで統一する
+a:focus-visible,
+button:focus-visible,
+.btn:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
 .flash-message {
@@ -56,63 +71,21 @@ body {
 }
 
 // ===== Bootstrap Custom Overrides =====
-.card {
-    background-color: $secondary-bg;
-    color: $text-light;
-    border: 1px solid lighten($secondary-bg, 10%);
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  }
-  
-  .btn-primary {
-    background-color: $accent-color;
-    border: none;
-    color: $text-light;
-  
-    &:hover {
-      background-color: darken($accent-color, 10%);
-    }
-  }
-  
-  .btn-secondary {
-    background-color: lighten($secondary-bg, 10%);
-    border: none;
-    color: $text-light;
-  
-    &:hover {
-      background-color: lighten($secondary-bg, 20%);
-    }
-  }
+// .card / .btn-primary / .btn-secondary / .form-control 等のトークン化は
+// components/_card.scss, _button.scss, _form.scss に集約している
 
-  .form-label {
-    color: $text-light;
-  }
-  
-  .form-control,
-  .form-select,
-  textarea {
-    background-color: $secondary-bg;
-    color: $text-light;
-    border: 1px solid lighten($secondary-bg, 10%);
-  
-    &:focus {
-      border-color: $accent-color;
-      box-shadow: 0 0 5px rgba($accent-color, 0.5);
-    }
-  }
-  
-  strong {
-    color: lighten($text-light, 10%);
-  }
+strong {
+  color: var(--color-text-primary);
+}
 
-  /* Summaryカードのモバイル最適化 */
+/* Summaryカードのモバイル最適化 */
 .summary-card h4 {
   font-size: 1.25rem;
 }
 
 .summary-card h6 {
   font-size: 0.8rem;
-  color: #adb5bd;
+  color: var(--color-text-secondary);
 }
 
 @media (max-width: 576px) {
@@ -132,8 +105,8 @@ body {
 
 /* グラフカード統一スタイル */
 .card[data-charts-target] {
-  background-color: $secondary-bg;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 0.75rem;
 }
 
@@ -153,95 +126,35 @@ body {
   }
 }
 
-/* ===== footer_nav（モバイル固定ナビ） ===== */
-.footer-nav {
-  height: var(--footer-nav-height);
-  padding-bottom: env(safe-area-inset-bottom);
-  background: rgba(0,0,0,0.75);
-  backdrop-filter: blur(8px);
-  border-top: 1px solid rgba(255,255,255,0.08);
-
-  .footer-nav__inner {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: .25rem;
-    padding: .6rem .75rem;
-  }
-
-  a {
-    color: $text-light;
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: .15rem;
-    padding: .6rem .25rem;
-    border-radius: .75rem;
-    font-size: .7rem; // 文字小さめ
-  }
-
-  a[aria-current="page"],
-  a.active {
-    background: rgba($accent-color, .12);
-    color: $accent-color;
-  }
-
-  i[data-lucide] {
-    width: 28px;   // アイコンやや大きめ
-    height: 26px;
-    stroke-width: 2.2;
-  }
-}
-
-@media (min-width: 768px) {
-  .footer-nav {
-    display: none;
-  }
-}
-
 /* 種目の基礎スタイル（タップ領域を確保） */
 .exercise-option {
-  padding: 0.8rem 1rem;
+  padding: 0.75rem 0.8rem;
   border-radius: 8px;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   cursor: pointer;
   transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-/* スマホアプリっぽい選択ハイライト */
-.exercise-option.selected-exercise {
-  background-color: rgba(58, 134, 255, 0.35);
-  border: 1.5px solid rgba(58, 134, 255, 0.45);
-  color: #0d1b2a;
-  box-shadow: 0 0 6px rgba(58, 134, 255, 0.30);
-  border-radius: 8px;
-}
-
 .exercise-card {
-  background-color: #102236; // ほんの少し明るいネイビー
+  background-color: var(--color-surface);
   border-radius: 12px;
   padding: 1.2rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-  color: $text-light;
-}
-
-.set-row {
-  padding-left: 0.3rem;
-  font-size: 1rem;
+  box-shadow: var(--shadow-md);
+  color: var(--color-text-primary);
 }
 
 .exercise-card h4 {
   font-size: 1.2rem;
   font-weight: bold;
   margin-bottom: 1rem;
-  color: $text-light;
+  color: var(--color-text-primary);
 }
 
 .exercise-memo {
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.85);   // text-light より少し弱め
+  color: var(--color-text-secondary);
   padding-left: 0.3rem;
-  border-left: 3px solid rgba(255, 255, 255, 0.4); // メモの視認性UP
+  border-left: 3px solid var(--color-secondary);
   margin-top: -4px;
   margin-bottom: 8px;
 }
@@ -249,25 +162,34 @@ body {
 //* ===== セット行（筋トレメモ風レイアウト） ===== */
 .set-row {
   padding: 0.6rem 0.3rem;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .set-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.6rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-border);
+  color: var(--color-text-secondary);
   font-weight: 600;
-  color: rgba(255,255,255,0.95);
-  font-size: 1rem;
-  min-width: 1.2rem;  /* 桁揃えに備えて少し幅を確保 */
+  font-size: 0.85rem;
 }
 
 .set-weight,
-.set-reps {
-  font-size: 0.95rem;
-  color: rgba(255,255,255,0.85);
+.set-reps,
+.set-metric {
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-primary);
 }
 
 .set-memo {
   font-size: 0.85rem;
-  color: rgba(255,255,255,0.75);
+  color: var(--color-text-secondary);
 
   /* 1行で省略 */
   white-space: nowrap;
@@ -275,22 +197,6 @@ body {
   text-overflow: ellipsis;
 
   margin-left: 1.6rem; /* 番号の縦揃えに合わせる */
-}
-
-/* 種目カードを少し整える */
-.exercise-card {
-  background-color: #102236; // (既に設定済み)
-  border-radius: 12px;
-  padding: 1.2rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-  color: $text-light;
-}
-
-.exercise-card h4 {
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-  color: $text-light;
 }
 
 /* ===== 種目選択 UI（カード方式） ===== */
@@ -302,43 +208,34 @@ body {
 
 /* 部位ごとのカード */
 .exercise-select-card {
-  background-color: #102236; // 既視感あるネイビー
+  background-color: var(--color-surface);
   border-radius: 12px;
   padding: 1rem 1.2rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border);
 }
 
 /* 部位タイトル */
 .part-title {
   font-size: 1.1rem;
   font-weight: 600;
-  color: $text-light;
+  color: var(--color-text-primary);
   margin-bottom: 0.6rem;
-}
-
-/* 種目 */
-.exercise-option {
-  padding: 0.75rem 0.8rem;
-  border-radius: 8px;
-  margin-bottom: 4px;
-  cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 /* 選択中のハイライト */
 .exercise-option.selected-exercise {
-  background-color: rgba($accent-color, 0.28);
-  border: 1px solid rgba($accent-color, 0.4);
-  color: $text-light;
-  box-shadow: 0 0 6px rgba($accent-color, 0.25);
+  background-color: rgba(58, 134, 255, 0.28);
+  border: 1px solid rgba(58, 134, 255, 0.4);
+  color: var(--color-text-primary);
+  box-shadow: 0 0 6px rgba(58, 134, 255, 0.25);
 }
 
 /* もっと見るボタン */
 .toggle-btn {
   background: none;
   border: none;
-  color: lighten($text-light, 20%);
+  color: var(--color-text-secondary);
   padding: 4px;
   font-size: 0.9rem;
   text-align: left;
@@ -362,28 +259,35 @@ body {
   }
 }
 
+// PC幅では読み物としての余白を保つため、Bootstrap既定より狭い上限幅に揃える
+@media (min-width: 1200px) {
+  main.container {
+    max-width: 960px;
+  }
+}
+
 /* === 種目名のカード === */
 .exercise-title-card {
-  background-color: #102236;   // 他カードと統一
+  background-color: var(--color-surface);
   border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border);
 }
 
 .exercise-title-card h3 {
-  color: $text-light;
+  color: var(--color-text-primary);
   font-weight: 600;
   letter-spacing: 0.5px;
 }
 
 /* ===== 今日のトレーニングカード ===== */
 .today-workout-card {
-  background-color: #102236;  // あなたの種目カードと完全一致
+  background-color: var(--color-surface);
   border-radius: 12px;
   padding: 1.2rem 1.4rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-  border: 1px solid rgba(255,255,255,0.08);
-  color: $text-light;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
   margin-top: 1rem;
 }
 
@@ -391,7 +295,7 @@ body {
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 1rem;
-  color: $text-light;
+  color: var(--color-text-primary);
   letter-spacing: 0.5px;
 }
 
@@ -399,36 +303,35 @@ body {
   font-size: 1.05rem;
   font-weight: 600;
   margin-bottom: 0.4rem;
-  color: lighten($text-light, 10%);
+  color: var(--color-text-primary);
 }
 
 .today-set-row {
   padding: 0.45rem 0.3rem;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   gap: 0.75rem;
   font-size: 0.95rem;
 
   .num {
-    color: rgba(255,255,255,0.95);
+    color: var(--color-text-primary);
     font-weight: 600;
     min-width: 1.2rem;
   }
 
   .weight, .reps {
-    color: rgba(255,255,255,0.85);
+    color: var(--color-text-primary);
   }
 }
 
 .add-exercise_btn {
   background-color: rgba(58, 134, 255, 0.25);
-  color: $text-light;
-  border: 1px solid rgba(255,255,255,0.15);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
   padding: 4px 10px;
   border-radius: 6px;
   font-size: 0.85rem;
   text-decoration: none !important;
-  border: none;
 
   &:hover {
     background-color: rgba(58, 134, 255, 0.35);
@@ -451,7 +354,7 @@ body {
 .btn.btn-google:hover {
   background-color: #f7f8f8;
   color: #3c4043;
-}  
+}
 
 .floating-back {
   position: fixed;
@@ -467,16 +370,14 @@ body {
   align-items: center;
   justify-content: center;
 
-  background: rgba(16, 34, 54, 0.85); // アプリ背景と馴染ませる
+  background: var(--color-surface-elevated);
   backdrop-filter: blur(10px);
 
-  color: #e0e1dd; // 明確に指定
+  color: var(--color-text-primary);
   font-size: 20px;
   font-weight: 600;
 
-  box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.25),
-    inset 0 0 0 1px rgba(255,255,255,0.08);
+  box-shadow: var(--shadow-md);
 
   cursor: pointer;
   user-select: none;
@@ -489,22 +390,19 @@ body {
 
 .floating-back:hover {
   transform: translateY(-1px);
-  box-shadow:
-    0 6px 18px rgba(0, 0, 0, 0.3),
-    inset 0 0 0 1px rgba(255,255,255,0.12);
+  box-shadow: var(--shadow-lg);
 }
 
 .floating-back:active {
   transform: scale(0.94);
-  background: rgba(16, 34, 54, 0.95);
 }
 
 .previous-workout-card {
-  background: #0f2033;
+  background: var(--color-surface);
   border-radius: 12px;
   padding: 12px;
   margin-bottom: 16px;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid var(--color-border);
 }
 
 .previous-workout-header {
@@ -516,7 +414,7 @@ body {
 
 .previous-workout-date {
   font-size: 0.9rem;
-  opacity: 0.8;
+  color: var(--color-text-secondary);
 }
 
 .previous-workout-copy {
@@ -532,7 +430,8 @@ body {
 }
 
 .previous-set-chip {
-  background: rgba(255,255,255,0.08);
+  background: var(--color-border);
+  color: var(--color-text-primary);
   padding: 6px 10px;
   border-radius: 999px;
   font-size: 0.85rem;
@@ -562,7 +461,7 @@ body {
 .avatar-background {
   position: absolute;
   inset: 0;
-  background: #0b1220; // 仮の単色
+  background: var(--color-background);
   z-index: 0;
 }
 
@@ -596,13 +495,13 @@ body {
 .avatar-title h5 {
   margin: 0;
   font-weight: 600;
-  color: #fff;
+  color: var(--color-text-primary);
 }
 
 .avatar-subtitle {
   display: block;
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.65);
+  color: var(--color-text-secondary);
   margin-top: 2px;
 }
 
@@ -610,7 +509,7 @@ body {
 .avatar-detail-btn {
   position: absolute;
   top: 50%;
-  right: 0;
+  right: var(--space-4);
   transform: translateY(-50%);
 
   width: 44px;
@@ -621,19 +520,20 @@ body {
   align-items: center;
   justify-content: center;
 
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
+  background: var(--color-surface-elevated);
+  color: var(--color-text-primary);
 
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--color-border);
   backdrop-filter: blur(6px);
 }
 
-.avatar-detail-btn i {
-  font-size: 26px;
+.avatar-detail-btn svg {
+  width: 22px;
+  height: 22px;
 }
 
 .avatar-detail-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(58, 134, 255, 0.18);
 }
 
 .avatar-detail-btn:active {
@@ -672,7 +572,7 @@ body {
 
 .pace-min-input::placeholder,
 .pace-sec-input::placeholder {
-  color: rgba(255, 255, 255, 0.45);
+  color: var(--color-text-secondary);
 }
 
 /* pace欄は常に右側にアイコン分の余白を確保して、表示位置がブレないようにする */
@@ -685,9 +585,10 @@ body {
   padding-right: 3rem;
 }
 
+// ログインカード内に表示される補足説明ボックス
 .auth-service-description {
-  background-color: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: var(--color-border);
+  border: 1px solid var(--color-border);
 
   h5 {
     font-size: 1rem;

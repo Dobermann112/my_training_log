@@ -38,7 +38,7 @@
               }.to_json) %>"
               aria-label="前回のセットをコピー"
             >
-              <i class="bi bi-arrow-repeat"></i> 前回値をコピー
+              <i data-lucide="repeat"></i> 前回値をコピー
             </button>
           </div>
       
@@ -58,46 +58,16 @@
       </div>
 
       <template data-sets-target="template">
-        <div class="set-input-row mb-3 p-3 rounded" style="background-color: #0f2033; border: 1px solid rgba(255,255,255,0.08);"
+        <div class="set-input-row mb-3 p-3 rounded"
              data-controller="workout-set-create"
              data-workout-set-create-date-value="<%= params[:date] %>"
              data-workout-set-create-exercise-id-value="<%= @exercise.id %>">
 
-          <div class="set-number-label mb-2 fw-bold text-light" data-sets-target="number">
+          <div class="set-number-label mb-2 fw-bold" data-sets-target="number">
             セット1
           </div>
 
-          <div class="d-flex gap-3">
-            <div class="flex-fill">
-              <label class="form-label">重量(kg)</label>
-              <input type="text"
-                     inputmode="decimal"
-                     step="any"
-                     class="form-control"
-                     data-sets-target="weight"
-                     data-workout-set-create-target="weight"
-                     data-action="input->workout-set-create#saveDraft">
-            </div>
-
-            <div class="flex-fill">
-              <label class="form-label">回数</label>
-              <input type="text"
-                     inputmode="numeric"
-                     class="form-control"
-                     data-sets-target="reps"
-                     data-workout-set-create-target="reps"
-                     data-action="input->workout-set-create#saveDraft">
-            </div>
-          </div>
-
-          <div class="mt-2">
-            <label class="form-label">メモ</label>
-            <textarea rows="1"
-                      class="form-control"
-                      data-sets-target="memo"
-                      data-workout-set-create-target="memo"
-                      data-action="input->workout-set-create#saveDraft"></textarea>
-          </div>
+          <%= render "shared/sets/input_fields" %>
         </div>
       </template>
 

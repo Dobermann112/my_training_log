@@ -33,3 +33,6 @@ application.register("cardio-set-create", CardioSetCreateController)
 
 import DraftCleanupController from "./draft_cleanup_controller"
 application.register("draft-cleanup", DraftCleanupController)
+
+import ThemeController from "./theme_controller"
+application.register("theme", ThemeController)

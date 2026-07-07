@@ -1,0 +1,70 @@
+// ===== Card =====
+// Bootstrap標準の.cardをトークン参照に統一しつつ、
+// ページ固有クラス(exercise-card等)の移行先となる共通クラス.card-surfaceを提供する。
+
+.card {
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+}
+
+.card-surface {
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-4);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+
+  &--compact {
+    padding: var(--space-3);
+  }
+
+  &--highlight {
+    border-color: var(--color-primary);
+  }
+}
+
+// セット/カーディオの入力行(sets_controller.js等がクラス名でquerySelectorするため
+// クラス名自体は変更せず、ここで背景色のみトークン化する)
+.set-input-row {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+// Bootstrapの.list-group-itemは固定色(--bs-list-group-color)を持つため
+// トークン参照に上書きする
+.list-group-item {
+  color: var(--color-text-primary);
+}
+
+// ===== Modal =====
+.modal-content {
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+}
+
+// Bootstrapの.btn-close-whiteは常に白アイコンになるため、
+// ライトテーマでは反転を解除しデフォルト(濃色)のアイコンに戻す
+[data-theme="light"] .btn-close-white {
+  filter: none;
+}
+
+// ===== Empty State =====
+.empty-state {
+  padding: var(--space-8) var(--space-4);
+  color: var(--color-text-secondary);
+}
+
+.empty-state-icon {
+  width: 40px;
+  height: 40px;
+  color: var(--color-text-secondary);
+}
+
+.empty-state-message {
+  color: var(--color-text-secondary);
+}

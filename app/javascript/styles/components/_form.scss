@@ -1,0 +1,21 @@
+// ===== Form =====
+// フォーム要素の見た目をトークン参照に統一する。
+// 各Viewでの `bg-transparent text-light border-secondary` 等のベタ書きは
+// 後続Phaseで順次このスタイルに寄せていく。
+
+.form-label {
+  color: var(--color-text-primary);
+}
+
+.form-control,
+.form-select,
+textarea {
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+
+  &:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.25);
+  }
+}

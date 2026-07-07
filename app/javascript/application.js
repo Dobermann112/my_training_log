@@ -14,20 +14,12 @@ import "./react/root.tsx"
 import { createIcons, icons } from "lucide"
 
 // Import Three.js Avatar
-import { initAvatarViewer, destroyAvatarViewer } from "./three/avatar/initAvatarViewer"
+// 初期化はReactのAvatarViewコンポーネントが行うため、ここではdestroyのみ扱う
+import { destroyAvatarViewer } from "./three/avatar/initAvatarViewer"
 
 // Turbo load
 document.addEventListener("turbo:load", () => {
   createIcons({ icons })
-
-  // avatar-root があるページだけ初期化
-  const avatarRoot = document.getElementById("avatar-root")
-  if (avatarRoot) {
-    // levels は data 属性 or window などから渡す想定
-    // 例: data-avatar-levels がある場合
-    const levels = JSON.parse(avatarRoot.dataset.levels || "{}")
-    initAvatarViewer(levels)
-  }
 })
 
 // Turbo before render（画面遷移前に確実に破棄）

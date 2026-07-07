@@ -1,9 +1,13 @@
-<nav class="navbar navbar-dark bg-dark shadow-sm d-md-none position-relative">
+<nav class="navbar app-navbar shadow-sm d-md-none position-relative">
   <div class="container">
     <% if user_signed_in? %>
-      <%= link_to "トレログ", dashboard_calendar_path, class: "navbar-brand fw-bold text-warning mx-auto" %>
+      <%= link_to "トレログ", dashboard_calendar_path, class: "navbar-brand fw-bold app-navbar-brand mx-auto" %>
     <% else %>
-      <%= link_to "トレログ", unauthenticated_root_path, class: "navbar-brand fw-bold text-warning mx-auto" %>
+      <%= link_to "トレログ", unauthenticated_root_path, class: "navbar-brand fw-bold app-navbar-brand mx-auto" %>
     <% end %>
+
+    <div class="position-absolute top-50 end-0 translate-middle-y me-3">
+      <%= render "shared/theme_toggle" %>
+    </div>
   </div>
 </nav>

@@ -22,6 +22,9 @@ let avatarLevels = {}
 let tooltipEl = null
 let currentHoveredPart = null
 
+// ローディング/エラー表示制御用
+let statusEl = null
+
 // Turbo遷移などで確実に解除できるよう、イベントハンドラを保持する
 let handlePointerMove = null
 let handlePointerLeave = null
@@ -63,6 +66,10 @@ export async function initAvatarViewer() {
   // パーツ情報を表示するツールチップを生成する
   tooltipEl = createTooltip(root)
 
+  // ローディング表示を生成し、取得中である旨を伝える
+  statusEl = createStatus(root)
+  setAvatarStatus("loading", "読み込み中...")
+
   // カメラの位置と視野角を設定する
   camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000)
   camera.position.set(0, 70, 95)
@@ -98,11 +105,13 @@ export async function initAvatarViewer() {
 
   // APIから現在の部位レベルを取得する
   let levels
+  let fetchFailed = false
   try {
     levels = await fetchAvatarLevels()
   } catch (e) {
     console.error("[Avatar] failed to fetch levels", e)
     levels = {}
+    fetchFailed = true
   }
 
   // レベル未取得時は base を初期値として扱う
@@ -119,6 +128,12 @@ export async function initAvatarViewer() {
 
   // 初回は1回だけ描画（静止画）
   renderOnce()
+
+  if (fetchFailed) {
+    setAvatarStatus("error", "最新のステータス取得に失敗しました。基本アバターを表示しています。")
+  } else {
+    setAvatarStatus("hidden")
+  }
 
   // OrbitControls操作中のみ連続描画を行う
   controls.addEventListener("start", startRender)
@@ -193,21 +208,29 @@ function loadPart(part, level) {
     avatarParts[part] = null
   }
 
-  loader.load(url, (gltf) => {
-    const obj = gltf.scene
-    obj.position.set(0, 40, 0)
-    obj.scale.set(50, 50, 50)
+  loader.load(
+    url,
+    (gltf) => {
+      const obj = gltf.scene
+      obj.position.set(0, 40, 0)
+      obj.scale.set(50, 50, 50)
 
-    // Raycasterで判定した時にどの部位か分かるよう情報を持たせる
-    obj.userData.part = part
-    obj.userData.level = level
+      // Raycasterで判定した時にどの部位か分かるよう情報を持たせる
+      obj.userData.part = part
+      obj.userData.level = level
 
-    avatarParts[part] = obj
-    scene.add(obj)
+      avatarParts[part] = obj
+      scene.add(obj)
 
-    // モデル読み込み後に1回だけ再描画する
-    renderOnce()
-  })
+      // モデル読み込み後に1回だけ再描画する
+      renderOnce()
+    },
+    undefined,
+    (error) => {
+      console.error(`[Avatar] failed to load part: ${part}`, error)
+      setAvatarStatus("error", "一部のアバターパーツの読み込みに失敗しました。")
+    }
+  )
 }
 
 // 連続描画を開始する
@@ -338,6 +361,43 @@ function createTooltip(root) {
   return el
 }
 
+// ローディング/エラー状態を表示するDOMを生成してroot配下に追加する
+function createStatus(root) {
+  if (!root) return null
+
+  const el = document.createElement("div")
+  el.className = "avatar-status"
+  el.style.position = "absolute"
+  el.style.inset = "0"
+  el.style.display = "flex"
+  el.style.flexDirection = "column"
+  el.style.alignItems = "center"
+  el.style.justifyContent = "center"
+  el.style.gap = "8px"
+  el.style.textAlign = "center"
+  el.style.padding = "0 16px"
+  el.style.pointerEvents = "none"
+  el.style.color = "var(--color-text-secondary)"
+  el.style.fontSize = "13px"
+
+  root.appendChild(el)
+  return el
+}
+
+// ローディング中/エラー発生時の表示を切り替える
+// mode: "loading" | "error" | "hidden"
+function setAvatarStatus(mode, message = "") {
+  if (!statusEl) return
+
+  if (mode === "hidden") {
+    statusEl.style.display = "none"
+    return
+  }
+
+  statusEl.style.display = "flex"
+  statusEl.textContent = message
+}
+
 // 指定部位のラベルとレベルをツールチップに表示する
 function showTooltip(part, event) {
   if (!tooltipEl) return
@@ -417,6 +477,9 @@ export function destroyAvatarViewer() {
   tooltipEl?.remove()
   tooltipEl = null
   currentHoveredPart = null
+
+  statusEl?.remove()
+  statusEl = null
 
   handlePointerMove = null
   handlePointerLeave = null

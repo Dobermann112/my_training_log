@@ -6,7 +6,7 @@
   <%= link_to by_date_workouts_path(date: @date),
         data: { turbo_method: :delete, turbo_confirm: "この日のトレーニングを削除しますか？" },
         class: "btn btn-sm btn-outline-danger" do %>
-    <i class="bi bi-trash"></i>
+    <i data-lucide="trash-2"></i>
   <% end %>
 </div>
 
@@ -15,14 +15,20 @@
 <h3 class="mt-4">セット記録</h3>
 
 <%= link_to "種目を追加", select_exercise_workouts_path(date: @date),
-            class: "btn btn-warning mt-2 mb-3" %>
+            class: "btn btn-primary mt-2 mb-3" %>
 
 <div id="set_form_errors"></div>
 
-<div id="workout_sets">
-  <%= render "workouts/exercise_sets", exercise_sets: @strength_sets, workout: @workout %> 
-</div>
+<% if @strength_sets.blank? && @cardio_sets_by_exercise.blank? %>
+  <%= render "shared/ui/empty_state",
+              icon: "clipboard-list",
+              message: "まだこの日の記録がありません。" %>
+<% else %>
+  <div id="workout_sets">
+    <%= render "workouts/exercise_sets", exercise_sets: @strength_sets, workout: @workout %>
+  </div>
 
-<div id="cardio_sets">
-  <%= render "workouts/cardio_sets", cardio_sets_by_exercise: @cardio_sets_by_exercise %>
-</div>
+  <div id="cardio_sets">
+    <%= render "workouts/cardio_sets", cardio_sets_by_exercise: @cardio_sets_by_exercise %>
+  </div>
+<% end %>

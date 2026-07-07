@@ -25,46 +25,20 @@
 
         <% @sets.each_with_index do |set, i| %>
           <div class="set-input-row mb-3 p-3 rounded"
-              style="background-color: #0f2033; border: 1px solid rgba(255,255,255,0.08);"
               data-set-uuid="<%= set.id %>"
               data-persisted="true"
               data-controller="workout-set-create">
 
             <!-- 番号ラベル（Stimulus が再計算する） -->
-            <div class="set-number-label mb-2 fw-bold text-light"
+            <div class="set-number-label mb-2 fw-bold"
                 data-sets-target="number">
               セット<%= i + 1 %>
             </div>
 
-            <div class="d-flex gap-3">
-              <div class="flex-fill">
-                <label class="form-label">重量(kg)</label>
-                <%= text_field_tag "",
-                                     set.weight,
-                                     class: "form-control",
-                                     inputmode: "decimal",
-                                     step: "any",
-                                     data: { workout_set_create_target: "weight", action: "input->workout-set-create#saveDraft" } %>
-              </div>
-
-              <div class="flex-fill">
-                <label class="form-label">回数</label>
-                <%= text_field_tag "",
-                                     set.reps,
-                                     class: "form-control",
-                                     inputmode: "numeric",
-                                     data: { workout_set_create_target: "reps", action: "input->workout-set-create#saveDraft" } %>
-              </div>
-            </div>
-
-            <div class="mt-2">
-              <label class="form-label">メモ</label>
-              <%= text_area_tag "",
-                                set.memo,
-                                rows: 1,
-                                class: "form-control",
-                                data: { workout_set_create_target: "memo", action: "input->workout-set-create#saveDraft" } %>
-            </div>
+            <%= render "shared/sets/input_fields",
+                        weight_value: set.weight,
+                        reps_value: set.reps,
+                        memo_value: set.memo %>
 
           </div>
         <% end %>
@@ -74,43 +48,15 @@
       <!-- 新規追加用テンプレート -->
       <template data-sets-target="template">
         <div class="set-input-row mb-3 p-3 rounded"
-            style="background-color: #0f2033; border: 1px solid rgba(255,255,255,0.08);"
             data-controller="workout-set-create"
             data-persisted="false">
 
-          <div class="set-number-label mb-2 fw-bold text-light"
+          <div class="set-number-label mb-2 fw-bold"
               data-sets-target="number">
             セット
           </div>
 
-          <div class="d-flex gap-3">
-            <div class="flex-fill">
-              <label class="form-label">重量(kg)</label>
-              <input type="text"
-                     inputmode="decimal"
-                     step="any"
-                     class="form-control"
-                     data-workout-set-create-target="weight"
-                     data-action="input->workout-set-create#saveDraft">
-            </div>
-
-            <div class="flex-fill">
-              <label class="form-label">回数</label>
-              <input type="text"
-                     inputmode="numeric"
-                     class="form-control"
-                     data-workout-set-create-target="reps"
-                     data-action="input->workout-set-create#saveDraft">
-            </div>
-          </div>
-
-          <div class="mt-2">
-            <label class="form-label">メモ</label>
-            <textarea rows="1"
-                      class="form-control"
-                      data-workout-set-create-target="memo"
-                      data-action="input->workout-set-create#saveDraft"></textarea>
-          </div>
+          <%= render "shared/sets/input_fields" %>
 
         </div>
       </template>

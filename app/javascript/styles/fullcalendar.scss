@@ -6,17 +6,17 @@
 
 /* カレンダーカード */
 #calendar {
-  background: #102236;
+  background: var(--color-surface);
   border-radius: 20px;
   padding: 1.4rem;
-  border: 1px solid rgba(255,255,255,0.10);
-  box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-lg);
 }
 
 /* タイトル */
 .fc-toolbar-title {
   font-size: 1.45rem !important;
-  color: rgba(255,255,255,0.92);
+  color: var(--color-text-primary);
   font-weight: 700;
 }
 
@@ -24,7 +24,7 @@
 .fc-col-header-cell-cushion {
   font-size: 0.83rem !important;
   font-weight: 600 !important;
-  color: rgba(255,255,255,0.75) !important;
+  color: var(--color-text-secondary) !important;
   text-decoration: none !important;
 }
 
@@ -48,7 +48,7 @@
   margin: 4px auto !important;
 
   background: transparent;
-  border: 1px solid rgba(255,255,255,0.15);
+  border: 1px solid var(--color-border);
 }
 
 /* --- 日付数字（丸の中の文字） --- */
@@ -60,7 +60,7 @@
 
   font-size: 0.9rem !important;
   font-weight: 600 !important;
-  color: rgba(255,255,255,0.85);
+  color: var(--color-text-primary);
   text-decoration: none !important;
 
   display: flex !important;
@@ -73,29 +73,29 @@
 
 /* --- 今日の日付 --- */
 .fc-day-today .fc-daygrid-day-frame {
-  background: rgba(255,255,255,0.2) !important;
-  border: 1px solid rgba(255,255,255,0.5) !important;
-  color: white !important;
+  background: rgba(58, 134, 255, 0.15) !important;
+  border: 1px solid var(--color-primary) !important;
+  color: var(--color-text-primary) !important;
 }
 
 /* --- Workout のある日（React 側で classNames: ["workout-day"] を付与） --- */
 .workout-day .fc-daygrid-day-frame {
-  background: #3a86ff !important;
+  background: var(--color-primary) !important;
   border: none !important;
 }
 .workout-day .fc-daygrid-day-number {
-  color: white !important;
+  color: var(--color-on-primary) !important;
 }
 
 /* td に付いた状態を起点に frame を装飾する */
 .fc-daygrid-day.fc-has-workout .fc-daygrid-day-frame {
   background: rgba(58, 134, 255, 0.35) !important;
-  border: 2px solid #3a86ff !important;
+  border: 2px solid var(--color-primary) !important;
 }
 
 /* 日付文字色 */
 .fc-daygrid-day.fc-has-workout .fc-daygrid-day-number {
-  color: #fff !important;
+  color: var(--color-text-primary) !important;
 }
 
 /* --- イベントバブル（今後丸セルに統合するため縮小 or 非表示推奨） --- */
@@ -114,7 +114,7 @@
 .calendar-title {
   font-size: 1.6rem;
   font-weight: 700;
-  color: rgba(255,255,255,0.92);
+  color: var(--color-text-primary);
 }
 
 /* ボタン群 */
@@ -126,21 +126,21 @@
 .nav-btn,
 .today-btn {
   padding: 0.4rem 0.8rem;
-  background: rgba(255,255,255,0.12);
+  background: var(--color-border);
   border: none;
   border-radius: 6px;
-  color: white;
+  color: var(--color-text-primary);
   cursor: pointer;
 }
 
 .nav-btn:hover,
 .today-btn:hover {
-  background: rgba(255,255,255,0.18);
+  background: rgba(58, 134, 255, 0.18);
 }
 
 
 /* --- スマホ調整 --- */
-@media (max-width: 480px) {
+@media (max-width: 576px) {
   .fc-daygrid-day-frame {
     width: 42px;
     height: 42px;
@@ -151,4 +151,3 @@
     font-size: 0.82rem !important;
   }
 }
-

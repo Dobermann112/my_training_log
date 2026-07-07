@@ -4,4 +4,5 @@ export type AvatarLevels = {
   lower_body: string
 }
 
-export function initAvatarViewer(levels: AvatarLevels): void
+export function initAvatarViewer(): Promise<void>
+export function destroyAvatarViewer(): void
