@@ -35,6 +35,12 @@
   border: 1px solid var(--color-border);
 }
 
+// Bootstrapの.list-group-itemは固定色(--bs-list-group-color)を持つため
+// トークン参照に上書きする
+.list-group-item {
+  color: var(--color-text-primary);
+}
+
 // ===== Modal =====
 .modal-content {
   background-color: var(--color-surface);
