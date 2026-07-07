@@ -27,3 +27,19 @@
     border-color: var(--color-primary);
   }
 }
+
+// ===== Empty State =====
+.empty-state {
+  padding: var(--space-8) var(--space-4);
+  color: var(--color-text-secondary);
+}
+
+.empty-state-icon {
+  width: 40px;
+  height: 40px;
+  color: var(--color-text-secondary);
+}
+
+.empty-state-message {
+  color: var(--color-text-secondary);
+}

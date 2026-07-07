@@ -15,6 +15,7 @@ export default class extends Controller {
     document.documentElement.setAttribute("data-theme", next)
     localStorage.setItem(STORAGE_KEY, next)
     this.applyIconVisibility(next)
+    window.dispatchEvent(new CustomEvent("theme:change", { detail: { theme: next } }))
   }
 
   currentTheme() {
