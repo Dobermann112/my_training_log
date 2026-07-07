@@ -1,0 +1,41 @@
+// ===== Button =====
+// 主要アクション=Primary(アクセント色)、控えめな操作=Outline、削除系=Dangerという
+// 役割をトークンベースで統一する。既存のBootstrapクラス名はそのまま使う。
+
+.btn-primary {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-on-primary);
+
+  &:hover,
+  &:focus {
+    background-color: var(--color-primary-hover);
+    border-color: var(--color-primary-hover);
+    color: var(--color-on-primary);
+  }
+}
+
+.btn-secondary {
+  background-color: var(--color-surface-elevated);
+  border-color: var(--color-border);
+  color: var(--color-text-primary);
+
+  &:hover,
+  &:focus {
+    background-color: var(--color-secondary);
+    border-color: var(--color-secondary);
+  }
+}
+
+// 従来「ダークカード上の控えめな操作」用に使われてきたクラス。
+// ライトテーマでも不可視にならないよう、白固定ではなくテーマトークン基準に寄せる。
+.btn-outline-light {
+  --bs-btn-color: var(--color-text-primary);
+  --bs-btn-border-color: var(--color-border);
+  --bs-btn-hover-color: var(--color-on-primary);
+  --bs-btn-hover-bg: var(--color-primary);
+  --bs-btn-hover-border-color: var(--color-primary);
+  --bs-btn-active-color: var(--color-on-primary);
+  --bs-btn-active-bg: var(--color-primary);
+  --bs-btn-active-border-color: var(--color-primary);
+}

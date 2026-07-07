@@ -43,6 +43,9 @@
 }
 
 :root {
+  // アクセント(常に青系)の上に乗る文字色。ライト/ダークどちらでも背景色自体は変わらないため固定値
+  --color-on-primary: #ffffff;
+
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
