@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 import ApexCharts from "apexcharts"
+import { showToast } from "../utils/toast"
 
 export default class extends Controller {
   static targets = [
@@ -132,6 +133,7 @@ export default class extends Controller {
       this.updateSummary(data.summary)
     } catch (e) {
       console.error("筋トレグラフ取得失敗:", e)
+      showToast("グラフの取得に失敗しました。時間をおいて再度お試しください。", "error")
     }
   }
 
@@ -158,8 +160,9 @@ export default class extends Controller {
       this.updateCardioSummary(data.summary)
     } catch (e) {
       console.error("有酸素グラフ取得失敗:", e)
+      showToast("グラフの取得に失敗しました。時間をおいて再度お試しください。", "error")
     }
-  }  
+  }
 
   _renderLine(seriesData) {
     const isScoreMode = seriesData.length > 0 && seriesData[0].ratio !== undefined
