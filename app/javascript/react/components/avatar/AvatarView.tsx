@@ -3,11 +3,8 @@ import { initAvatarViewer } from "../../../three/avatar/initAvatarViewer"
 
 const AvatarView = () => {
   useEffect(() => {
-    fetch("/api/avatar")
-      .then(res => res.json())
-      .then(levels => {
-        initAvatarViewer(levels)
-      })
+    // レベル取得とローディング/エラー表示はinitAvatarViewer内で行う
+    initAvatarViewer()
   }, [])
 
   return <div id="avatar-root" />
