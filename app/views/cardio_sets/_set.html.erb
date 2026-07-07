@@ -2,10 +2,10 @@
   <div class="d-flex justify-content-between align-items-center">
     <div class="d-flex gap-3 align-items-center">
       <span class="set-number"><%= set.set_number %></span>
-      <span><%= set.distance %> km</span>
-      <span><%= set.duration %> min</span>
-      <span><%= set.calories %> kcal</span>
-      <span>
+      <span class="set-metric"><%= set.distance %> km</span>
+      <span class="set-metric"><%= set.duration %> min</span>
+      <span class="set-metric"><%= set.calories %> kcal</span>
+      <span class="set-metric">
         <%= set.pace.present? ? "#{format_pace_min_per_km(set.pace)} /km" : "-" %>
       </span>
 

@@ -2,7 +2,7 @@
 <div class="empty-state text-center">
   <i data-lucide="<%= icon %>" class="empty-state-icon mb-2"></i>
   <p class="empty-state-message mb-3"><%= message %></p>
-  <% if local_assigns[:action_text].present? && local_assigns[:action_path].present? %>
+  <% if action_text.present? && action_path.present? %>
     <%= link_to action_text, action_path, class: "btn btn-primary" %>
   <% end %>
 </div>

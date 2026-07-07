@@ -154,15 +154,24 @@ strong {
 }
 
 .set-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.6rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-border);
+  color: var(--color-text-secondary);
   font-weight: 600;
-  color: var(--color-text-primary);
-  font-size: 1rem;
-  min-width: 1.2rem;  /* 桁揃えに備えて少し幅を確保 */
+  font-size: 0.85rem;
 }
 
 .set-weight,
-.set-reps {
-  font-size: 0.95rem;
+.set-reps,
+.set-metric {
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
   color: var(--color-text-primary);
 }
 
