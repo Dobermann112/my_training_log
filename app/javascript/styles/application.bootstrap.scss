@@ -112,52 +112,6 @@ body {
   }
 }
 
-/* ===== footer_nav（モバイル固定ナビ） ===== */
-.footer-nav {
-  height: var(--footer-nav-height);
-  padding-bottom: env(safe-area-inset-bottom);
-  background: rgba(0,0,0,0.75);
-  backdrop-filter: blur(8px);
-  border-top: 1px solid rgba(255,255,255,0.08);
-
-  .footer-nav__inner {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: .25rem;
-    padding: .6rem .75rem;
-  }
-
-  a {
-    color: $text-light;
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: .15rem;
-    padding: .6rem .25rem;
-    border-radius: .75rem;
-    font-size: .7rem; // 文字小さめ
-  }
-
-  a[aria-current="page"],
-  a.active {
-    background: rgba($accent-color, .12);
-    color: $accent-color;
-  }
-
-  i[data-lucide] {
-    width: 28px;   // アイコンやや大きめ
-    height: 26px;
-    stroke-width: 2.2;
-  }
-}
-
-@media (min-width: 768px) {
-  .footer-nav {
-    display: none;
-  }
-}
-
 /* 種目の基礎スタイル（タップ領域を確保） */
 .exercise-option {
   padding: 0.8rem 1rem;
