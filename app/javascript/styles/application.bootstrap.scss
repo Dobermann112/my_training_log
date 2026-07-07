@@ -18,8 +18,9 @@ $flash-notice-text: #000;
 
 // ===== Base Layout =====
 body {
-  background-color: $primary-bg;
-  color: $text-light;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-base);
 }
 
 @media (max-width: 767.98px) {
