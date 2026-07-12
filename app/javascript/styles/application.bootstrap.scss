@@ -540,6 +540,99 @@ strong {
   transform: translateY(-50%) scale(0.96);
 }
 
+/* パーツホバー/タップ時のツールチップ */
+.avatar-part-tooltip {
+  position: absolute;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: var(--color-surface-elevated);
+  color: var(--color-text-primary);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--color-border);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ローディング/エラー表示 */
+.avatar-status {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+  padding: 0 16px;
+  pointer-events: none;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+
+/* 部位ごとのレベル進捗バッジ */
+.avatar-level-badge {
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-4);
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: var(--color-surface-elevated);
+  border: 1px solid var(--color-border);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  pointer-events: none;
+}
+
+.avatar-level-row {
+  display: grid;
+  grid-template-columns: 44px 40px 64px 36px;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+}
+
+.avatar-level-row__label {
+  color: var(--color-text-secondary);
+}
+
+.avatar-level-row__level {
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.avatar-level-row__bar {
+  position: relative;
+  width: 64px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--color-border);
+  overflow: hidden;
+}
+
+.avatar-level-row__bar-fill {
+  position: absolute;
+  inset: 0;
+  width: 0%;
+  border-radius: 999px;
+  background: var(--color-primary);
+  transition: width 0.4s ease;
+}
+
+.avatar-level-row__percent {
+  text-align: right;
+  color: var(--color-text-secondary);
+}
+
 .auth-page {
   min-height: 100vh;
   background-image: url("/auth/auth_bg_pc.jpg");

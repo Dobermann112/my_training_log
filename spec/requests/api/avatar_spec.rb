@@ -24,12 +24,12 @@ RSpec.describe 'Api::Avatars', type: :request do
       get '/api/avatar'
 
       json = response.parsed_body
-      expect(json['upper_body']).to eq('base')
-      expect(json['core']).to eq('base')
-      expect(json['lower_body']).to eq('base')
+      expect(json['upper_body']).to eq('level' => 'base', 'progress' => 0.0, 'next_level' => 'level_3')
+      expect(json['core']).to eq('level' => 'base', 'progress' => 0.0, 'next_level' => 'level_3')
+      expect(json['lower_body']).to eq('level' => 'base', 'progress' => 0.0, 'next_level' => 'level_3')
     end
 
-    it 'stat が存在する場合は level を反映する' do
+    it 'stat が存在する場合は level と進捗率を反映する' do
       user.avatar_part_stats.create!(
         avatar_part: :upper_body,
         point: 300,
@@ -39,7 +39,7 @@ RSpec.describe 'Api::Avatars', type: :request do
       get '/api/avatar'
       json = response.parsed_body
 
-      expect(json['upper_body']).to eq('level_3')
+      expect(json['upper_body']).to eq('level' => 'level_3', 'progress' => 0.0, 'next_level' => 'level_7')
     end
   end
 end

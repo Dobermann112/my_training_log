@@ -23,7 +23,7 @@ module Api
             0
           end
 
-        result[part] = Avatar::LevelThresholds.level_for(point)
+        result[part] = Avatar::LevelThresholds.progress_for(point)
       end
     end
   end

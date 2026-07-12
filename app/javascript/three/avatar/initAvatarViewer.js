@@ -1,6 +1,10 @@
 import * as THREE from "three"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
+import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment"
+
+// パーツ切り替え時のクロスフェード演出時間(ms)
+const CROSSFADE_DURATION = 500
 
 // Three.jsの主要オブジェクト
 let renderer = null
@@ -24,6 +28,13 @@ let currentHoveredPart = null
 
 // ローディング/エラー表示制御用
 let statusEl = null
+
+// レベル進捗バッジ表示制御用
+let badgeEl = null
+let badgeRowEls = {}
+
+// バッジ表示上のパーツ表示順
+const PART_ORDER = ["upper_body", "core", "lower_body"]
 
 // Turbo遷移などで確実に解除できるよう、イベントハンドラを保持する
 let handlePointerMove = null
@@ -61,10 +72,21 @@ export async function initAvatarViewer() {
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
   renderer.setSize(width, height)
   renderer.setClearColor(0x000000, 0)
+  renderer.outputColorSpace = THREE.SRGBColorSpace
+  renderer.toneMapping = THREE.ACESFilmicToneMapping
+  renderer.toneMappingExposure = 1.1
   root.appendChild(renderer.domElement)
+
+  // IBL環境光を設定し、フラットな陰影を和らげてPBRマテリアルを馴染ませる
+  const pmremGenerator = new THREE.PMREMGenerator(renderer)
+  scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture
+  pmremGenerator.dispose()
 
   // パーツ情報を表示するツールチップを生成する
   tooltipEl = createTooltip(root)
+
+  // レベル進捗バッジを生成する
+  badgeEl = createLevelBadge(root)
 
   // ローディング表示を生成し、取得中である旨を伝える
   statusEl = createStatus(root)
@@ -114,17 +136,21 @@ export async function initAvatarViewer() {
     fetchFailed = true
   }
 
-  // レベル未取得時は base を初期値として扱う
+  // レベル未取得時は base・進捗0を初期値として扱う
+  const fallback = { level: "base", progress: 0, next_level: "level_3" }
   avatarLevels = {
-    upper_body: levels.upper_body ?? "base",
-    core:       levels.core       ?? "base",
-    lower_body: levels.lower_body ?? "base",
+    upper_body: levels.upper_body ?? fallback,
+    core:       levels.core       ?? fallback,
+    lower_body: levels.lower_body ?? fallback,
   }
 
   // 各部位のモデルを現在レベルに応じて読み込む
-  loadPart("upper_body", avatarLevels.upper_body)
-  loadPart("core", avatarLevels.core)
-  loadPart("lower_body", avatarLevels.lower_body)
+  loadPart("upper_body", avatarLevels.upper_body.level)
+  loadPart("core", avatarLevels.core.level)
+  loadPart("lower_body", avatarLevels.lower_body.level)
+
+  // レベル進捗バッジを最新の状態に更新する
+  updateLevelBadge()
 
   // 初回は1回だけ描画（静止画）
   renderOnce()
@@ -197,16 +223,12 @@ async function fetchAvatarLevels() {
 }
 
 // 指定された部位・レベルのGLBモデルを読み込み、sceneに追加する
+// 既存モデルがある場合は即座に差し替えず、クロスフェードで滑らかに切り替える
 function loadPart(part, level) {
   if (!level) return
   const url = `/models/avatar/${part}_${level}.glb`
 
-  // 既存モデルがある場合は破棄して差し替える
-  if (avatarParts[part]) {
-    disposeObject(avatarParts[part])
-    scene.remove(avatarParts[part])
-    avatarParts[part] = null
-  }
+  const previousObj = avatarParts[part]
 
   loader.load(
     url,
@@ -222,8 +244,7 @@ function loadPart(part, level) {
       avatarParts[part] = obj
       scene.add(obj)
 
-      // モデル読み込み後に1回だけ再描画する
-      renderOnce()
+      crossfadeParts(previousObj, obj)
     },
     undefined,
     (error) => {
@@ -231,6 +252,47 @@ function loadPart(part, level) {
       setAvatarStatus("error", "一部のアバターパーツの読み込みに失敗しました。")
     }
   )
+}
+
+// オブジェクト配下のメッシュ全体に不透明度を設定する
+function setObjectOpacity(obj, opacity) {
+  obj.traverse((child) => {
+    if (!child.isMesh) return
+
+    const materials = Array.isArray(child.material) ? child.material : [child.material]
+    materials.forEach((mat) => {
+      if (!mat) return
+      mat.transparent = true
+      mat.opacity = opacity
+    })
+  })
+}
+
+// 旧モデルをフェードアウトしつつ新モデルをフェードインし、成長演出を滑らかにする
+function crossfadeParts(previousObj, nextObj, duration = CROSSFADE_DURATION) {
+  const startTime = performance.now()
+  setObjectOpacity(nextObj, 0)
+  if (previousObj) setObjectOpacity(previousObj, 1)
+
+  function step(now) {
+    const t = Math.min((now - startTime) / duration, 1)
+    setObjectOpacity(nextObj, t)
+    if (previousObj) setObjectOpacity(previousObj, 1 - t)
+
+    renderer.render(scene, camera)
+
+    if (t < 1) {
+      requestAnimationFrame(step)
+      return
+    }
+
+    if (previousObj) {
+      disposeObject(previousObj)
+      scene.remove(previousObj)
+    }
+  }
+
+  requestAnimationFrame(step)
 }
 
 // 連続描画を開始する
@@ -331,7 +393,15 @@ function formatLevelLabel(level) {
   return String(level)
 }
 
-// ツールチップDOMを生成してroot配下に追加する
+// 部位の進捗(progress: 0.0〜1.0)を画面表示用のパーセント表記へ変換する
+function formatPercentLabel(stat) {
+  if (!stat) return ""
+  if (!stat.next_level) return "MAX"
+
+  return `${Math.round((stat.progress ?? 0) * 100)}%`
+}
+
+// ツールチップDOMを生成してroot配下に追加する（配色はSCSS側のテーマ変数に委ねる）
 function createTooltip(root) {
   if (!root) return null
 
@@ -340,21 +410,7 @@ function createTooltip(root) {
 
   const el = document.createElement("div")
   el.className = "avatar-part-tooltip"
-  el.style.position = "absolute"
   el.style.display = "none"
-  el.style.pointerEvents = "none"
-  el.style.padding = "8px 12px"
-  el.style.borderRadius = "12px"
-  el.style.background = "rgba(20, 20, 24, 0.92)"
-  el.style.color = "#fff"
-  el.style.fontSize = "12px"
-  el.style.fontWeight = "600"
-  el.style.lineHeight = "1.4"
-  el.style.boxShadow = "0 8px 24px rgba(0, 0, 0, 0.28)"
-  el.style.backdropFilter = "blur(8px)"
-  el.style.webkitBackdropFilter = "blur(8px)"
-  el.style.zIndex = "10"
-  el.style.whiteSpace = "nowrap"
   el.style.transform = "translate(12px, 12px)"
 
   root.appendChild(el)
@@ -367,21 +423,64 @@ function createStatus(root) {
 
   const el = document.createElement("div")
   el.className = "avatar-status"
-  el.style.position = "absolute"
-  el.style.inset = "0"
-  el.style.display = "flex"
-  el.style.flexDirection = "column"
-  el.style.alignItems = "center"
-  el.style.justifyContent = "center"
-  el.style.gap = "8px"
-  el.style.textAlign = "center"
-  el.style.padding = "0 16px"
-  el.style.pointerEvents = "none"
-  el.style.color = "var(--color-text-secondary)"
-  el.style.fontSize = "13px"
 
   root.appendChild(el)
   return el
+}
+
+// 部位ごとのレベル進捗バッジDOMを生成してroot配下に追加する
+function createLevelBadge(root) {
+  if (!root) return null
+
+  const el = document.createElement("div")
+  el.className = "avatar-level-badge"
+
+  badgeRowEls = {}
+
+  PART_ORDER.forEach((part) => {
+    const row = document.createElement("div")
+    row.className = "avatar-level-row"
+
+    const label = document.createElement("span")
+    label.className = "avatar-level-row__label"
+    label.textContent = formatPartLabel(part)
+
+    const level = document.createElement("span")
+    level.className = "avatar-level-row__level"
+
+    const bar = document.createElement("div")
+    bar.className = "avatar-level-row__bar"
+
+    const fill = document.createElement("div")
+    fill.className = "avatar-level-row__bar-fill"
+    bar.appendChild(fill)
+
+    const percent = document.createElement("span")
+    percent.className = "avatar-level-row__percent"
+
+    row.append(label, level, bar, percent)
+    el.appendChild(row)
+
+    badgeRowEls[part] = { levelEl: level, fillEl: fill, percentEl: percent }
+  })
+
+  root.appendChild(el)
+  return el
+}
+
+// 現在のavatarLevelsを進捗バッジへ反映する
+function updateLevelBadge() {
+  if (!badgeEl) return
+
+  PART_ORDER.forEach((part) => {
+    const rowEls = badgeRowEls[part]
+    const stat = avatarLevels[part]
+    if (!rowEls || !stat) return
+
+    rowEls.levelEl.textContent = formatLevelLabel(stat.level)
+    rowEls.percentEl.textContent = formatPercentLabel(stat)
+    rowEls.fillEl.style.width = `${Math.round((stat.progress ?? 0) * 100)}%`
+  })
 }
 
 // ローディング中/エラー発生時の表示を切り替える
@@ -398,15 +497,16 @@ function setAvatarStatus(mode, message = "") {
   statusEl.textContent = message
 }
 
-// 指定部位のラベルとレベルをツールチップに表示する
+// 指定部位のラベル・レベル・進捗をツールチップに表示する
 function showTooltip(part, event) {
   if (!tooltipEl) return
 
-  const level = avatarLevels[part]
+  const stat = avatarLevels[part]
   const partLabel = formatPartLabel(part)
-  const levelLabel = formatLevelLabel(level)
+  const levelLabel = formatLevelLabel(stat?.level)
+  const percentLabel = formatPercentLabel(stat)
 
-  tooltipEl.textContent = `${partLabel} ${levelLabel}`
+  tooltipEl.textContent = `${partLabel} ${levelLabel}${percentLabel ? ` (${percentLabel})` : ""}`
   tooltipEl.style.display = "block"
 
   updateTooltipPosition(event)
@@ -480,6 +580,10 @@ export function destroyAvatarViewer() {
 
   statusEl?.remove()
   statusEl = null
+
+  badgeEl?.remove()
+  badgeEl = null
+  badgeRowEls = {}
 
   handlePointerMove = null
   handlePointerLeave = null
