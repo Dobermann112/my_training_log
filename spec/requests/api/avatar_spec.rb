@@ -41,5 +41,18 @@ RSpec.describe 'Api::Avatars', type: :request do
 
       expect(json['upper_body']).to eq('level' => 'level_3', 'progress' => 0.0, 'next_level' => 'level_7')
     end
+
+    it 'core は upper_body より低い point(75)で level_3 に到達する' do
+      user.avatar_part_stats.create!(
+        avatar_part: :core,
+        point: 75,
+        last_trained_at: Time.current
+      )
+
+      get '/api/avatar'
+      json = response.parsed_body
+
+      expect(json['core']).to eq('level' => 'level_3', 'progress' => 0.0, 'next_level' => 'level_7')
+    end
   end
 end

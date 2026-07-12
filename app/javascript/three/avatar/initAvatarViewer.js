@@ -6,6 +6,9 @@ import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment
 // パーツ切り替え時のクロスフェード演出時間(ms)
 const CROSSFADE_DURATION = 500
 
+// アバター本体に適用するブランドカラー(--color-primary系)のtint
+const AVATAR_TINT_COLOR = 0x3a86ff
+
 // Three.jsの主要オブジェクト
 let renderer = null
 let controls = null
@@ -241,6 +244,9 @@ function loadPart(part, level) {
       obj.userData.part = part
       obj.userData.level = level
 
+      // ライト/ダーク両テーマの背景に埋もれないよう、ブランドカラーでtintする
+      applyAvatarTint(obj)
+
       avatarParts[part] = obj
       scene.add(obj)
 
@@ -252,6 +258,19 @@ function loadPart(part, level) {
       setAvatarStatus("error", "一部のアバターパーツの読み込みに失敗しました。")
     }
   )
+}
+
+// オブジェクト配下のメッシュ全体をブランドカラーでtintする
+function applyAvatarTint(obj) {
+  obj.traverse((child) => {
+    if (!child.isMesh) return
+
+    const materials = Array.isArray(child.material) ? child.material : [child.material]
+    materials.forEach((mat) => {
+      if (!mat?.color) return
+      mat.color.set(AVATAR_TINT_COLOR)
+    })
+  })
 }
 
 // オブジェクト配下のメッシュ全体に不透明度を設定する
@@ -381,16 +400,15 @@ function formatPartLabel(part) {
   }
 }
 
+// 内部tier名(base/level_3/level_7)を画面表示用の1始まりレベル番号に対応させる
+const LEVEL_DISPLAY_NUMBER = { base: 1, level_3: 2, level_7: 3 }
+
 // level文字列を画面表示用の Lv.表記へ変換する
 function formatLevelLabel(level) {
   if (!level) return ""
 
-  if (level === "base") return "Lv.0"
-
-  const matched = String(level).match(/\d+/)
-  if (matched) return `Lv.${matched[0]}`
-
-  return String(level)
+  const num = LEVEL_DISPLAY_NUMBER[level]
+  return num ? `Lv.${num}` : String(level)
 }
 
 // 部位の進捗(progress: 0.0〜1.0)を画面表示用のパーセント表記へ変換する
