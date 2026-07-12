@@ -14,7 +14,7 @@ module Avatar
     end
 
     def level
-      Avatar::LevelThresholds.level_for(avatar_part_stat.point)
+      Avatar::LevelThresholds.level_for(avatar_part_stat.point, avatar_part_stat.avatar_part)
     end
 
     def call
